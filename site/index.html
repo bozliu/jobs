@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jobs Atlas</title>
 <link rel="icon" href="data:,">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,
 *::before,
@@ -17,27 +14,21 @@
 
 :root {
   color-scheme: light;
-  --bg: oklch(98.5% 0.01 75);
-  --bg-strong: oklch(96.4% 0.02 75);
-  --surface: color-mix(in oklch, oklch(99.2% 0.01 80) 90%, oklch(83% 0.03 60) 10%);
-  --surface-strong: color-mix(in oklch, oklch(94.5% 0.02 78) 88%, oklch(71% 0.05 60) 12%);
-  --surface-ink: oklch(24% 0.02 60);
-  --line: oklch(84% 0.02 70);
-  --line-strong: oklch(72% 0.03 70);
-  --text: oklch(22% 0.02 58);
-  --muted: oklch(47% 0.02 62);
-  --accent: oklch(66% 0.11 62);
-  --accent-soft: oklch(89% 0.05 72);
-  --accent-ink: oklch(42% 0.06 58);
-  --teal: oklch(69% 0.08 200);
-  --rose: oklch(70% 0.09 32);
-  --shadow: 0 28px 80px rgba(66, 52, 30, 0.08);
-  --shadow-soft: 0 18px 48px rgba(76, 58, 31, 0.08);
-  --radius-xl: 32px;
-  --radius-lg: 24px;
-  --radius-md: 18px;
-  --radius-sm: 14px;
-  --content-width: min(1220px, calc(100vw - 40px));
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --surface-2: #fafafc;
+  --line: rgba(17, 24, 39, 0.08);
+  --line-strong: rgba(17, 24, 39, 0.14);
+  --text: #101114;
+  --muted: #6b7280;
+  --muted-2: #8b92a0;
+  --accent: #1d4ed8;
+  --shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --content-width: min(1440px, calc(100vw - 28px));
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -49,27 +40,12 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    radial-gradient(circle at top left, rgba(211, 185, 125, 0.24), transparent 28%),
-    radial-gradient(circle at top right, rgba(124, 165, 173, 0.18), transparent 24%),
-    linear-gradient(180deg, var(--bg) 0%, oklch(99% 0.008 80) 42%, var(--bg-strong) 100%);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), rgba(245, 245, 247, 0.94) 55%),
+    var(--bg);
   color: var(--text);
-  font-family: "Manrope", sans-serif;
-  line-height: 1.45;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 65%);
-  opacity: 0.25;
 }
 
 a {
@@ -82,71 +58,51 @@ input {
   font: inherit;
 }
 
-img {
-  max-width: 100%;
-  display: block;
-}
-
-.page-shell {
-  position: relative;
-  overflow: clip;
-}
-
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  backdrop-filter: blur(18px);
-  background: color-mix(in oklch, var(--bg) 84%, white 16%);
-  border-bottom: 1px solid rgba(139, 120, 87, 0.12);
-}
-
-.topbar-inner {
+.shell {
   width: var(--content-width);
   margin: 0 auto;
+  padding: 20px 0 40px;
+}
+
+.header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 18px;
-  padding: 16px 0;
+  gap: 20px;
+  margin-bottom: 18px;
 }
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.92), transparent 40%),
-    linear-gradient(135deg, rgba(203, 170, 106, 0.96), rgba(111, 154, 164, 0.84));
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 18px 30px rgba(104, 87, 57, 0.18);
-}
-
-.brand-copy {
-  display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 10px;
 }
 
-.brand-copy strong {
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-.brand-copy span {
-  font-size: 0.76rem;
-  color: var(--muted);
-  text-transform: uppercase;
+.brand-kicker {
+  font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-.nav-actions {
+.brand h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+}
+
+.brand p {
+  margin: 0;
+  max-width: 760px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.header-actions {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -154,772 +110,496 @@ img {
   justify-content: flex-end;
 }
 
-.ghost-link,
-.primary-link {
+.header-actions a,
+.header-actions button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
-  padding: 0 18px;
+  min-height: 40px;
+  padding: 0 16px;
   border-radius: 999px;
-  border: 1px solid rgba(118, 97, 63, 0.18);
-  transition:
-    transform 240ms var(--ease-out),
-    background-color 240ms var(--ease-out),
-    border-color 240ms var(--ease-out),
-    box-shadow 240ms var(--ease-out);
-}
-
-.ghost-link {
-  background: rgba(255, 255, 255, 0.44);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.76);
   color: var(--text);
+  transition:
+    transform 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out);
 }
 
-.primary-link {
-  background: linear-gradient(135deg, rgba(208, 175, 112, 0.95), rgba(118, 153, 164, 0.9));
-  color: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 18px 42px rgba(130, 114, 82, 0.18);
-}
-
-.ghost-link:hover,
-.ghost-link:focus-visible,
-.primary-link:hover,
-.primary-link:focus-visible {
+.header-actions a:hover,
+.header-actions a:focus-visible,
+.header-actions button:hover,
+.header-actions button:focus-visible {
   transform: translateY(-1px);
-  border-color: rgba(118, 97, 63, 0.3);
-  box-shadow: var(--shadow-soft);
+  border-color: var(--line-strong);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
   outline: none;
 }
 
-.hero {
-  width: var(--content-width);
-  margin: 0 auto;
-  padding: clamp(48px, 8vw, 96px) 0 42px;
-}
-
-.hero-panel {
-  position: relative;
-  overflow: hidden;
-  border-radius: calc(var(--radius-xl) + 8px);
-  border: 1px solid rgba(131, 113, 82, 0.14);
-  background:
-    radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.88), transparent 24%),
-    radial-gradient(circle at 86% 18%, rgba(114, 162, 171, 0.22), transparent 24%),
-    linear-gradient(180deg, rgba(255, 253, 250, 0.95), rgba(246, 241, 233, 0.9));
+.board {
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(17, 24, 39, 0.06);
   box-shadow: var(--shadow);
-  padding: clamp(28px, 4vw, 48px);
+  overflow: hidden;
+  backdrop-filter: blur(18px);
 }
 
-.hero-panel::after {
-  content: "";
-  position: absolute;
-  inset: auto -10% -35% 40%;
-  height: 420px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(208, 175, 112, 0.18), transparent 62%);
-  filter: blur(14px);
-  pointer-events: none;
+.board-top {
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
 }
 
-.hero-grid {
+.top-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-  gap: clamp(26px, 4vw, 42px);
-  position: relative;
-  z-index: 1;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--accent-ink);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: "";
-  display: inline-block;
-  width: 34px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(193, 157, 91, 0.16), rgba(193, 157, 91, 0.72));
-}
-
-.hero h1 {
-  margin: 22px 0 18px;
-  max-width: 12ch;
-  font-family: "Sora", sans-serif;
-  font-size: clamp(3rem, 7vw, 6.2rem);
-  line-height: 0.92;
-  letter-spacing: -0.07em;
-}
-
-.hero-lede {
-  max-width: 62ch;
-  color: var(--muted);
-  font-size: clamp(1.02rem, 1.4vw, 1.15rem);
-  line-height: 1.78;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 28px;
-}
-
-.hero-actions .ghost-link,
-.hero-actions .primary-link {
-  min-height: 48px;
-  padding-inline: 20px;
-}
-
-.hero-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: space-between;
-}
-
-.hero-card-stack {
-  display: grid;
-  gap: 14px;
-}
-
-.hero-note,
-.metric-card,
-.highlight-card,
-.story-card,
-.detail-panel,
-.method-card,
-.category-card {
-  border-radius: var(--radius-lg);
-  background: color-mix(in oklch, white 78%, var(--bg-strong) 22%);
-  border: 1px solid rgba(126, 106, 74, 0.12);
-  box-shadow: var(--shadow-soft);
-}
-
-.hero-note {
-  padding: 22px;
-}
-
-.hero-note small,
-.highlight-card small,
-.story-card small,
-.detail-panel small,
-.method-card small,
-.category-card small {
-  display: inline-flex;
-  color: var(--muted);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-}
-
-.hero-note > strong {
-  display: block;
-  margin-top: 14px;
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  font-family: "Sora", sans-serif;
-  line-height: 0.95;
-  letter-spacing: -0.06em;
-}
-
-.hero-note p {
-  margin: 14px 0 0;
-  color: var(--muted);
-}
-
-.section {
-  width: var(--content-width);
-  margin: 0 auto;
-  padding: clamp(38px, 7vw, 80px) 0;
-}
-
-.section-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 340px);
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
   align-items: end;
-  margin-bottom: 26px;
 }
 
-.section-header h2 {
-  margin: 0;
-  font-family: "Sora", sans-serif;
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
-}
-
-.section-header p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.75;
-}
-
-.metrics-grid,
-.highlights-grid,
-.stories-grid,
-.method-grid {
+.stats-row,
+.highlights-row,
+.category-row {
   display: grid;
-  gap: 16px;
+  gap: 10px;
 }
 
-.metrics-grid {
+.stats-row {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 16px;
 }
 
-.highlights-grid {
+.highlights-row {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 10px;
 }
 
-.stories-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.method-grid {
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-}
-
-.metric-card,
-.highlight-card,
-.story-card,
-.method-card,
-.category-card {
-  padding: 22px;
-}
-
-.metric-card strong,
-.highlight-card strong,
-.story-card strong {
-  display: block;
-  margin: 14px 0 10px;
-  font-family: "Sora", sans-serif;
-  font-size: clamp(1.6rem, 3vw, 2.7rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
-}
-
-.metric-card p,
-.highlight-card p,
-.story-card p,
-.method-card p,
-.detail-panel p,
-.category-card p {
-  margin: 0;
-  color: var(--muted);
-}
-
-.metric-card .metric-label,
-.highlight-card .metric-label {
-  display: block;
-  color: var(--text);
-  font-weight: 700;
-}
-
-.metric-card .metric-detail,
-.highlight-card .metric-detail {
-  margin-top: 8px;
-}
-
-.category-rail {
-  display: grid;
+.category-row {
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 18px;
+  margin-top: 10px;
 }
 
+.stat-card,
+.highlight-card,
 .category-card {
-  min-height: 184px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 14px 16px;
 }
 
+.stat-card small,
+.highlight-card small,
+.category-card small,
+.panel-section small,
+.legend small {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.stat-card strong,
+.highlight-card strong,
 .category-card strong {
   display: block;
-  margin: 14px 0 10px;
-  font-size: 1.35rem;
-  line-height: 1.1;
+  margin-top: 10px;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
-.category-card .category-meta {
-  display: grid;
-  gap: 7px;
-  margin-top: 18px;
+.stat-card p,
+.highlight-card p,
+.category-card p,
+.panel-section p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
 }
 
-.meta-row {
+.highlight-card strong,
+.category-card strong {
+  font-size: 18px;
+}
+
+.highlight-card .context,
+.category-card .context {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 0.92rem;
-}
-
-.meta-row span:last-child {
-  color: var(--text);
-  font-weight: 700;
-}
-
-.explorer-shell {
-  border-radius: calc(var(--radius-xl) + 8px);
-  padding: clamp(22px, 3.6vw, 32px);
-  border: 1px solid rgba(126, 106, 74, 0.14);
-  background:
-    linear-gradient(180deg, rgba(255, 252, 246, 0.94), rgba(245, 240, 231, 0.92)),
-    radial-gradient(circle at top right, rgba(121, 157, 167, 0.14), transparent 24%);
-  box-shadow: var(--shadow);
-}
-
-.explorer-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 22px;
+  justify-content: flex-end;
 }
 
-.toolbar-copy p {
-  margin: 10px 0 0;
-  max-width: 58ch;
-  color: var(--muted);
-}
-
-.mode-switch {
+.mode-toggle {
   display: inline-flex;
   gap: 6px;
   padding: 6px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(126, 106, 74, 0.14);
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
-.mode-switch button {
-  min-height: 42px;
-  padding: 0 18px;
-  border-radius: 999px;
+.mode-toggle button {
+  min-height: 38px;
+  padding: 0 14px;
   border: 0;
+  border-radius: 999px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
   transition:
-    color 220ms var(--ease-out),
-    background-color 220ms var(--ease-out),
-    transform 220ms var(--ease-out);
+    background-color 180ms var(--ease-out),
+    color 180ms var(--ease-out);
 }
 
-.mode-switch button.active {
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--text);
-  box-shadow: 0 12px 28px rgba(117, 95, 58, 0.12);
-}
-
-.mode-switch button:hover,
-.mode-switch button:focus-visible {
-  color: var(--text);
-  transform: translateY(-1px);
-  outline: none;
+.mode-toggle button.active {
+  background: #111827;
+  color: white;
 }
 
 .legend {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(126, 106, 74, 0.14);
-  color: var(--muted);
-  font-size: 0.88rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
 .legend-bar {
   width: 120px;
   height: 10px;
   border-radius: 999px;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
-.explorer-layout {
+.legend span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.board-main {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-  gap: 18px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1.45fr) 360px;
+  min-height: 760px;
 }
 
-.stage-shell {
+.chart-shell {
   position: relative;
-  padding: 10px;
-  border-radius: calc(var(--radius-xl) - 6px);
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(126, 106, 74, 0.1);
+  min-height: 760px;
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(250, 250, 252, 0.95));
 }
 
-.treemap-stage {
+.chart {
   position: relative;
-  min-height: 620px;
-  border-radius: calc(var(--radius-xl) - 10px);
+  height: 100%;
+  min-height: 736px;
+  border-radius: 24px;
+  background: var(--surface-2);
   overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(246, 240, 230, 0.95), rgba(237, 229, 216, 0.95)),
-    linear-gradient(120deg, rgba(204, 175, 122, 0.16), transparent 46%);
+  border: 1px solid rgba(17, 24, 39, 0.05);
 }
 
-.category-layer {
+.category-box {
   position: absolute;
-  border-radius: 26px;
-  border: 1px solid rgba(120, 99, 67, 0.11);
-  background: rgba(255, 255, 255, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36);
   overflow: hidden;
-}
-
-.category-layer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 34%);
-  pointer-events: none;
+  border-radius: 22px;
+  border: 1px solid rgba(17, 24, 39, 0.06);
+  background: rgba(255, 255, 255, 0.26);
 }
 
 .category-label {
   position: absolute;
-  left: 14px;
-  top: 14px;
+  top: 12px;
+  left: 12px;
   z-index: 1;
-  padding: 7px 12px;
+  max-width: calc(100% - 24px);
+  padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(249, 247, 242, 0.74);
-  color: var(--surface-ink);
-  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--text);
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 10px 24px rgba(97, 78, 45, 0.08);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.treemap-tile {
+.tile {
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 4px;
-  padding: 12px;
+  gap: 3px;
+  padding: 10px;
   border: 0;
-  text-align: left;
+  border-radius: 18px;
   color: white;
+  text-align: left;
   cursor: pointer;
-  border-radius: 20px;
   overflow: hidden;
   transition:
-    transform 220ms var(--ease-out),
-    box-shadow 220ms var(--ease-out),
-    opacity 220ms var(--ease-out),
-    filter 220ms var(--ease-out);
+    transform 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out),
+    opacity 160ms var(--ease-out),
+    filter 160ms var(--ease-out);
 }
 
-.treemap-tile::before {
+.tile::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 42%);
-  opacity: 0.6;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 38%);
   pointer-events: none;
 }
 
-.treemap-tile::after {
+.tile::after {
   content: "";
   position: absolute;
   inset: auto 0 0;
   height: 64%;
-  background: linear-gradient(180deg, transparent, rgba(21, 17, 12, 0.42));
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.34));
   pointer-events: none;
 }
 
-.treemap-tile > * {
+.tile > * {
   position: relative;
   z-index: 1;
 }
 
-.treemap-tile:hover,
-.treemap-tile:focus-visible,
-.treemap-tile.is-selected {
-  transform: translateY(-2px);
-  box-shadow: 0 24px 42px rgba(48, 37, 21, 0.2);
+.tile:hover,
+.tile:focus-visible,
+.tile.is-active {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18);
   outline: none;
 }
 
-.treemap-tile.is-dimmed {
-  opacity: 0.56;
-  filter: saturate(0.84);
+.tile.is-dimmed {
+  opacity: 0.58;
+  filter: saturate(0.8);
 }
 
-.treemap-tile h3 {
+.tile h3 {
   margin: 0;
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-size: clamp(11px, 0.95vw, 15px);
   line-height: 1.08;
   letter-spacing: -0.03em;
 }
 
-.treemap-tile span {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.84);
+.tile span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.88);
 }
 
-.treemap-tile[data-density="compact"] {
-  padding: 10px;
-}
-
-.treemap-tile[data-density="micro"] h3,
-.treemap-tile[data-density="micro"] span {
+.tile[data-density="micro"] h3,
+.tile[data-density="micro"] span {
   display: none;
 }
 
-.detail-panel {
-  position: sticky;
-  top: 92px;
-  padding: 24px;
+.tile[data-density="compact"] {
+  padding: 8px;
 }
 
-.detail-panel h3 {
-  margin: 16px 0 8px;
-  font-family: "Sora", sans-serif;
-  font-size: clamp(1.8rem, 3.4vw, 2.7rem);
-  line-height: 1;
+.panel {
+  border-left: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 20px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panel-header h2 {
+  margin: 8px 0 0;
+  font-size: 28px;
+  line-height: 0.98;
   letter-spacing: -0.05em;
 }
 
-.detail-grid {
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.panel-copy {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.panel-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
-  margin: 20px 0 24px;
-}
-
-.detail-metric {
-  padding: 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(126, 106, 74, 0.1);
-}
-
-.detail-metric span {
-  display: block;
-  color: var(--muted);
-  font-size: 0.76rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-}
-
-.detail-metric strong {
-  display: block;
-  margin-top: 10px;
-  font-size: 1.18rem;
-  line-height: 1.1;
-}
-
-.detail-callout {
-  padding: 16px 18px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(241, 236, 229, 0.82));
-  border: 1px solid rgba(126, 106, 74, 0.12);
-  color: var(--text);
-}
-
-.detail-rationale {
   margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(126, 106, 74, 0.12);
 }
 
-.detail-actions {
+.metric {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 12px;
+}
+
+.metric small {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.metric strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 18px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.panel-section {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.compare-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.compare-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.compare-item strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.compare-item span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  text-align: right;
+}
+
+.panel-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 20px;
 }
 
-.detail-actions a {
-  min-height: 44px;
-}
-
-.story-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.story-card::after {
-  content: "";
-  position: absolute;
-  right: -10%;
-  bottom: -20%;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(208, 175, 112, 0.14), transparent 62%);
-  pointer-events: none;
-}
-
-.story-card h3 {
-  margin: 14px 0 12px;
-  max-width: 18ch;
-  font-family: "Sora", sans-serif;
-  font-size: clamp(1.55rem, 2.8vw, 2.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-}
-
-.story-metric {
+.panel-actions a {
   display: inline-flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 16px 0 20px;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.68);
-  border: 1px solid rgba(126, 106, 74, 0.12);
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
 }
 
-.story-metric strong {
-  margin: 0;
-  font-size: 1.6rem;
-}
-
-.story-list,
-.method-list {
-  display: grid;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.story-list-item,
-.method-list li {
-  list-style: none;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(126, 106, 74, 0.1);
-}
-
-.story-list-item strong {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 1rem;
-}
-
-.story-list-item span {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.method-card {
-  padding: 28px;
-}
-
-.method-card h3 {
-  margin: 14px 0 14px;
-  font-family: "Sora", sans-serif;
-  font-size: clamp(1.7rem, 3vw, 2.5rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-}
-
-.method-list {
-  margin: 0;
-  padding: 0;
-}
-
-.method-list li {
-  color: var(--muted);
+.panel-actions a.primary {
+  background: #111827;
+  border-color: #111827;
+  color: white;
 }
 
 .footer {
-  width: var(--content-width);
-  margin: 0 auto;
-  padding: 0 0 48px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 4px 0;
   color: var(--muted);
+  font-size: 13px;
 }
 
-.footer small {
-  display: block;
-  padding-top: 18px;
-  border-top: 1px solid rgba(126, 106, 74, 0.12);
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 720ms var(--ease-out),
-    transform 720ms var(--ease-out);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (max-width: 1120px) {
-  .hero-grid,
-  .explorer-layout,
-  .method-grid,
-  .section-header {
+@media (max-width: 1200px) {
+  .board-main {
     grid-template-columns: 1fr;
   }
 
-  .metrics-grid,
-  .highlights-grid {
+  .panel {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .stats-row,
+  .highlights-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .stories-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .category-rail {
+  .category-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .detail-panel {
-    position: static;
   }
 }
 
-@media (max-width: 760px) {
-  :root {
-    --content-width: min(100vw - 24px, 100%);
+@media (max-width: 840px) {
+  .header,
+  .top-grid {
+    grid-template-columns: 1fr;
+    display: grid;
   }
 
-  .topbar-inner {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .nav-actions {
-    width: 100%;
+  .header-actions,
+  .toolbar {
     justify-content: flex-start;
   }
 
-  .hero-actions,
-  .detail-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .metrics-grid,
-  .highlights-grid,
-  .category-rail {
+  .stats-row,
+  .highlights-row,
+  .category-row,
+  .panel-grid {
     grid-template-columns: 1fr;
   }
 
-  .mode-switch {
+  .mode-toggle {
     width: 100%;
     overflow-x: auto;
   }
@@ -929,16 +609,9 @@ img {
     justify-content: space-between;
   }
 
-  .legend-bar {
-    width: 84px;
-  }
-
-  .treemap-stage {
-    min-height: 560px;
-  }
-
-  .detail-grid {
-    grid-template-columns: 1fr;
+  .chart-shell,
+  .chart {
+    min-height: 580px;
   }
 }
 
@@ -950,186 +623,81 @@ img {
   *,
   *::before,
   *::after {
+    transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .reveal,
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
   }
 }
 </style>
 </head>
 <body>
-<div class="page-shell">
-  <header class="topbar">
-    <div class="topbar-inner">
+  <div class="shell">
+    <header class="header">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div class="brand-copy">
-          <strong>Jobs Atlas</strong>
-          <span>Career research visualized</span>
-        </div>
+        <span class="brand-kicker">BLS Occupations / AI Exposure / Treemap</span>
+        <h1>One interactive map of the U.S. job market.</h1>
+        <p id="introCopy">Loading the latest dataset.</p>
       </div>
-      <nav class="nav-actions">
-        <a class="ghost-link" href="#findings">Findings</a>
-        <a class="ghost-link" href="#explorer">Explorer</a>
-        <a class="primary-link" id="repoLinkTop" href="https://github.com/bozliu/jobs" target="_blank" rel="noreferrer">View repo</a>
-      </nav>
-    </div>
-  </header>
+      <div class="header-actions">
+        <a id="repoLink" href="https://github.com/bozliu/jobs" target="_blank" rel="noreferrer">GitHub</a>
+        <a id="sourceLink" href="https://www.bls.gov/ooh/" target="_blank" rel="noreferrer">BLS source</a>
+      </div>
+    </header>
 
-  <main>
-    <section class="hero reveal">
-      <div class="hero-panel">
-        <div class="hero-grid">
+    <section class="board">
+      <div class="board-top">
+        <div class="top-grid">
           <div>
-            <span class="eyebrow">Jobs Atlas / BLS x AI x Careers</span>
-            <h1>A keynote view of how work is shifting.</h1>
-            <p class="hero-lede" id="heroLede">
-              Loading the latest dataset.
-            </p>
-            <div class="hero-actions">
-              <a class="primary-link" href="#explorer">Open the explorer</a>
-              <a class="ghost-link" href="#methodology">See methodology</a>
-            </div>
+            <div class="stats-row" id="statsRow"></div>
+            <div class="highlights-row" id="highlightsRow"></div>
+            <div class="category-row" id="categoryRow"></div>
           </div>
-          <div class="hero-meta">
-            <div class="hero-card-stack" id="heroCallouts"></div>
-            <div class="hero-note">
-              <small>Daily refresh</small>
-              <strong>09:00</strong>
-              <p>Asia/Shanghai, with production deploys staying on one fixed Vercel URL.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="metrics">
-      <div class="metrics-grid" id="heroStats"></div>
-    </section>
-
-    <section class="section reveal" id="findings">
-      <div class="section-header">
-        <div>
-          <span class="eyebrow">What the data says</span>
-          <h2>The labor market is splitting along growth, pay, and exposure.</h2>
-        </div>
-        <p>
-          The fastest stories in the dataset are not random. Energy transition, advanced care,
-          managerial leverage, and digital throughput show up again and again.
-        </p>
-      </div>
-      <div class="highlights-grid" id="highlightsGrid"></div>
-      <div class="category-rail" id="categoryRail"></div>
-    </section>
-
-    <section class="section reveal" id="explorer">
-      <div class="section-header">
-        <div>
-          <span class="eyebrow">Explorer</span>
-          <h2>Scan 143 million jobs, then drop into the role that matters.</h2>
-        </div>
-        <p>
-          Area maps employment, color maps the active lens, and the side panel turns each role into
-          a readable career snapshot.
-        </p>
-      </div>
-      <div class="explorer-shell">
-        <div class="explorer-toolbar">
-          <div class="toolbar-copy">
-            <span class="eyebrow">Interactive map</span>
-            <p id="explorerSummary"></p>
-          </div>
-          <div>
-            <div class="mode-switch" id="modeSwitch" aria-label="Select treemap color mode"></div>
+          <div class="toolbar">
+            <div class="mode-toggle" id="modeToggle" aria-label="Choose metric"></div>
             <div class="legend" id="legend"></div>
           </div>
         </div>
-        <div class="explorer-layout">
-          <div class="stage-shell">
-            <div class="treemap-stage" id="treemapStage" aria-label="Treemap of occupations"></div>
-          </div>
-          <aside class="detail-panel" id="detailPanel" aria-live="polite"></aside>
+      </div>
+
+      <div class="board-main">
+        <div class="chart-shell">
+          <div class="chart" id="chart" aria-label="Interactive occupation treemap"></div>
         </div>
+        <aside class="panel" id="panel" aria-live="polite"></aside>
       </div>
     </section>
 
-    <section class="section reveal" id="stories">
-      <div class="section-header">
-        <div>
-          <span class="eyebrow">Curated story slices</span>
-          <h2>Read the market in four passes, not four hundred tabs.</h2>
-        </div>
-        <p>
-          Each slice compresses the dataset into a human-readable thesis, then points you back into
-          the explorer for inspection.
-        </p>
-      </div>
-      <div class="stories-grid" id="storiesGrid"></div>
-    </section>
-
-    <section class="section reveal" id="methodology">
-      <div class="section-header">
-        <div>
-          <span class="eyebrow">Methodology</span>
-          <h2>Built from BLS records, then annotated with LLM-scored exposure.</h2>
-        </div>
-        <p>
-          This is a research product, not a deterministic forecast. The goal is to make the shape of
-          the market legible, then let you inspect the assumptions in the open.
-        </p>
-      </div>
-      <div class="method-grid">
-        <div class="method-card">
-          <small>Pipeline</small>
-          <h3>One static site, generated from a reproducible Python pipeline.</h3>
-          <ul class="method-list">
-            <li>Scrape and cache occupation pages from the Bureau of Labor Statistics Occupational Outlook Handbook.</li>
-            <li>Parse pages into structured summaries, compensation, education, and outlook fields.</li>
-            <li>Score exposure with an LLM rubric focused on digital task substitution and workflow reshaping.</li>
-            <li>Rebuild the static site payload and ship production updates on a fixed Vercel URL.</li>
-          </ul>
-        </div>
-        <div class="method-card" id="methodMeta"></div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <small id="footerNote">Loading metadata.</small>
-  </footer>
-</div>
+    <footer class="footer">
+      <span id="footerMeta">Loading metadata.</span>
+      <span>Everything on this page is driven by the interactive map and its active selection.</span>
+    </footer>
+  </div>
 
 <script>
 const MODE_CONFIG = {
+  exposure: {
+    label: "AI Exposure",
+    low: "Lower",
+    high: "Higher",
+    gradient: "linear-gradient(90deg, rgb(100, 161, 143), rgb(212, 187, 112), rgb(193, 98, 62))",
+  },
   outlook: {
     label: "Outlook",
-    lowLabel: "Declining",
-    highLabel: "Growing",
-    gradient: "linear-gradient(90deg, rgb(198, 91, 70), rgb(218, 166, 105), rgb(97, 157, 146))",
+    low: "Declining",
+    high: "Growing",
+    gradient: "linear-gradient(90deg, rgb(203, 92, 67), rgb(220, 173, 106), rgb(90, 160, 149))",
   },
   pay: {
     label: "Pay",
-    lowLabel: "Lower pay",
-    highLabel: "Higher pay",
-    gradient: "linear-gradient(90deg, rgb(180, 170, 154), rgb(205, 183, 132), rgb(144, 112, 60))",
+    low: "Lower",
+    high: "Higher",
+    gradient: "linear-gradient(90deg, rgb(184, 180, 173), rgb(217, 190, 123), rgb(145, 107, 52))",
   },
   education: {
     label: "Education",
-    lowLabel: "Lower barrier",
-    highLabel: "More credentialed",
-    gradient: "linear-gradient(90deg, rgb(123, 169, 160), rgb(173, 185, 129), rgb(126, 99, 146))",
-  },
-  exposure: {
-    label: "AI exposure",
-    lowLabel: "Lower exposure",
-    highLabel: "Higher exposure",
-    gradient: "linear-gradient(90deg, rgb(116, 164, 150), rgb(200, 180, 112), rgb(186, 101, 66))",
+    low: "Lower barrier",
+    high: "More credentialed",
+    gradient: "linear-gradient(90deg, rgb(110, 164, 155), rgb(182, 184, 125), rgb(123, 108, 155))",
   },
 };
 
@@ -1144,17 +712,22 @@ const EDUCATION_LEVELS = [
   "Doctoral or professional degree",
 ];
 
-const MODE_ORDER = ["outlook", "pay", "education", "exposure"];
-
 let dataset = null;
-let selectedSlug = null;
 let activeMode = "exposure";
+let selectedSlug = null;
+let chartRecords = [];
 let resizeTimer = null;
 
-function formatCompact(value, maximumFractionDigits = 1) {
+function formatInteger(value) {
+  if (value == null) return "N/A";
+  return new Intl.NumberFormat("en-US").format(value);
+}
+
+function formatCompact(value, max = 1) {
+  if (value == null) return "N/A";
   return new Intl.NumberFormat("en-US", {
     notation: "compact",
-    maximumFractionDigits,
+    maximumFractionDigits: max,
   }).format(value);
 }
 
@@ -1167,11 +740,6 @@ function formatCurrency(value) {
   }).format(value);
 }
 
-function formatInteger(value) {
-  if (value == null) return "N/A";
-  return new Intl.NumberFormat("en-US").format(value);
-}
-
 function formatPercent(value) {
   if (value == null) return "N/A";
   return `${value > 0 ? "+" : ""}${value}%`;
@@ -1182,7 +750,7 @@ function formatScore(value) {
   return `${Number(value).toFixed(1)}/10`;
 }
 
-function formatStat(value, format) {
+function formatValue(value, format) {
   if (format === "jobs") return formatCompact(value);
   if (format === "currency") return formatCurrency(value);
   if (format === "percent") return formatPercent(value);
@@ -1190,10 +758,10 @@ function formatStat(value, format) {
   return formatInteger(value);
 }
 
-function formatDetailJobs(value) {
+function formatJobs(value) {
   if (value == null) return "N/A";
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M jobs`;
-  if (value >= 1_000) return `${Math.round(value / 1_000)}K jobs`;
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M jobs`;
+  if (value >= 1000) return `${Math.round(value / 1000)}K jobs`;
   return `${formatInteger(value)} jobs`;
 }
 
@@ -1201,68 +769,71 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
-function mixColor(from, to, t) {
-  const safe = clamp(t, 0, 1);
-  const channels = from.map((channel, index) => Math.round(channel + (to[index] - channel) * safe));
-  return `rgb(${channels.join(", ")})`;
+function lerpColor(from, to, t) {
+  const ratio = clamp(t, 0, 1);
+  const values = from.map((channel, index) => Math.round(channel + (to[index] - channel) * ratio));
+  return `rgb(${values.join(", ")})`;
 }
 
-function getTileColor(record, mode) {
+function tileColor(record, mode) {
   if (mode === "outlook") {
-    if (record.outlook == null) return "rgb(174, 166, 156)";
-    const t = clamp((record.outlook + 12) / 62, 0, 1);
-    if (t < 0.5) return mixColor([196, 92, 72], [216, 170, 110], t / 0.5);
-    return mixColor([216, 170, 110], [91, 159, 146], (t - 0.5) / 0.5);
+    if (record.outlook == null) return "rgb(186, 183, 177)";
+    const ratio = clamp((record.outlook + 12) / 62, 0, 1);
+    if (ratio < 0.5) return lerpColor([203, 92, 67], [220, 173, 106], ratio / 0.5);
+    return lerpColor([220, 173, 106], [90, 160, 149], (ratio - 0.5) / 0.5);
   }
+
   if (mode === "pay") {
-    if (record.pay == null) return "rgb(174, 166, 156)";
-    const capped = clamp(record.pay, 25_000, 250_000);
-    const t = (Math.log(capped) - Math.log(25_000)) / (Math.log(250_000) - Math.log(25_000));
-    return mixColor([177, 169, 155], [139, 111, 61], t);
+    if (record.pay == null) return "rgb(186, 183, 177)";
+    const value = clamp(record.pay, 25000, 250000);
+    const ratio = (Math.log(value) - Math.log(25000)) / (Math.log(250000) - Math.log(25000));
+    return lerpColor([184, 180, 173], [145, 107, 52], ratio);
   }
+
   if (mode === "education") {
     const index = EDUCATION_LEVELS.indexOf(record.education);
-    if (index < 0) return "rgb(174, 166, 156)";
+    if (index < 0) return "rgb(186, 183, 177)";
     const palette = [
-      "rgb(120, 166, 156)",
-      "rgb(136, 174, 155)",
-      "rgb(154, 181, 147)",
-      "rgb(171, 181, 132)",
-      "rgb(179, 171, 125)",
-      "rgb(172, 147, 127)",
-      "rgb(149, 121, 137)",
-      "rgb(126, 99, 146)",
+      "rgb(110, 164, 155)",
+      "rgb(128, 171, 155)",
+      "rgb(148, 177, 148)",
+      "rgb(166, 181, 137)",
+      "rgb(184, 181, 125)",
+      "rgb(174, 156, 130)",
+      "rgb(150, 129, 143)",
+      "rgb(123, 108, 155)",
     ];
     return palette[index];
   }
-  if (record.exposure == null) return "rgb(174, 166, 156)";
-  const t = clamp(record.exposure / 10, 0, 1);
-  if (t < 0.55) return mixColor([110, 164, 149], [209, 186, 114], t / 0.55);
-  return mixColor([209, 186, 114], [189, 100, 65], (t - 0.55) / 0.45);
+
+  if (record.exposure == null) return "rgb(186, 183, 177)";
+  const ratio = clamp(record.exposure / 10, 0, 1);
+  if (ratio < 0.55) return lerpColor([100, 161, 143], [212, 187, 112], ratio / 0.55);
+  return lerpColor([212, 187, 112], [193, 98, 62], (ratio - 0.55) / 0.45);
 }
 
-function summarizeTile(record, mode) {
-  if (mode === "outlook") return `${formatPercent(record.outlook)} / ${formatDetailJobs(record.jobs)}`;
-  if (mode === "pay") return `${formatCurrency(record.pay)} / ${formatDetailJobs(record.jobs)}`;
-  if (mode === "education") return `${record.education || "N/A"} / ${formatDetailJobs(record.jobs)}`;
-  return `${formatScore(record.exposure)} / ${formatDetailJobs(record.jobs)}`;
+function tileMeta(record, mode) {
+  if (mode === "outlook") return `${formatPercent(record.outlook)} / ${formatJobs(record.jobs)}`;
+  if (mode === "pay") return `${formatCurrency(record.pay)} / ${formatJobs(record.jobs)}`;
+  if (mode === "education") return `${record.education || "N/A"} / ${formatJobs(record.jobs)}`;
+  return `${formatScore(record.exposure)} / ${formatJobs(record.jobs)}`;
 }
 
 function squarify(items, x, y, width, height) {
   if (!items.length) return [];
   if (items.length === 1) return [{ ...items[0], x, y, width, height }];
 
-  const results = [];
+  const result = [];
   let remaining = [...items];
-  let currentX = x;
-  let currentY = y;
-  let currentWidth = width;
-  let currentHeight = height;
+  let originX = x;
+  let originY = y;
+  let w = width;
+  let h = height;
 
-  while (remaining.length > 0) {
-    const remainingTotal = remaining.reduce((sum, item) => sum + item.value, 0);
-    const vertical = currentWidth >= currentHeight;
-    const side = vertical ? currentHeight : currentWidth;
+  while (remaining.length) {
+    const total = remaining.reduce((sum, item) => sum + item.value, 0);
+    const vertical = w >= h;
+    const side = vertical ? h : w;
     let row = [remaining[0]];
     let rowSum = remaining[0].value;
 
@@ -1270,8 +841,8 @@ function squarify(items, x, y, width, height) {
       const candidate = [...row, remaining[index]];
       const candidateSum = rowSum + remaining[index].value;
       if (
-        worstAspect(candidate, candidateSum, side, remainingTotal, vertical ? currentWidth : currentHeight) <
-        worstAspect(row, rowSum, side, remainingTotal, vertical ? currentWidth : currentHeight)
+        worstAspect(candidate, candidateSum, side, total, vertical ? w : h) <
+        worstAspect(row, rowSum, side, total, vertical ? w : h)
       ) {
         row = candidate;
         rowSum = candidateSum;
@@ -1280,37 +851,37 @@ function squarify(items, x, y, width, height) {
       }
     }
 
-    const rowFraction = rowSum / remainingTotal;
-    const rowThickness = vertical ? currentWidth * rowFraction : currentHeight * rowFraction;
+    const rowFraction = rowSum / total;
+    const thickness = vertical ? w * rowFraction : h * rowFraction;
     let offset = 0;
 
     row.forEach((item) => {
-      const itemFraction = item.value / rowSum;
-      const itemLength = side * itemFraction;
+      const ratio = item.value / rowSum;
+      const length = side * ratio;
       if (vertical) {
-        results.push({ ...item, x: currentX, y: currentY + offset, width: rowThickness, height: itemLength });
+        result.push({ ...item, x: originX, y: originY + offset, width: thickness, height: length });
       } else {
-        results.push({ ...item, x: currentX + offset, y: currentY, width: itemLength, height: rowThickness });
+        result.push({ ...item, x: originX + offset, y: originY, width: length, height: thickness });
       }
-      offset += itemLength;
+      offset += length;
     });
 
     if (vertical) {
-      currentX += rowThickness;
-      currentWidth -= rowThickness;
+      originX += thickness;
+      w -= thickness;
     } else {
-      currentY += rowThickness;
-      currentHeight -= rowThickness;
+      originY += thickness;
+      h -= thickness;
     }
 
     remaining = remaining.slice(row.length);
   }
 
-  return results;
+  return result;
 }
 
-function worstAspect(row, rowSum, side, totalArea, availableExtent) {
-  const rowExtent = availableExtent * (rowSum / totalArea);
+function worstAspect(row, rowSum, side, total, extent) {
+  const rowExtent = extent * (rowSum / total);
   if (!rowExtent) return Infinity;
   let worst = 0;
   row.forEach((item) => {
@@ -1322,251 +893,78 @@ function worstAspect(row, rowSum, side, totalArea, availableExtent) {
   return worst;
 }
 
-function createMetricCard(item) {
-  return `
-    <article class="metric-card">
-      <small>${item.label}</small>
-      <strong>${formatStat(item.value, item.format)}</strong>
-      <span class="metric-detail">${item.detail}</span>
-    </article>
-  `;
-}
-
-function createHighlightCard(item) {
-  return `
-    <article class="highlight-card">
-      <small>${item.title}</small>
-      <strong>${formatStat(item.value, item.format)}</strong>
-      <span class="metric-label">${item.context}</span>
-      <p class="metric-detail">${item.detail}</p>
-    </article>
-  `;
-}
-
-function createCategoryCard(category) {
-  return `
-    <article class="category-card">
-      <div>
-        <small>${category.label}</small>
-        <strong>${formatCompact(category.jobs)}</strong>
-        <p>${category.occupationCount} tracked roles, ${category.shareOfJobs.toFixed(1)}% of the map.</p>
-      </div>
-      <div class="category-meta">
-        <div class="meta-row"><span>Avg pay</span><span>${formatCurrency(category.averagePay)}</span></div>
-        <div class="meta-row"><span>Avg outlook</span><span>${formatPercent(Math.round(category.averageOutlook || 0))}</span></div>
-        <div class="meta-row"><span>Avg AI exposure</span><span>${formatScore(category.averageExposure || 0)}</span></div>
-      </div>
-    </article>
-  `;
-}
-
-function createStoryCard(story) {
-  const items = story.occupations
-    .map((occupation) => `
-      <li class="story-list-item">
-        <strong>${occupation.title}</strong>
-        <span>${occupation.categoryLabel} / ${formatDetailJobs(occupation.jobs)} / ${formatPercent(occupation.outlook)} / ${formatScore(occupation.exposure)}</span>
-      </li>
-    `)
-    .join("");
-
-  return `
-    <article class="story-card">
-      <small>${story.eyebrow}</small>
-      <h3>${story.title}</h3>
-      <p>${story.description}</p>
-      <div class="story-metric">
-        <small>${story.metricLabel}</small>
-        <strong>${formatStat(story.metricValue, story.metricFormat)}</strong>
-        <span>${story.metricContext}</span>
-      </div>
-      <ul class="story-list">${items}</ul>
-    </article>
-  `;
-}
-
-function renderHeader(summary) {
-  const lede = document.getElementById("heroLede");
-  lede.innerHTML = `
-    Explore <strong>${formatCompact(summary.totalJobs)}</strong> jobs across
-    <strong>${summary.occupationsCount}</strong> occupations and
-    <strong>${summary.categoryCount}</strong> career families. This is a light-first, editorial interface over the
-    Bureau of Labor Statistics dataset, sharpened with AI exposure scoring and rebuilt for daily refreshes.
-  `;
-
-  const heroCallouts = document.getElementById("heroCallouts");
-  heroCallouts.innerHTML = summary.highlights
-    .slice(0, 3)
-    .map((item) => `
-      <article class="hero-note">
-        <small>${item.title}</small>
-        <strong>${formatStat(item.value, item.format)}</strong>
-        <p><strong style="font-size:1rem;line-height:1.3;letter-spacing:-0.02em;">${item.context}</strong><br>${item.detail}</p>
-      </article>
-    `)
-    .join("");
-
-  document.getElementById("repoLinkTop").href = summary.repoUrl;
-  document.getElementById("explorerSummary").textContent =
-    `The map is grouped by career family, then sized by employment. The side panel stays focused on one role at a time so you can compare scale, compensation, credentials, and AI pressure without leaving the page.`;
-}
-
-function renderMetrics(summary) {
-  document.getElementById("heroStats").innerHTML = summary.heroStats.map(createMetricCard).join("");
-  document.getElementById("highlightsGrid").innerHTML = summary.highlights.map(createHighlightCard).join("");
-  document.getElementById("categoryRail").innerHTML = dataset.categories.slice(0, 5).map(createCategoryCard).join("");
-}
-
-function renderStories(stories) {
-  document.getElementById("storiesGrid").innerHTML = stories.map(createStoryCard).join("");
-}
-
-function renderMethod(summary, generatedAt) {
-  const generatedDate = new Date(generatedAt);
-  const footerDate = `${new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-    timeStyle: "short",
-    timeZone: "UTC",
-  }).format(generatedDate)} UTC`;
-
-  document.getElementById("methodMeta").innerHTML = `
-    <small>Open model caveat</small>
-    <h3>Use it to inspect the market, not to outsource judgment.</h3>
-    <p>
-      A high exposure score does not mean a role disappears. It signals that the workflow is especially open
-      to digital acceleration, substitution, or restructuring.
-    </p>
-    <div class="method-list">
-      <div class="story-list-item">
-        <strong>Source of truth</strong>
-        <span><a href="${summary.sourceUrl}" target="_blank" rel="noreferrer">Bureau of Labor Statistics Occupational Outlook Handbook</a></span>
-      </div>
-      <div class="story-list-item">
-        <strong>Open source repo</strong>
-        <span><a href="${summary.repoUrl}" target="_blank" rel="noreferrer">${summary.repoUrl}</a></span>
-      </div>
-      <div class="story-list-item">
-        <strong>Latest payload build</strong>
-        <span>${footerDate}</span>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("footerNote").textContent =
-    `Generated from ${summary.occupationsCount} occupations and ${formatInteger(summary.totalJobs)} jobs. Latest payload build: ${footerDate}.`;
-}
-
-function renderModeSwitch() {
-  const switcher = document.getElementById("modeSwitch");
-  switcher.innerHTML = MODE_ORDER
-    .map((mode) => `<button type="button" data-mode="${mode}" class="${mode === activeMode ? "active" : ""}">${MODE_CONFIG[mode].label}</button>`)
-    .join("");
-
-  switcher.querySelectorAll("button").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeMode = button.dataset.mode;
-      renderModeSwitch();
-      renderLegend();
-      renderTreemap();
-      renderDetailPanel();
-    });
-  });
-}
-
-function renderLegend() {
-  const config = MODE_CONFIG[activeMode];
-  document.getElementById("legend").innerHTML = `
-    <span>${config.lowLabel}</span>
-    <span class="legend-bar" style="background:${config.gradient}"></span>
-    <span>${config.highLabel}</span>
-  `;
-}
-
 function getSelectedRecord() {
   const fallback = dataset.summary.mostExposedLargeOccupation?.slug || dataset.occupations[0]?.slug;
   const slug = selectedSlug || fallback;
-  return dataset.occupations.find((occupation) => occupation.slug === slug) || dataset.occupations[0];
+  return dataset.occupations.find((item) => item.slug === slug) || dataset.occupations[0];
 }
 
-function makeInsightCopy(record) {
-  if (!record) return "";
-  if (activeMode === "pay") {
-    const delta = record.pay != null && dataset.summary.weightedAveragePay != null
-      ? record.pay - dataset.summary.weightedAveragePay
-      : null;
-    if (delta == null) return "Pay data is unavailable for this role.";
-    return delta >= 0
-      ? `This role sits ${formatCurrency(delta)} above the job-weighted pay baseline in this dataset.`
-      : `This role sits ${formatCurrency(Math.abs(delta))} below the dataset's job-weighted pay baseline.`;
-  }
-  if (activeMode === "outlook") {
-    const delta = record.outlook != null && dataset.summary.weightedAverageOutlook != null
-      ? record.outlook - dataset.summary.weightedAverageOutlook
-      : null;
-    if (delta == null) return "Outlook data is unavailable for this role.";
-    return delta >= 0
-      ? `This role is tracking ${delta.toFixed(1)} percentage points above the dataset's weighted growth outlook.`
-      : `This role is tracking ${Math.abs(delta).toFixed(1)} percentage points below the weighted growth outlook.`;
-  }
-  if (activeMode === "education") {
-    return `This role typically enters through ${record.education || "an unspecified educational path"}, which shapes how quickly supply can scale.`;
-  }
-  const delta = record.exposure != null && dataset.summary.weightedAverageExposure != null
-    ? record.exposure - dataset.summary.weightedAverageExposure
-    : null;
-  if (delta == null) return "Exposure scoring is unavailable for this role.";
-  return delta >= 0
-    ? `This role lands ${delta.toFixed(1)} points above the job-weighted exposure average.`
-    : `This role lands ${Math.abs(delta).toFixed(1)} points below the job-weighted exposure average.`;
+function renderHeader() {
+  const summary = dataset.summary;
+  document.getElementById("introCopy").textContent =
+    `Explore ${formatCompact(summary.totalJobs)} jobs across ${summary.occupationsCount} occupations. The map sizes roles by employment and lets you recolor everything by outlook, pay, required education, or AI exposure.`;
+  document.getElementById("repoLink").href = summary.repoUrl;
+  document.getElementById("sourceLink").href = summary.sourceUrl;
 }
 
-function renderDetailPanel() {
-  const record = getSelectedRecord();
-  if (!record) return;
+function renderStats() {
+  document.getElementById("statsRow").innerHTML = dataset.summary.heroStats.map((item) => `
+    <article class="stat-card">
+      <small>${item.label}</small>
+      <strong>${formatValue(item.value, item.format)}</strong>
+      <p>${item.detail}</p>
+    </article>
+  `).join("");
 
-  const detailPanel = document.getElementById("detailPanel");
-  detailPanel.innerHTML = `
-    <small>${record.category_label}</small>
-    <h3>${record.title}</h3>
-    <p>${makeInsightCopy(record)}</p>
-    <div class="detail-grid">
-      <div class="detail-metric">
-        <span>Employment</span>
-        <strong>${formatDetailJobs(record.jobs)}</strong>
-      </div>
-      <div class="detail-metric">
-        <span>Median pay</span>
-        <strong>${formatCurrency(record.pay)}</strong>
-      </div>
-      <div class="detail-metric">
-        <span>Growth outlook</span>
-        <strong>${formatPercent(record.outlook)}</strong>
-      </div>
-      <div class="detail-metric">
-        <span>AI exposure</span>
-        <strong>${formatScore(record.exposure)}</strong>
-      </div>
-    </div>
-    <div class="detail-callout">${record.education || "Education path unavailable"} / ${record.outlook_desc || "Outlook label unavailable"}</div>
-    <div class="detail-rationale">
-      <small>Exposure rationale</small>
-      <p>${record.exposure_rationale || "No exposure rationale is available for this occupation."}</p>
-    </div>
-    <div class="detail-actions">
-      <a class="primary-link" href="${record.url}" target="_blank" rel="noreferrer">Open BLS profile</a>
-      <a class="ghost-link" href="${dataset.summary.repoUrl}" target="_blank" rel="noreferrer">View source repo</a>
-    </div>
+  document.getElementById("highlightsRow").innerHTML = dataset.summary.highlights.map((item) => `
+    <article class="highlight-card">
+      <small>${item.title}</small>
+      <strong>${formatValue(item.value, item.format)}</strong>
+      <span class="context">${item.context}</span>
+      <p>${item.detail}</p>
+    </article>
+  `).join("");
+
+  document.getElementById("categoryRow").innerHTML = dataset.categories.slice(0, 5).map((category) => `
+    <article class="category-card">
+      <small>${category.label}</small>
+      <strong>${formatCompact(category.jobs)}</strong>
+      <span class="context">${category.occupationCount} roles</span>
+      <p>${category.shareOfJobs.toFixed(1)}% of mapped employment</p>
+    </article>
+  `).join("");
+}
+
+function renderControls() {
+  const modeToggle = document.getElementById("modeToggle");
+  modeToggle.innerHTML = Object.entries(MODE_CONFIG).map(([key, config]) => `
+    <button type="button" data-mode="${key}" class="${activeMode === key ? "active" : ""}">${config.label}</button>
+  `).join("");
+
+  modeToggle.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeMode = button.dataset.mode;
+      renderControls();
+      renderTreemap();
+      renderPanel();
+    });
+  });
+
+  const legendConfig = MODE_CONFIG[activeMode];
+  document.getElementById("legend").innerHTML = `
+    <small>${legendConfig.label}</small>
+    <span>${legendConfig.low}</span>
+    <div class="legend-bar" style="background:${legendConfig.gradient}"></div>
+    <span>${legendConfig.high}</span>
   `;
 }
 
 function renderTreemap() {
-  const stage = document.getElementById("treemapStage");
-  const stageWidth = stage.clientWidth;
-  const stageHeight = window.innerWidth < 760 ? 560 : Math.max(620, Math.round(stageWidth * 0.7));
-  stage.style.height = `${stageHeight}px`;
-  stage.innerHTML = "";
+  const chart = document.getElementById("chart");
+  const width = chart.clientWidth;
+  const height = chart.clientHeight;
+  chart.innerHTML = "";
 
-  const categoryMap = new Map(dataset.categories.map((category) => [category.slug, category]));
   const categories = dataset.categories.map((category) => ({
     ...category,
     value: category.jobs || 1,
@@ -1575,96 +973,178 @@ function renderTreemap() {
       .map((occupation) => ({ ...occupation, value: occupation.jobs || 1 })),
   }));
 
-  const categoryRects = squarify(categories, 0, 0, stageWidth, stageHeight);
+  const categoryRects = squarify(categories, 0, 0, width, height);
   const selected = getSelectedRecord();
 
   categoryRects.forEach((categoryRect) => {
-    const categoryLayer = document.createElement("div");
-    categoryLayer.className = "category-layer";
-    categoryLayer.style.left = `${categoryRect.x + 4}px`;
-    categoryLayer.style.top = `${categoryRect.y + 4}px`;
-    categoryLayer.style.width = `${Math.max(categoryRect.width - 8, 0)}px`;
-    categoryLayer.style.height = `${Math.max(categoryRect.height - 8, 0)}px`;
+    const categoryBox = document.createElement("div");
+    categoryBox.className = "category-box";
+    categoryBox.style.left = `${categoryRect.x + 5}px`;
+    categoryBox.style.top = `${categoryRect.y + 5}px`;
+    categoryBox.style.width = `${Math.max(categoryRect.width - 10, 0)}px`;
+    categoryBox.style.height = `${Math.max(categoryRect.height - 10, 0)}px`;
 
     const label = document.createElement("div");
     label.className = "category-label";
     label.textContent = categoryRect.label;
-    if (categoryRect.width < 180 || categoryRect.height < 90) {
+    if (categoryRect.width < 160 || categoryRect.height < 80) {
       label.style.display = "none";
     }
-    categoryLayer.appendChild(label);
-    stage.appendChild(categoryLayer);
+    categoryBox.appendChild(label);
+    chart.appendChild(categoryBox);
 
     const tiles = squarify(
       categoryRect.items,
       categoryRect.x + 10,
       categoryRect.y + 10,
       Math.max(categoryRect.width - 20, 0),
-      Math.max(categoryRect.height - 20, 0),
+      Math.max(categoryRect.height - 20, 0)
     );
 
-    tiles.forEach((tile) => {
-      const element = document.createElement("button");
-      const area = tile.width * tile.height;
-      const density = area < 4200 ? "micro" : area < 7800 ? "compact" : "default";
-      element.type = "button";
-      element.className = "treemap-tile";
-      element.dataset.density = density;
-      element.setAttribute("aria-label", `${tile.title}, ${summarizeTile(tile, activeMode)}`);
-      element.style.left = `${tile.x}px`;
-      element.style.top = `${tile.y}px`;
-      element.style.width = `${Math.max(tile.width - 4, 0)}px`;
-      element.style.height = `${Math.max(tile.height - 4, 0)}px`;
-      element.style.background = `
-        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02)),
-        linear-gradient(135deg, ${getTileColor(tile, activeMode)}, color-mix(in srgb, ${getTileColor(tile, activeMode)} 72%, black 28%))
+    tiles.forEach((tileRect) => {
+      const tile = document.createElement("button");
+      const area = tileRect.width * tileRect.height;
+      const density = area < 4200 ? "micro" : area < 8400 ? "compact" : "default";
+      tile.type = "button";
+      tile.className = "tile";
+      tile.dataset.density = density;
+      tile.style.left = `${tileRect.x}px`;
+      tile.style.top = `${tileRect.y}px`;
+      tile.style.width = `${Math.max(tileRect.width - 4, 0)}px`;
+      tile.style.height = `${Math.max(tileRect.height - 4, 0)}px`;
+      tile.style.background = `
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
+        linear-gradient(135deg, ${tileColor(tileRect, activeMode)}, color-mix(in srgb, ${tileColor(tileRect, activeMode)} 74%, black 26%))
       `;
-      if (selected && tile.slug === selected.slug) element.classList.add("is-selected");
-      if (selected && tile.slug !== selected.slug) element.classList.add("is-dimmed");
-      element.innerHTML = `
-        <h3>${tile.title}</h3>
-        <span>${summarizeTile(tile, activeMode)}</span>
+      tile.setAttribute("aria-label", `${tileRect.title}, ${tileMeta(tileRect, activeMode)}`);
+      if (selected && tileRect.slug === selected.slug) tile.classList.add("is-active");
+      if (selected && tileRect.slug !== selected.slug) tile.classList.add("is-dimmed");
+      tile.innerHTML = `
+        <h3>${tileRect.title}</h3>
+        <span>${tileMeta(tileRect, activeMode)}</span>
       `;
 
-      element.addEventListener("mouseenter", () => {
-        selectedSlug = tile.slug;
-        renderDetailPanel();
+      tile.addEventListener("mouseenter", () => {
+        selectedSlug = tileRect.slug;
+        renderPanel();
       });
-      element.addEventListener("focus", () => {
-        selectedSlug = tile.slug;
+      tile.addEventListener("focus", () => {
+        selectedSlug = tileRect.slug;
         renderTreemap();
-        renderDetailPanel();
+        renderPanel();
       });
-      element.addEventListener("click", () => {
-        selectedSlug = tile.slug;
+      tile.addEventListener("click", () => {
+        selectedSlug = tileRect.slug;
         renderTreemap();
-        renderDetailPanel();
+        renderPanel();
       });
 
-      stage.appendChild(element);
+      chart.appendChild(tile);
     });
   });
 }
 
-function setupRevealObserver() {
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const targets = document.querySelectorAll(".reveal");
-
-  if (reducedMotion) {
-    targets.forEach((target) => target.classList.add("is-visible"));
-    return;
+function insightText(record) {
+  if (activeMode === "pay") {
+    const delta = record.pay != null && dataset.summary.weightedAveragePay != null
+      ? record.pay - dataset.summary.weightedAveragePay
+      : null;
+    if (delta == null) return "Pay data is unavailable for this role.";
+    return delta >= 0
+      ? `This role sits ${formatCurrency(delta)} above the job-weighted pay baseline.`
+      : `This role sits ${formatCurrency(Math.abs(delta))} below the job-weighted pay baseline.`;
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.18 });
+  if (activeMode === "outlook") {
+    const delta = record.outlook != null && dataset.summary.weightedAverageOutlook != null
+      ? record.outlook - dataset.summary.weightedAverageOutlook
+      : null;
+    if (delta == null) return "Growth data is unavailable for this role.";
+    return delta >= 0
+      ? `This role runs ${delta.toFixed(1)} percentage points above the weighted market outlook.`
+      : `This role runs ${Math.abs(delta).toFixed(1)} percentage points below the weighted market outlook.`;
+  }
 
-  targets.forEach((target) => observer.observe(target));
+  if (activeMode === "education") {
+    return `The standard entry path is ${record.education || "unspecified"}, which shapes how quickly talent supply can expand.`;
+  }
+
+  const delta = record.exposure != null && dataset.summary.weightedAverageExposure != null
+    ? record.exposure - dataset.summary.weightedAverageExposure
+    : null;
+  if (delta == null) return "Exposure scoring is unavailable for this role.";
+  return delta >= 0
+    ? `This role lands ${delta.toFixed(1)} points above the job-weighted AI exposure average.`
+    : `This role lands ${Math.abs(delta).toFixed(1)} points below the job-weighted AI exposure average.`;
+}
+
+function compareItems(record) {
+  const category = dataset.categories.find((item) => item.slug === record.category);
+  if (!category || !category.topOccupations) return [];
+  return category.topOccupations;
+}
+
+function renderPanel() {
+  const record = getSelectedRecord();
+  const compare = compareItems(record);
+  const panel = document.getElementById("panel");
+
+  panel.innerHTML = `
+    <div class="panel-header">
+      <div>
+        <span class="pill">${record.category_label}</span>
+        <h2>${record.title}</h2>
+      </div>
+      <span class="pill">${MODE_CONFIG[activeMode].label}</span>
+    </div>
+    <p class="panel-copy">${insightText(record)}</p>
+
+    <div class="panel-grid">
+      <div class="metric">
+        <small>Employment</small>
+        <strong>${formatJobs(record.jobs)}</strong>
+      </div>
+      <div class="metric">
+        <small>Median Pay</small>
+        <strong>${formatCurrency(record.pay)}</strong>
+      </div>
+      <div class="metric">
+        <small>Outlook</small>
+        <strong>${formatPercent(record.outlook)}</strong>
+      </div>
+      <div class="metric">
+        <small>AI Exposure</small>
+        <strong>${formatScore(record.exposure)}</strong>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <small>Entry profile</small>
+      <p>${record.education || "Education path unavailable"} / ${record.outlook_desc || "Outlook label unavailable"}</p>
+    </div>
+
+    <div class="panel-section">
+      <small>Exposure rationale</small>
+      <p>${record.exposure_rationale || "No exposure rationale is available for this role."}</p>
+    </div>
+
+    <div class="panel-section">
+      <small>Largest roles in this family</small>
+      <div class="compare-list">
+        ${compare.map((item) => `
+          <div class="compare-item">
+            <strong>${item.title}</strong>
+            <span>${formatJobs(item.jobs)}<br>${formatScore(item.exposure)}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="panel-actions">
+      <a class="primary" href="${record.url}" target="_blank" rel="noreferrer">Open BLS page</a>
+      <a href="${dataset.summary.repoUrl}" target="_blank" rel="noreferrer">Open repo</a>
+    </div>
+  `;
 }
 
 async function loadData() {
@@ -1673,34 +1153,43 @@ async function loadData() {
   return response.json();
 }
 
-function initializePage() {
-  renderHeader(dataset.summary);
-  renderMetrics(dataset.summary);
-  renderStories(dataset.stories);
-  renderMethod(dataset.summary, dataset.generatedAt);
-  renderModeSwitch();
-  renderLegend();
+function renderFooter() {
+  const generatedAt = new Date(dataset.generatedAt);
+  const formatted = `${new Intl.DateTimeFormat("en-US", {
+    dateStyle: "long",
+    timeStyle: "short",
+    timeZone: "UTC",
+  }).format(generatedAt)} UTC`;
+  document.getElementById("footerMeta").textContent =
+    `Generated from ${dataset.summary.occupationsCount} occupations and ${formatInteger(dataset.summary.totalJobs)} jobs. Last payload build: ${formatted}.`;
+}
+
+function init() {
+  renderHeader();
+  renderStats();
+  renderControls();
   renderTreemap();
-  renderDetailPanel();
-  setupRevealObserver();
+  renderPanel();
+  renderFooter();
 }
 
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
-  resizeTimer = window.setTimeout(() => {
+  resizeTimer = setTimeout(() => {
     if (dataset) renderTreemap();
-  }, 120);
+  }, 100);
 });
 
 loadData()
   .then((payload) => {
     dataset = payload;
+    chartRecords = payload.occupations;
     selectedSlug = payload.summary.mostExposedLargeOccupation?.slug || payload.occupations[0]?.slug || null;
-    initializePage();
+    init();
   })
   .catch((error) => {
-    document.getElementById("heroLede").textContent = "The dataset could not be loaded. Please rebuild the site payload.";
-    document.getElementById("footerNote").textContent = error.message;
+    document.getElementById("introCopy").textContent = "Failed to load site data. Rebuild the static payload and refresh.";
+    document.getElementById("footerMeta").textContent = error.message;
     console.error(error);
   });
 </script>
