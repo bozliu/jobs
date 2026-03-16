@@ -1,0 +1,92 @@
+name: Daily refresh
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Compute scoring checksum
+        id: checksum
+        run: |
+          python <<'PY'
+          import hashlib
+          import os
+          from pathlib import Path
+
+          root = Path.cwd()
+          tracked = [root / "score.py", root / "occupations.csv", root / "occupations.json"]
+          tracked.extend(sorted((root / "pages").glob("*.md")))
+
+          hasher = hashlib.sha256()
+          for path in tracked:
+            relative = path.relative_to(root).as_posix()
+            hasher.update(relative.encode())
+            hasher.update(b"\0")
+            hasher.update(path.read_bytes())
+            hasher.update(b"\0")
+
+          current_hash = hasher.hexdigest()
+          previous_hash = (root / "score_inputs.sha256").read_text().strip() if (root / "score_inputs.sha256").exists() else ""
+          should_rescore = str(current_hash != previous_hash).lower()
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+            fh.write(f"current_hash={current_hash}\n")
+            fh.write(f"previous_hash={previous_hash}\n")
+            fh.write(f"should_rescore={should_rescore}\n")
+          PY
+
+      - name: Re-score occupations when inputs change
+        if: steps.checksum.outputs.should_rescore == 'true'
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if [ -z "${OPENROUTER_API_KEY}" ]; then
+            echo "OPENROUTER_API_KEY is required when score inputs change." >&2
+            exit 1
+          fi
+          uv run python score.py
+
+      - name: Persist scoring checksum
+        if: steps.checksum.outputs.should_rescore == 'true'
+        run: printf '%s\n' "${{ steps.checksum.outputs.current_hash }}" > score_inputs.sha256
+
+      - name: Rebuild site payload
+        run: python build_site_data.py
+
+      - name: Commit generated changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add score_inputs.sha256 scores.json site/data.json
+
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore: daily refresh"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
