@@ -1,0 +1,1050 @@
+{
+  "generatedAt": "2026-03-17T02:54:03.752354+00:00",
+  "source": {
+    "label": "ILOSTAT employment by occupation",
+    "url": "https://ilostat.ilo.org/data/",
+    "indicator": "EMP_TEMP_SEX_OCU_NB"
+  },
+  "regions": {
+    "asia": {
+      "id": "asia",
+      "label": "Asia",
+      "yearStrategy": "latest_per_country",
+      "year": null,
+      "yearLabel": "China 2005 / Japan 2025 / India 2024 / Australia 2024",
+      "note": "Asia is merged from the latest country-level occupation year available in ILOSTAT. China is currently only published there in older ISCO-88 occupational splits, so this regional view uses mixed country years instead of one shared year.",
+      "countries": [
+        {
+          "code": "CHN",
+          "name": "China",
+          "year": 2005,
+          "classification": "ISCO88",
+          "jobs": 668306160,
+          "sources": [
+            "EA:995"
+          ]
+        },
+        {
+          "code": "JPN",
+          "name": "Japan",
+          "year": 2025,
+          "classification": "ISCO08",
+          "jobs": 70550000,
+          "sources": [
+            "BA:259"
+          ]
+        },
+        {
+          "code": "IND",
+          "name": "India",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 482793235,
+          "sources": [
+            "BA:14121"
+          ]
+        },
+        {
+          "code": "AUS",
+          "name": "Australia",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 14422002,
+          "sources": [
+            "BA:518"
+          ]
+        }
+      ],
+      "occupations": [
+        {
+          "slug": "isco-6",
+          "title": "Skilled agricultural, forestry and fishery workers",
+          "groupCode": "6",
+          "jobs": 603266241,
+          "countryBreakdown": [
+            {
+              "country": "China",
+              "countryCode": "CHN",
+              "jobs": 431077410,
+              "year": 2005,
+              "classification": "ISCO88",
+              "source": "EA:995"
+            },
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 170087957,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 1820000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 280874,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-7",
+          "title": "Craft and related trades workers",
+          "groupCode": "7",
+          "jobs": 161863597,
+          "countryBreakdown": [
+            {
+              "country": "China",
+              "countryCode": "CHN",
+              "jobs": 105849620,
+              "year": 2005,
+              "classification": "ISCO88",
+              "source": "EA:995"
+            },
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 54618291,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 1395686,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-5",
+          "title": "Service and sales workers",
+          "groupCode": "5",
+          "jobs": 145276570,
+          "countryBreakdown": [
+            {
+              "country": "China",
+              "countryCode": "CHN",
+              "jobs": 61369670,
+              "year": 2005,
+              "classification": "ISCO88",
+              "source": "EA:995"
+            },
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 60396188,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 21120000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 2390712,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-9",
+          "title": "Elementary occupations",
+          "groupCode": "9",
+          "jobs": 108288682,
+          "countryBreakdown": [
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 102156234,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 5050000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 1082448,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-2",
+          "title": "Professionals",
+          "groupCode": "2",
+          "jobs": 82568199,
+          "countryBreakdown": [
+            {
+              "country": "China",
+              "countryCode": "CHN",
+              "jobs": 38141750,
+              "year": 2005,
+              "classification": "ISCO88",
+              "source": "EA:995"
+            },
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 27347003,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 13520000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 3559446,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-4",
+          "title": "Clerical support workers",
+          "groupCode": "4",
+          "jobs": 47455104,
+          "countryBreakdown": [
+            {
+              "country": "China",
+              "countryCode": "CHN",
+              "jobs": 20710480,
+              "year": 2005,
+              "classification": "ISCO88",
+              "source": "EA:995"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 14480000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            },
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 10994561,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 1270063,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-8",
+          "title": "Plant and machine operators, and assemblers",
+          "groupCode": "8",
+          "jobs": 42617172,
+          "countryBreakdown": [
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 28454456,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 13310000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 852716,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-1",
+          "title": "Managers",
+          "groupCode": "1",
+          "jobs": 31128167,
+          "countryBreakdown": [
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 17061987,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "China",
+              "countryCode": "CHN",
+              "jobs": 11157230,
+              "year": 2005,
+              "classification": "ISCO88",
+              "source": "EA:995"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 1658950,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            },
+            {
+              "country": "Japan",
+              "countryCode": "JPN",
+              "jobs": 1250000,
+              "year": 2025,
+              "classification": "ISCO08",
+              "source": "BA:259"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-3",
+          "title": "Technicians and associate professionals",
+          "groupCode": "3",
+          "jobs": 13601701,
+          "countryBreakdown": [
+            {
+              "country": "India",
+              "countryCode": "IND",
+              "jobs": 11676558,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:14121"
+            },
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 1925143,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-0",
+          "title": "Armed forces occupations",
+          "groupCode": "0",
+          "jobs": 5964,
+          "countryBreakdown": [
+            {
+              "country": "Australia",
+              "countryCode": "AUS",
+              "jobs": 5964,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:518"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        }
+      ],
+      "source": {
+        "label": "ILOSTAT employment by occupation",
+        "url": "https://ilostat.ilo.org/data/",
+        "indicator": "EMP_TEMP_SEX_OCU_NB"
+      }
+    },
+    "europe": {
+      "id": "europe",
+      "label": "Europe",
+      "yearStrategy": "latest_shared",
+      "year": 2024,
+      "yearLabel": "2024",
+      "note": "Europe is merged from the latest common occupation year shared across the selected countries in ILOSTAT.",
+      "countries": [
+        {
+          "code": "DEU",
+          "name": "Germany",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 42432017,
+          "sources": [
+            "BA:2242"
+          ]
+        },
+        {
+          "code": "GBR",
+          "name": "United Kingdom",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 33359359,
+          "sources": [
+            "BA:666"
+          ]
+        },
+        {
+          "code": "FRA",
+          "name": "France",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 28736027,
+          "sources": [
+            "BA:148"
+          ]
+        },
+        {
+          "code": "ITA",
+          "name": "Italy",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 23932264,
+          "sources": [
+            "BA:2238"
+          ]
+        },
+        {
+          "code": "ESP",
+          "name": "Spain",
+          "year": 2024,
+          "classification": "ISCO08",
+          "jobs": 21653892,
+          "sources": [
+            "BA:2244"
+          ]
+        }
+      ],
+      "occupations": [
+        {
+          "slug": "isco-2",
+          "title": "Professionals",
+          "groupCode": "2",
+          "jobs": 33555786,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 9975010,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 8352338,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 7118134,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 4312720,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 3797584,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-3",
+          "title": "Technicians and associate professionals",
+          "groupCode": "3",
+          "jobs": 25255939,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 8488473,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 5173461,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 4690110,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 4225667,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 2678228,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-5",
+          "title": "Service and sales workers",
+          "groupCode": "5",
+          "jobs": 23605564,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 5860891,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 4917878,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 4519405,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 4159168,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 4148222,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-4",
+          "title": "Clerical support workers",
+          "groupCode": "4",
+          "jobs": 15728610,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 5395499,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 2974866,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 2895886,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 2316420,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 2145939,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-7",
+          "title": "Craft and related trades workers",
+          "groupCode": "7",
+          "jobs": 14755469,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 4426687,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 3165597,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 2729650,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 2260225,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 2173310,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-9",
+          "title": "Elementary occupations",
+          "groupCode": "9",
+          "jobs": 13663171,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 3037306,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 3008054,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 2696660,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 2496840,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 2424311,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-1",
+          "title": "Managers",
+          "groupCode": "1",
+          "jobs": 11170072,
+          "countryBreakdown": [
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 5383352,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 2118685,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 1896716,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 941017,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 830302,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-8",
+          "title": "Plant and machine operators, and assemblers",
+          "groupCode": "8",
+          "jobs": 9084529,
+          "countryBreakdown": [
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 2629649,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 1801404,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 1682592,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 1504093,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 1466791,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-6",
+          "title": "Skilled agricultural, forestry and fishery workers",
+          "groupCode": "6",
+          "jobs": 2576955,
+          "countryBreakdown": [
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 715197,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 555696,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 511898,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 432039,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 362125,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        },
+        {
+          "slug": "isco-0",
+          "title": "Armed forces occupations",
+          "groupCode": "0",
+          "jobs": 717464,
+          "countryBreakdown": [
+            {
+              "country": "Italy",
+              "countryCode": "ITA",
+              "jobs": 234514,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2238"
+            },
+            {
+              "country": "France",
+              "countryCode": "FRA",
+              "jobs": 190543,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:148"
+            },
+            {
+              "country": "Germany",
+              "countryCode": "DEU",
+              "jobs": 166090,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2242"
+            },
+            {
+              "country": "Spain",
+              "countryCode": "ESP",
+              "jobs": 95782,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:2244"
+            },
+            {
+              "country": "United Kingdom",
+              "countryCode": "GBR",
+              "jobs": 30535,
+              "year": 2024,
+              "classification": "ISCO08",
+              "source": "BA:666"
+            }
+          ],
+          "source": {
+            "label": "ILOSTAT employment by occupation",
+            "url": "https://ilostat.ilo.org/data/",
+            "indicator": "EMP_TEMP_SEX_OCU_NB"
+          }
+        }
+      ],
+      "source": {
+        "label": "ILOSTAT employment by occupation",
+        "url": "https://ilostat.ilo.org/data/",
+        "indicator": "EMP_TEMP_SEX_OCU_NB"
+      }
+    }
+  }
+}

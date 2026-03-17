@@ -74,6 +74,53 @@ jobs:
         if: steps.checksum.outputs.should_rescore == 'true'
         run: printf '%s\n' "${{ steps.checksum.outputs.current_hash }}" > score_inputs.sha256
 
+      - name: Compute regional scoring checksum
+        id: regional_checksum
+        run: |
+          python <<'PY'
+          import hashlib
+          import os
+          from pathlib import Path
+
+          root = Path.cwd()
+          tracked = [root / "score_regional_groups.py", root / "regional_occupations.json"]
+
+          hasher = hashlib.sha256()
+          for path in tracked:
+            relative = path.relative_to(root).as_posix()
+            hasher.update(relative.encode())
+            hasher.update(b"\0")
+            hasher.update(path.read_bytes())
+            hasher.update(b"\0")
+
+          current_hash = hasher.hexdigest()
+          previous_hash = (root / "regional_score_inputs.sha256").read_text().strip() if (root / "regional_score_inputs.sha256").exists() else ""
+          should_rescore = str(current_hash != previous_hash).lower()
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+            fh.write(f"current_hash={current_hash}\n")
+            fh.write(f"previous_hash={previous_hash}\n")
+            fh.write(f"should_rescore={should_rescore}\n")
+          PY
+
+      - name: Re-score regional occupation groups when inputs change
+        if: steps.regional_checksum.outputs.should_rescore == 'true'
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if [ -z "${OPENROUTER_API_KEY}" ]; then
+            echo "OPENROUTER_API_KEY is required when regional scoring inputs change." >&2
+            exit 1
+          fi
+          uv run python score_regional_groups.py
+
+      - name: Persist regional scoring checksum
+        if: steps.regional_checksum.outputs.should_rescore == 'true'
+        run: printf '%s\n' "${{ steps.regional_checksum.outputs.current_hash }}" > regional_score_inputs.sha256
+
+      - name: Refresh regional employment data
+        run: python fetch_regional_data.py
+
       - name: Rebuild site payload
         run: python build_site_data.py
 
@@ -81,7 +128,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add score_inputs.sha256 scores.json site/data.json
+          git add \
+            score_inputs.sha256 \
+            scores.json \
+            regional_score_inputs.sha256 \
+            regional_scores.json \
+            regional_employment.json \
+            site/data.json
 
           if git diff --cached --quiet; then
             echo "No generated changes to commit."

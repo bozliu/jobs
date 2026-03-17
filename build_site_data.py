@@ -1,10 +1,10 @@
 """
-Build a structured JSON payload for the static website.
+Build a multi-view JSON payload for the static website.
 
-The output is designed for a narrative, data-rich frontend. In addition to the
-occupation records used by the treemap, it includes summary metrics, category
-snapshots, and curated story slices derived from the BLS data and AI exposure
-scores.
+The output powers a single-page explorer with three geography views:
+- US: detailed BLS occupations
+- Asia: merged regional ILOSTAT occupation groups
+- Europe: merged regional ILOSTAT occupation groups
 
 Usage:
     python build_site_data.py
@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 
 REPO_URL = "https://github.com/bozliu/jobs"
 BLS_URL = "https://www.bls.gov/ooh/"
+ILOSTAT_URL = "https://ilostat.ilo.org/data/"
 LARGE_OCCUPATION_MIN_JOBS = 150_000
 
 CATEGORY_LABELS = {
@@ -49,6 +50,7 @@ CATEGORY_LABELS = {
     "protective-service": "Protective Service",
     "sales": "Sales",
     "transportation-and-material-moving": "Transportation & Material Moving",
+    "international-major-groups": "International Major Groups",
 }
 
 DEGREE_FORWARD_EDUCATION = {
@@ -67,6 +69,26 @@ PHYSICAL_CATEGORIES = {
     "production",
     "transportation-and-material-moving",
 }
+
+US_PROMPT_TEXT = """You are an expert analyst evaluating how exposed different occupations are to AI. You will be given a detailed description of an occupation from the Bureau of Labor Statistics.
+
+Rate the occupation's overall AI Exposure on a scale from 0 to 10.
+
+AI Exposure measures: how much will AI reshape this occupation? Consider both direct effects (AI automating tasks currently done by humans) and indirect effects (AI making each worker so productive that fewer are needed).
+
+A key signal is whether the job's work product is fundamentally digital. If the job can be done entirely from a home office on a computer — writing, coding, analyzing, communicating — then AI exposure is inherently high (7+), because AI capabilities in digital domains are advancing rapidly. Even if today's AI can't handle every aspect of such a job, the trajectory is steep and the ceiling is very high. Conversely, jobs requiring physical presence, manual skill, or real-time human interaction in the physical world have a natural barrier to AI exposure.
+
+Use these anchors to calibrate your score:
+
+- 0–1: Minimal exposure. The work is almost entirely physical, hands-on, or requires real-time human presence in unpredictable environments. AI has essentially no impact on daily work.
+- 2–3: Low exposure. Mostly physical or interpersonal work. AI might help with minor peripheral tasks but doesn't touch the core job.
+- 4–5: Moderate exposure. A mix of physical/interpersonal work and knowledge work. AI can meaningfully assist with the information-processing parts but a substantial share of the job still requires human presence.
+- 6–7: High exposure. Predominantly knowledge work with some need for human judgment, relationships, or physical presence.
+- 8–9: Very high exposure. The job is almost entirely done on a computer.
+- 10: Maximum exposure. Routine information processing, fully digital, with no physical component.
+
+Respond with ONLY a JSON object in this exact format:
+{"exposure": <0-10>, "rationale": "<2-3 sentences explaining the key factors>"}"""
 
 
 def weighted_average(records: list[dict], key: str) -> float | None:
@@ -100,19 +122,22 @@ def dominant_education(records: list[dict]) -> str | None:
 def make_occupation_snapshot(record: dict | None) -> dict | None:
     if not record:
         return None
-    return {
+    snapshot = {
         "title": record["title"],
         "slug": record["slug"],
         "category": record["category"],
         "categoryLabel": record["category_label"],
         "jobs": record["jobs"],
-        "pay": record["pay"],
-        "outlook": record["outlook"],
-        "outlookDesc": record["outlook_desc"],
-        "education": record["education"],
-        "exposure": record["exposure"],
-        "url": record["url"],
+        "pay": record.get("pay"),
+        "outlook": record.get("outlook"),
+        "outlookDesc": record.get("outlook_desc"),
+        "education": record.get("education"),
+        "exposure": record.get("exposure"),
+        "url": record.get("url"),
     }
+    if record.get("countryBreakdown"):
+        snapshot["countryBreakdown"] = record["countryBreakdown"]
+    return snapshot
 
 
 def select_top(records: list[dict], key: str, limit: int = 1, reverse: bool = True) -> list[dict]:
@@ -255,10 +280,9 @@ def build_stories(records: list[dict], categories: list[dict]) -> list[dict]:
     ]
 
 
-def build_summary(records: list[dict], categories: list[dict]) -> dict:
+def build_us_summary(records: list[dict], categories: list[dict]) -> dict:
     total_jobs = sum(record["jobs"] or 0 for record in records)
     large_records = select_large(records)
-
     fastest_growth = select_top(records, "outlook", limit=1)[0]
     highest_pay = select_top(records, "pay", limit=1)[0]
     largest_role = select_top(records, "jobs", limit=1)[0]
@@ -274,50 +298,38 @@ def build_summary(records: list[dict], categories: list[dict]) -> dict:
     largest_category = categories[0]
     large_categories = [category for category in categories if category["jobs"] >= 5_000_000]
     most_exposed_category = max(
-        [
-            category
-            for category in (large_categories or categories)
-            if category["averageExposure"] is not None
-        ],
+        [category for category in (large_categories or categories) if category["averageExposure"] is not None],
         key=lambda category: category["averageExposure"],
     )
 
     return {
         "repoUrl": REPO_URL,
         "sourceUrl": BLS_URL,
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "sourceLabel": "Bureau of Labor Statistics Occupational Outlook Handbook",
+        "generatedAt": None,
         "occupationsCount": len(records),
         "categoryCount": len(categories),
+        "countriesCount": 1,
+        "countries": [{"name": "United States", "code": "USA", "year": 2024}],
+        "year": 2024,
+        "yearLabel": "2024",
+        "yearStrategy": "single_year",
         "totalJobs": total_jobs,
         "weightedAveragePay": weighted_average(records, "pay"),
         "weightedAverageOutlook": weighted_average(records, "outlook"),
         "weightedAverageExposure": weighted_average(records, "exposure"),
-        "heroStats": [
-            {
-                "label": "Jobs mapped",
-                "value": total_jobs,
-                "format": "jobs",
-                "detail": "2024 BLS employment across the entire map",
-            },
-            {
-                "label": "Occupations",
-                "value": len(records),
-                "format": "count",
-                "detail": "roles represented in the Occupational Outlook Handbook",
-            },
-            {
-                "label": "Career families",
-                "value": len(categories),
-                "format": "count",
-                "detail": "major BLS groupings rendered into one explorer",
-            },
-            {
-                "label": "Average AI exposure",
-                "value": weighted_average(records, "exposure"),
-                "format": "score",
-                "detail": "job-weighted exposure across the dataset",
-            },
+        "introHtml": [
+            'This is a research tool that visualizes <b>342 occupations</b> from the <a href="https://www.bls.gov/ooh/">Bureau of Labor Statistics Occupational Outlook Handbook</a>, covering <b>143M jobs</b> across the US economy. Each rectangle&apos;s <b>area</b> is proportional to total employment. <b>Color</b> shows the selected metric: projected growth outlook, median pay, education requirements, or AI exposure.',
+            'The <a class="repo-link" href="https://github.com/bozliu/jobs">source code</a> includes scrapers, parsers, and a prompt-driven scoring pipeline. The Digital AI Exposure layer is one example: it estimates how much current AI, which is primarily digital, may reshape each occupation.',
+            'A high exposure score does <em>not</em> mean a role disappears. It only means AI is likely to materially change the throughput, workflow, or structure of the job.'
         ],
+        "promptText": US_PROMPT_TEXT,
+        "showPrompt": True,
+        "largestOccupation": make_occupation_snapshot(largest_role),
+        "fastestGrowingOccupation": make_occupation_snapshot(fastest_growth),
+        "highestPayOccupation": make_occupation_snapshot(highest_pay),
+        "mostExposedLargeOccupation": make_occupation_snapshot(most_exposed_large),
+        "mostResilientLargeOccupation": make_occupation_snapshot(most_resilient_large),
         "highlights": [
             {
                 "title": "Largest employment base",
@@ -348,15 +360,10 @@ def build_summary(records: list[dict], categories: list[dict]) -> dict:
                 "detail": "average exposure weighted by employment",
             },
         ],
-        "largestOccupation": make_occupation_snapshot(largest_role),
-        "fastestGrowingOccupation": make_occupation_snapshot(fastest_growth),
-        "highestPayOccupation": make_occupation_snapshot(highest_pay),
-        "mostExposedLargeOccupation": make_occupation_snapshot(most_exposed_large),
-        "mostResilientLargeOccupation": make_occupation_snapshot(most_resilient_large),
     }
 
 
-def load_records() -> list[dict]:
+def load_us_records() -> list[dict]:
     with open("scores.json") as file:
         scores_list = json.load(file)
     scores = {score["slug"]: score for score in scores_list}
@@ -389,17 +396,136 @@ def load_records() -> list[dict]:
     return sorted(records, key=lambda record: record["jobs"] or 0, reverse=True)
 
 
-def main() -> None:
-    records = load_records()
+def build_us_view() -> dict:
+    records = load_us_records()
     total_jobs = sum(record["jobs"] or 0 for record in records)
     categories = build_categories(records, total_jobs)
-    summary = build_summary(records, categories)
-    payload = {
-        "generatedAt": None,
+    summary = build_us_summary(records, categories)
+    return {
+        "id": "us",
+        "label": "US",
+        "heading": "US Job Market Visualizer",
+        "countries": ["United States"],
+        "year": 2024,
+        "yearLabel": "2024",
+        "yearStrategy": "single_year",
+        "availableModes": ["outlook", "pay", "education", "exposure"],
+        "defaultMode": "outlook",
         "summary": summary,
         "stories": build_stories(records, categories),
         "categories": categories,
         "occupations": records,
+    }
+
+
+def build_regional_summary(region: dict, occupations: list[dict]) -> dict:
+    total_jobs = sum(item["jobs"] for item in occupations)
+    largest = max(occupations, key=lambda item: item["jobs"])
+    most_exposed = max(occupations, key=lambda item: (item["exposure"], item["jobs"]))
+    most_resilient = min(occupations, key=lambda item: (item["exposure"], -item["jobs"]))
+    countries = region["countries"]
+    country_names = ", ".join(item["name"] for item in countries)
+
+    if region["yearStrategy"] == "latest_shared":
+        note = f"Built from the latest shared ILOSTAT occupation year across {country_names}."
+    else:
+        note = region["note"]
+
+    return {
+        "repoUrl": REPO_URL,
+        "sourceUrl": region["source"]["url"],
+        "sourceLabel": region["source"]["label"],
+        "generatedAt": None,
+        "occupationsCount": len(occupations),
+        "categoryCount": 1,
+        "countriesCount": len(countries),
+        "countries": countries,
+        "year": region["year"],
+        "yearLabel": region["yearLabel"],
+        "yearStrategy": region["yearStrategy"],
+        "note": note,
+        "totalJobs": total_jobs,
+        "weightedAveragePay": None,
+        "weightedAverageOutlook": None,
+        "weightedAverageExposure": weighted_average(occupations, "exposure"),
+        "introHtml": [
+            f'This view merges employment-by-occupation data from <a href="{ILOSTAT_URL}">ILOSTAT</a> for <b>{country_names}</b>. The rectangles are broad international occupation groups rather than country-specific detailed job titles.',
+            'In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents AI exposure. This keeps the views comparable and readable without forcing unreliable pay, education, or outlook estimates across countries.',
+            note,
+        ],
+        "promptText": None,
+        "showPrompt": False,
+        "largestOccupation": make_occupation_snapshot(largest),
+        "mostExposedLargeOccupation": make_occupation_snapshot(most_exposed),
+        "mostResilientLargeOccupation": make_occupation_snapshot(most_resilient),
+    }
+
+
+def load_regional_views() -> dict[str, dict]:
+    with open("regional_employment.json") as file:
+        employment_payload = json.load(file)
+    with open("regional_scores.json") as file:
+        scores_payload = json.load(file)
+    scores = {row["slug"]: row for row in scores_payload}
+
+    views = {}
+    for region_id, region in employment_payload["regions"].items():
+        occupations = []
+        for item in region["occupations"]:
+            score = scores.get(item["slug"])
+            if not score:
+                continue
+            occupations.append(
+                {
+                    "title": item["title"],
+                    "slug": item["slug"],
+                    "category": "international-major-groups",
+                    "category_label": CATEGORY_LABELS["international-major-groups"],
+                    "pay": None,
+                    "jobs": item["jobs"],
+                    "outlook": None,
+                    "outlook_desc": "",
+                    "education": None,
+                    "exposure": score["exposure"],
+                    "exposure_rationale": score["rationale"],
+                    "countryBreakdown": item["countryBreakdown"],
+                    "source": item["source"],
+                    "url": item["source"]["url"],
+                }
+            )
+        occupations.sort(key=lambda record: record["jobs"], reverse=True)
+        summary = build_regional_summary(region, occupations)
+        views[region_id] = {
+            "id": region_id,
+            "label": region["label"],
+            "heading": f"{region['label']} Job Market Visualizer",
+            "countries": [item["name"] for item in region["countries"]],
+            "year": region["year"],
+            "yearLabel": region["yearLabel"],
+            "yearStrategy": region["yearStrategy"],
+            "availableModes": ["exposure"],
+            "defaultMode": "exposure",
+            "summary": summary,
+            "stories": [],
+            "categories": [],
+            "occupations": occupations,
+        }
+
+    return views
+
+
+def main() -> None:
+    us_view = build_us_view()
+    regional_views = load_regional_views()
+
+    payload = {
+        "generatedAt": None,
+        "defaultRegion": "us",
+        "views": {
+            "us": us_view,
+            "asia": regional_views["asia"],
+            "europe": regional_views["europe"],
+        },
     }
 
     generated_at = datetime.now(timezone.utc).isoformat()
@@ -412,21 +538,24 @@ def main() -> None:
     def normalized(data: dict) -> dict:
         stripped = json.loads(json.dumps(data))
         stripped.pop("generatedAt", None)
-        stripped.get("summary", {}).pop("generatedAt", None)
+        for view in stripped.get("views", {}).values():
+            view.get("summary", {}).pop("generatedAt", None)
         return stripped
 
     if existing_payload and normalized(existing_payload) == normalized(payload):
         generated_at = existing_payload.get("generatedAt") or generated_at
 
     payload["generatedAt"] = generated_at
-    payload["summary"]["generatedAt"] = generated_at
+    for view in payload["views"].values():
+        view["summary"]["generatedAt"] = generated_at
 
     os.makedirs("site", exist_ok=True)
-    with open("site/data.json", "w") as file:
+    with open(existing_path, "w") as file:
         json.dump(payload, file, indent=2)
 
-    print(f"Wrote structured payload for {len(records)} occupations to site/data.json")
-    print(f"Total jobs represented: {total_jobs:,}")
+    total_us_jobs = payload["views"]["us"]["summary"]["totalJobs"]
+    print(f"Wrote multi-view payload to {existing_path}")
+    print(f"US jobs represented: {total_us_jobs:,}")
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>US Job Market Visualizer</title>
+<title>Job Market Visualizer</title>
 <link rel="icon" href="data:,">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,8 +11,10 @@
 :root {
   --bg: #0a0a0f;
   --bg2: #12121a;
+  --bg3: #181822;
   --fg: #e0e0e8;
   --fg2: #888894;
+  --fg3: #b5b5c2;
 }
 
 body {
@@ -20,6 +22,8 @@ body {
   color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
+
+a { color: var(--fg2); }
 
 #wrapper {
   max-width: 1400px;
@@ -36,31 +40,42 @@ body {
 .intro {
   margin-bottom: 18px;
 }
+
 .intro h1 {
   font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
 }
+
 .intro h1 a {
   font-size: 13px;
   font-weight: 400;
   color: var(--fg2);
   text-decoration: none;
 }
-.intro h1 a:hover { text-decoration: underline; }
-.intro p {
+
+.intro h1 a:hover,
+.intro a:hover { text-decoration: underline; }
+
+.meta-line {
+  font-size: 12px;
+  color: var(--fg2);
+  margin-bottom: 12px;
+}
+
+#introCopy p {
   font-size: 15px;
   line-height: 1.6;
   color: var(--fg2);
   margin-bottom: 8px;
 }
-.intro a { color: var(--fg2); }
-.intro strong, .intro b { color: var(--fg); font-weight: 600; }
+
+#introCopy strong, #introCopy b { color: var(--fg); font-weight: 600; }
 
 .intro details { margin: 10px 0; }
 .intro summary {
@@ -86,6 +101,14 @@ body {
   word-break: break-word;
 }
 
+.controls-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
 .stats-row {
   display: flex;
   flex-wrap: wrap;
@@ -98,7 +121,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  min-width: 110px;
 }
+
 .stat-section h3 {
   font-size: 11px;
   font-weight: 600;
@@ -106,65 +131,68 @@ body {
   letter-spacing: 0.08em;
   color: var(--fg2);
 }
+
 .stat-big {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
 }
+
 .stat-label {
   font-size: 11px;
   color: var(--fg2);
+  max-width: 160px;
+  line-height: 1.35;
 }
 
-.tier-bar { display: flex; flex-direction: column; gap: 3px; }
-.tier-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
-.tier-color { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-.tier-name { flex: 1; color: var(--fg2); white-space: nowrap; }
-.tier-jobs { text-align: right; white-space: nowrap; }
-.tier-pct { text-align: right; width: 30px; color: var(--fg2); font-size: 11px; }
-
-.histogram { display: flex; align-items: flex-end; gap: 2px; height: 54px; }
-.histogram .bar { flex: 1; border-radius: 1px 1px 0 0; min-height: 1px; }
-.hist-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--fg2); margin-top: 2px; }
-
-.hbar-chart { display: flex; flex-direction: column; gap: 3px; }
-.hbar-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
-.hbar-label { width: 72px; flex-shrink: 0; color: var(--fg2); font-size: 11px; text-align: right; }
-.hbar-track { flex: 1; height: 12px; background: rgba(255,255,255,0.04); border-radius: 2px; overflow: hidden; min-width: 36px; }
-.hbar-fill { height: 100%; border-radius: 2px; }
-.hbar-val { width: 30px; flex-shrink: 0; font-size: 11px; color: var(--fg); text-align: right; }
-
-.controls-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-
+.geo-toggle,
 .color-toggle {
   display: flex;
   gap: 4px;
+  flex-wrap: wrap;
 }
+
+.geo-toggle[hidden],
+.color-toggle[hidden],
+.mode-chip[hidden] {
+  display: none !important;
+}
+
+.geo-toggle button,
 .color-toggle button {
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 500;
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 4px;
+  border-radius: 999px;
   background: transparent;
   color: var(--fg2);
   cursor: pointer;
   transition: all 0.15s;
 }
+
+.color-toggle button { border-radius: 4px; }
+
+.geo-toggle button.active,
 .color-toggle button.active {
   background: rgba(255,255,255,0.08);
   color: var(--fg);
   border-color: rgba(255,255,255,0.2);
 }
+
+.geo-toggle button:hover:not(.active),
 .color-toggle button:hover:not(.active) {
   background: rgba(255,255,255,0.04);
+}
+
+.mode-chip {
+  font-size: 12px;
+  color: var(--fg3);
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
 }
 
 .gradient-legend {
@@ -174,7 +202,33 @@ body {
   font-size: 11px;
   color: var(--fg2);
 }
+
 .gradient-legend canvas { border-radius: 2px; }
+
+.tier-bar { display: flex; flex-direction: column; gap: 3px; }
+.tier-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.tier-color { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.tier-name { flex: 1; color: var(--fg2); white-space: nowrap; }
+.tier-jobs { text-align: right; white-space: nowrap; }
+.tier-pct { text-align: right; width: 36px; color: var(--fg2); font-size: 11px; }
+
+.histogram { display: flex; align-items: flex-end; gap: 2px; height: 54px; }
+.histogram .bar { flex: 1; border-radius: 1px 1px 0 0; min-height: 1px; }
+.hist-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--fg2); margin-top: 2px; }
+
+.hbar-chart { display: flex; flex-direction: column; gap: 3px; min-width: 210px; }
+.hbar-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.hbar-label { width: 90px; flex-shrink: 0; color: var(--fg2); font-size: 11px; text-align: right; }
+.hbar-track { flex: 1; height: 12px; background: rgba(255,255,255,0.04); border-radius: 2px; overflow: hidden; min-width: 36px; }
+.hbar-fill { height: 100%; border-radius: 2px; }
+.hbar-val { width: 52px; flex-shrink: 0; font-size: 11px; color: var(--fg); text-align: right; }
+
+.mini-note {
+  font-size: 11px;
+  color: var(--fg2);
+  line-height: 1.4;
+  max-width: 180px;
+}
 
 canvas#canvas {
   display: block;
@@ -190,92 +244,120 @@ canvas#canvas {
   padding: 12px 16px;
   font-size: 13px;
   line-height: 1.5;
-  max-width: 340px;
+  max-width: 360px;
   opacity: 0;
   transition: opacity 0.12s;
   z-index: 20;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
 }
+
 #tooltip.visible { opacity: 1; }
 #tooltip .tt-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #fff; }
 #tooltip .tt-exposure { font-size: 12px; margin-bottom: 8px; }
 #tooltip .tt-stats { display: grid; grid-template-columns: auto auto; gap: 2px 12px; font-size: 12px; }
 #tooltip .tt-stats .label { color: var(--fg2); }
 #tooltip .tt-stats .value { color: var(--fg); text-align: right; }
-#tooltip .tt-rationale { font-size: 11px; color: var(--fg2); margin-top: 8px; line-height: 1.4; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px; }
+#tooltip .tt-rationale {
+  font-size: 11px;
+  color: var(--fg2);
+  margin-top: 8px;
+  line-height: 1.4;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 8px;
+}
+#tooltip .tt-country-breakdown {
+  margin-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 8px;
+}
+#tooltip .tt-country-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg2);
+  margin-bottom: 6px;
+}
+#tooltip .tt-country-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--fg3);
+}
+
+@media (max-width: 900px) {
+  #header { padding: 18px 18px 12px; }
+  .intro h1 { font-size: 24px; }
+  .controls-row, .stats-row { gap: 16px 18px; }
+  .hbar-chart { min-width: 180px; }
+}
+
+@media (max-width: 640px) {
+  .intro h1 { font-size: 22px; }
+  .stat-big { font-size: 28px; }
+  .hbar-label { width: 78px; }
+  #tooltip { max-width: min(340px, calc(100vw - 24px)); }
+}
 </style>
 </head>
 <body>
 
 <div id="wrapper">
-<div id="header">
-  <div class="intro">
-    <h1>US Job Market Visualizer <a class="repo-link" href="https://github.com/bozliu/jobs">GitHub</a></h1>
-    <p>This is a research tool that visualizes <b>342 occupations</b> from the <a href="https://www.bls.gov/ooh/">Bureau of Labor Statistics Occupational Outlook Handbook</a>, covering <b>143M jobs</b> across the US economy. Each rectangle's <b>area</b> is proportional to total employment. <b>Color</b> shows the selected metric &mdash; toggle between BLS projected growth outlook, median pay, education requirements, and AI exposure. Click any tile to view its full BLS page. This is not a report, a paper, or a serious economic publication &mdash; it is a development tool for exploring BLS data visually.</p>
-    <p><b>LLM-powered coloring:</b> The <a class="repo-link" href="https://github.com/bozliu/jobs">source code</a> includes scrapers, parsers, and a pipeline for writing custom LLM prompts to score and color occupations by any criteria. You write a prompt, the LLM scores each occupation, and the treemap colors accordingly. The "Digital AI Exposure" option is one example &mdash; it estimates how much current AI (which is primarily digital) will reshape each occupation. But you could write a different prompt for any question &mdash; e.g. exposure to humanoid robotics, offshoring risk, climate impact &mdash; and re-run the pipeline to get a different coloring.</p>
-    <details>
-      <summary>View the Digital AI Exposure scoring prompt (example)</summary>
-      <div class="prompt-box">You are an expert analyst evaluating how exposed different occupations are to AI. You will be given a detailed description of an occupation from the Bureau of Labor Statistics.
+  <div id="header">
+    <div class="intro">
+      <h1><span id="pageTitle">Job Market Visualizer</span> <a class="repo-link" href="https://github.com/bozliu/jobs">GitHub</a></h1>
+      <div class="meta-line" id="regionMeta"></div>
+      <div id="introCopy"></div>
+      <details id="promptDetails" hidden>
+        <summary>View the Digital AI Exposure scoring prompt</summary>
+        <div class="prompt-box" id="promptBox"></div>
+      </details>
+    </div>
 
-Rate the occupation's overall AI Exposure on a scale from 0 to 10.
+    <div class="controls-row">
+      <div class="stat-section">
+        <h3>Region</h3>
+        <div class="geo-toggle" id="regionToggle">
+          <button data-region="us" class="active">US</button>
+          <button data-region="asia">Asia</button>
+          <button data-region="europe">Europe</button>
+        </div>
+      </div>
 
-AI Exposure measures: how much will AI reshape this occupation? Consider both direct effects (AI automating tasks currently done by humans) and indirect effects (AI making each worker so productive that fewer are needed).
+      <div class="stat-section" id="modeSection">
+        <h3>Layer</h3>
+        <div class="color-toggle" id="colorToggle">
+          <button data-mode="outlook" class="active">BLS Outlook</button>
+          <button data-mode="pay">Median Pay</button>
+          <button data-mode="education">Education</button>
+          <button data-mode="exposure">Digital AI Exposure</button>
+        </div>
+        <div class="mode-chip" id="modeChip" hidden>Area = Employment · Color = Digital AI Exposure</div>
+      </div>
 
-A key signal is whether the job's work product is fundamentally digital. If the job can be done entirely from a home office on a computer — writing, coding, analyzing, communicating — then AI exposure is inherently high (7+), because AI capabilities in digital domains are advancing rapidly. Even if today's AI can't handle every aspect of such a job, the trajectory is steep and the ceiling is very high. Conversely, jobs requiring physical presence, manual skill, or real-time human interaction in the physical world have a natural barrier to AI exposure.
-
-Use these anchors to calibrate your score:
-
-- 0–1: Minimal exposure. The work is almost entirely physical, hands-on, or requires real-time human presence in unpredictable environments. AI has essentially no impact on daily work. Examples: roofer, landscaper, commercial diver.
-
-- 2–3: Low exposure. Mostly physical or interpersonal work. AI might help with minor peripheral tasks (scheduling, paperwork) but doesn't touch the core job. Examples: electrician, plumber, firefighter, dental hygienist.
-
-- 4–5: Moderate exposure. A mix of physical/interpersonal work and knowledge work. AI can meaningfully assist with the information-processing parts but a substantial share of the job still requires human presence. Examples: registered nurse, police officer, veterinarian.
-
-- 6–7: High exposure. Predominantly knowledge work with some need for human judgment, relationships, or physical presence. AI tools are already useful and workers using AI may be substantially more productive. Examples: teacher, manager, accountant, journalist.
-
-- 8–9: Very high exposure. The job is almost entirely done on a computer. All core tasks — writing, coding, analyzing, designing, communicating — are in domains where AI is rapidly improving. The occupation faces major restructuring. Examples: software developer, graphic designer, translator, data analyst, paralegal, copywriter.
-
-- 10: Maximum exposure. Routine information processing, fully digital, with no physical component. AI can already do most of it today. Examples: data entry clerk, telemarketer.
-
-Respond with ONLY a JSON object in this exact format, no other text:
-{"exposure": &lt;0-10&gt;, "rationale": "&lt;2-3 sentences explaining the key factors&gt;"}</div>
-    </details>
-    <p><b>Caveat on Digital AI Exposure scores:</b> These are rough LLM estimates, not rigorous predictions. A high score does not predict the job will disappear. Software developers score 9/10 because AI is transforming their work &mdash; but demand for software could easily <em>grow</em> as each developer becomes more productive. The score does not account for demand elasticity, latent demand, regulatory barriers, or social preferences for human workers. Many high-exposure jobs will be reshaped, not replaced.</p>
-  </div>
-
-  <div class="controls-row">
-    <div class="stat-section">
-      <h3>Layer</h3>
-      <div class="color-toggle" id="colorToggle">
-        <button data-mode="outlook" class="active">BLS Outlook</button>
-        <button data-mode="pay">Median Pay</button>
-        <button data-mode="education">Education</button>
-        <button data-mode="exposure">Digital AI Exposure</button>
+      <div class="gradient-legend">
+        <span id="legendLow">Declining</span>
+        <canvas id="gradientLegend" width="80" height="8"></canvas>
+        <span id="legendHigh">Growing</span>
       </div>
     </div>
-    <div class="gradient-legend">
-      <span id="legendLow">Declining</span>
-      <canvas id="gradientLegend" width="80" height="8"></canvas>
-      <span id="legendHigh">Growing</span>
+
+    <div class="stats-row">
+      <div class="stat-section">
+        <h3>Total jobs</h3>
+        <div class="stat-big" id="statTotalJobs">&mdash;</div>
+      </div>
+      <div class="stat-section" id="block2"></div>
+      <div class="stat-section" id="block3"></div>
+      <div class="stat-section" id="block4"></div>
+      <div class="stat-section" id="block5"></div>
+      <div class="stat-section" id="block6"></div>
+      <div class="stat-section" id="block7"></div>
+      <div class="stat-section" id="block8"></div>
     </div>
   </div>
 
-  <div class="stats-row">
-    <div class="stat-section">
-      <h3>Total jobs</h3>
-      <div class="stat-big" id="statTotalJobs">&mdash;</div>
-    </div>
-    <div class="stat-section" id="block2"></div>
-    <div class="stat-section" id="block3"></div>
-    <div class="stat-section" id="block4"></div>
-    <div class="stat-section" id="block5"></div>
-    <div class="stat-section" id="block6"></div>
-    <div class="stat-section" id="block7"></div>
-    <div class="stat-section" id="block8"></div>
-  </div>
-</div>
-
-<canvas id="canvas"></canvas>
+  <canvas id="canvas"></canvas>
 </div>
 
 <div id="tooltip">
@@ -283,11 +365,92 @@ Respond with ONLY a JSON object in this exact format, no other text:
   <div class="tt-exposure"></div>
   <div class="tt-stats"></div>
   <div class="tt-rationale"></div>
+  <div class="tt-country-breakdown"></div>
 </div>
 
 <script>
-
+let payload = null;
+let activeRegion = "us";
+let usMode = "outlook";
 let colorMode = "outlook";
+let data = [];
+let rects = [];
+let hovered = null;
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let dpr = window.devicePixelRatio || 1;
+const MARGIN = 12;
+const GAP = 1.5;
+
+const EDU_LEVELS = [
+  "No formal educational credential",
+  "High school diploma or equivalent",
+  "Postsecondary nondegree award",
+  "Some college, no degree",
+  "Associate's degree",
+  "Bachelor's degree",
+  "Master's degree",
+  "Doctoral or professional degree",
+];
+
+const PAY_BANDS = [
+  { label: "<$35K", min: 0, max: 35000 },
+  { label: "$35–50K", min: 35000, max: 50000 },
+  { label: "$50–75K", min: 50000, max: 75000 },
+  { label: "$75–100K", min: 75000, max: 100000 },
+  { label: "$100K+", min: 100000, max: Infinity },
+];
+
+const EDU_GROUPS = [
+  { label: "No degree/HS", match: ["No formal educational credential", "High school diploma or equivalent"] },
+  { label: "Postsec/Assoc", match: ["Postsecondary nondegree award", "Some college, no degree", "Associate's degree"] },
+  { label: "Bachelor's", match: ["Bachelor's degree"] },
+  { label: "Master's", match: ["Master's degree"] },
+  { label: "Doctoral/Prof", match: ["Doctoral or professional degree"] },
+];
+
+const OUTLOOK_TIERS = [
+  { label: "Declining (<0%)", min: -Infinity, max: -1 },
+  { label: "Slow (0–3%)", min: 0, max: 3 },
+  { label: "Average (4–7%)", min: 4, max: 7 },
+  { label: "Fast (8–14%)", min: 8, max: 14 },
+  { label: "Much faster (15%+)", min: 15, max: Infinity },
+];
+
+const LEGEND_CONFIG = {
+  exposure:  { low: "Low", high: "High" },
+  outlook:   { low: "Declining", high: "Growing" },
+  pay:       { low: "$25K", high: "$250K" },
+  education: { low: "No degree", high: "Doctoral" },
+};
+
+function currentView() {
+  return payload.views[activeRegion];
+}
+
+function isUSView() {
+  return activeRegion === "us";
+}
+
+function formatNumber(n) {
+  if (n == null) return "—";
+  if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, "") + "B";
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+  if (n >= 1e3) return Math.round(n / 1e3) + "K";
+  return n.toLocaleString();
+}
+
+function formatBigNumber(n) {
+  if (n == null) return "—";
+  if (n >= 1e9) return (n / 1e9).toFixed(2).replace(/0$/, "").replace(/\.$/, "") + "B";
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+  return formatNumber(n);
+}
+
+function formatPay(n) {
+  return n == null ? "—" : "$" + n.toLocaleString();
+}
 
 function boostContrast(t) {
   const c = (t - 0.5) * 2;
@@ -312,17 +475,6 @@ function greenRedCSS(t, alpha) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-const EDU_LEVELS = [
-  "No formal educational credential",
-  "High school diploma or equivalent",
-  "Postsecondary nondegree award",
-  "Some college, no degree",
-  "Associate's degree",
-  "Bachelor's degree",
-  "Master's degree",
-  "Doctoral or professional degree",
-];
-
 function outlookColor(v, a) {
   if (v == null) return `rgba(128,128,128,${a})`;
   return greenRedCSS(1 - Math.max(0, Math.min(1, (v + 12) / 24)), a);
@@ -342,6 +494,7 @@ function exposureColor(v, a) {
 }
 
 function tileColorCSS(d, alpha) {
+  if (!isUSView()) return exposureColor(d.exposure, alpha);
   if (colorMode === "exposure") return exposureColor(d.exposure, alpha);
   if (colorMode === "outlook") return outlookColor(d.outlook, alpha);
   if (colorMode === "pay") return payColor(d.pay, alpha);
@@ -350,9 +503,13 @@ function tileColorCSS(d, alpha) {
 }
 
 function tileSubInfo(r) {
+  if (!isUSView()) {
+    return (r.exposure != null ? r.exposure + "/10" : "") +
+      (r.jobs ? " · " + formatNumber(r.jobs) + " jobs" : "");
+  }
   if (colorMode === "exposure") {
     return (r.exposure != null ? r.exposure + "/10" : "") +
-           (r.jobs ? " · " + formatNumber(r.jobs) + " jobs" : "");
+      (r.jobs ? " · " + formatNumber(r.jobs) + " jobs" : "");
   }
   if (colorMode === "outlook") {
     const o = r.outlook != null ? (r.outlook > 0 ? "+" : "") + r.outlook + "%" : "";
@@ -360,7 +517,7 @@ function tileSubInfo(r) {
   }
   if (colorMode === "pay") {
     return (r.pay != null ? formatPay(r.pay) : "") +
-           (r.jobs ? " · " + formatNumber(r.jobs) + " jobs" : "");
+      (r.jobs ? " · " + formatNumber(r.jobs) + " jobs" : "");
   }
   if (colorMode === "education") {
     const short = {
@@ -429,16 +586,6 @@ function worstAspect(row, rowSum, side, totalArea, availableExtent) {
   return worst;
 }
 
-let payload = null;
-let data = [];
-let rects = [];
-let hovered = null;
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-let dpr = window.devicePixelRatio || 1;
-const MARGIN = 12;
-const GAP = 1.5;
-
 function layout() {
   const wrapper = document.getElementById("wrapper");
   const w = wrapper.clientWidth;
@@ -450,8 +597,9 @@ function layout() {
   const tx = MARGIN, ty = MARGIN, tw = w - MARGIN * 2, th = h - MARGIN * 2;
   const byCategory = {};
   for (const d of data) {
-    if (!byCategory[d.category]) byCategory[d.category] = [];
-    byCategory[d.category].push(d);
+    const cat = d.category || "uncategorized";
+    if (!byCategory[cat]) byCategory[cat] = [];
+    byCategory[cat].push(d);
   }
   const categories = Object.keys(byCategory).map(cat => ({
     cat,
@@ -512,89 +660,83 @@ function hitTest(mx, my) {
   return null;
 }
 
-function formatNumber(n) {
-  if (n == null) return "—";
-  if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
-  if (n >= 1e3) return Math.round(n / 1e3) + "K";
-  return n.toLocaleString();
-}
-function formatPay(n) { return n == null ? "—" : "$" + n.toLocaleString(); }
-
 function tooltipHighlight(d) {
-  if (colorMode === "exposure") {
-    const v = d.exposure;
-    if (v == null) return "";
-    const color = exposureColor(v, 1);
+  const v = d.exposure;
+  if (v == null) return "";
+  const color = exposureColor(v, 1);
+  if (!isUSView() || colorMode === "exposure") {
     return `<span style="color:${color};font-weight:600;">Digital AI Exposure: ${v}/10</span>` +
       `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
       `<div style="height:100%;width:${v * 10}%;background:${color};border-radius:2px;"></div></div>`;
-  } else if (colorMode === "outlook") {
-    const v = d.outlook;
-    if (v == null) return "";
-    const color = outlookColor(v, 1);
-    return `<span style="color:${color};font-weight:600;">Outlook: ${v > 0 ? "+" : ""}${v}%</span>` +
+  }
+  if (colorMode === "outlook") {
+    const colorOutlook = outlookColor(d.outlook, 1);
+    return `<span style="color:${colorOutlook};font-weight:600;">Outlook: ${d.outlook > 0 ? "+" : ""}${d.outlook}%</span>` +
       (d.outlook_desc ? ` <span style="color:var(--fg2);">(${d.outlook_desc})</span>` : "") +
       `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
-      `<div style="height:100%;width:${Math.min(100, Math.max(0, (v + 10) / 30 * 100))}%;background:${color};border-radius:2px;"></div></div>`;
-  } else if (colorMode === "pay") {
-    const v = d.pay;
-    if (v == null) return "";
-    const color = payColor(v, 1);
-    return `<span style="color:${color};font-weight:600;">Median Pay: ${formatPay(v)}</span>` +
-      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
-      `<div style="height:100%;width:${Math.min(100, v / 150000 * 100)}%;background:${color};border-radius:2px;"></div></div>`;
-  } else if (colorMode === "education") {
-    const edu = d.education || "";
-    const idx = EDU_LEVELS.indexOf(edu);
-    const color = idx >= 0 ? eduColor(idx, 1) : "var(--fg)";
-    return `<span style="color:${color};font-weight:600;">Education: ${edu || "—"}</span>`;
+      `<div style="height:100%;width:${Math.min(100, Math.max(0, (d.outlook + 10) / 30 * 100))}%;background:${colorOutlook};border-radius:2px;"></div></div>`;
   }
-  return "";
+  if (colorMode === "pay") {
+    const colorPay = payColor(d.pay, 1);
+    return `<span style="color:${colorPay};font-weight:600;">Median Pay: ${formatPay(d.pay)}</span>` +
+      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="height:100%;width:${Math.min(100, d.pay / 150000 * 100)}%;background:${colorPay};border-radius:2px;"></div></div>`;
+  }
+  const edu = d.education || "";
+  const idx = EDU_LEVELS.indexOf(edu);
+  const colorEdu = idx >= 0 ? eduColor(idx, 1) : "var(--fg)";
+  return `<span style="color:${colorEdu};font-weight:600;">Education: ${edu || "—"}</span>`;
+}
+
+function renderCountryBreakdown(d) {
+  if (!d.countryBreakdown || !d.countryBreakdown.length) return "";
+  const total = d.countryBreakdown.reduce((sum, item) => sum + item.jobs, 0);
+  const rows = d.countryBreakdown
+    .slice()
+    .sort((a, b) => b.jobs - a.jobs)
+    .map(item => {
+      const pct = total > 0 ? (item.jobs / total * 100).toFixed(0) : "0";
+      return `<div class="tt-country-row"><span>${item.country}</span><span>${formatNumber(item.jobs)} · ${pct}% · ${item.year}</span></div>`;
+    })
+    .join("");
+  return `<div class="tt-country-title">Country mix</div>${rows}`;
 }
 
 function showTooltip(d, mx, my) {
   const tt = document.getElementById("tooltip");
   tt.querySelector(".tt-title").textContent = d.title;
   tt.querySelector(".tt-exposure").innerHTML = tooltipHighlight(d);
-  tt.querySelector(".tt-stats").innerHTML = `
-    <span class="label">Median pay</span><span class="value">${formatPay(d.pay)}</span>
-    <span class="label">Jobs (2024)</span><span class="value">${formatNumber(d.jobs)}</span>
-    <span class="label">Outlook</span><span class="value">${d.outlook != null ? d.outlook + "%" : "—"} ${d.outlook_desc ? "(" + d.outlook_desc + ")" : ""}</span>
-    <span class="label">Education</span><span class="value">${d.education || "—"}</span>`;
-  tt.querySelector(".tt-rationale").textContent = colorMode === "exposure" ? (d.exposure_rationale || "") : "";
+
+  if (isUSView()) {
+    tt.querySelector(".tt-stats").innerHTML = `
+      <span class="label">Median pay</span><span class="value">${formatPay(d.pay)}</span>
+      <span class="label">Jobs (2024)</span><span class="value">${formatNumber(d.jobs)}</span>
+      <span class="label">Outlook</span><span class="value">${d.outlook != null ? d.outlook + "%" : "—"} ${d.outlook_desc ? "(" + d.outlook_desc + ")" : ""}</span>
+      <span class="label">Education</span><span class="value">${d.education || "—"}</span>`;
+    tt.querySelector(".tt-country-breakdown").innerHTML = "";
+  } else {
+    const topCountry = d.countryBreakdown && d.countryBreakdown.length ? d.countryBreakdown[0] : null;
+    tt.querySelector(".tt-stats").innerHTML = `
+      <span class="label">Regional jobs</span><span class="value">${formatBigNumber(d.jobs)}</span>
+      <span class="label">AI exposure</span><span class="value">${d.exposure != null ? d.exposure + "/10" : "—"}</span>
+      <span class="label">Top country</span><span class="value">${topCountry ? topCountry.country : "—"}</span>
+      <span class="label">Source</span><span class="value">ILOSTAT</span>`;
+    tt.querySelector(".tt-country-breakdown").innerHTML = renderCountryBreakdown(d);
+  }
+
+  tt.querySelector(".tt-rationale").textContent = d.exposure_rationale || "";
   let tx = mx + 16, ty = my - 16;
-  if (tx + 340 > window.innerWidth) tx = mx - 356;
+  if (tx + 360 > window.innerWidth) tx = mx - 376;
   if (ty < 10) ty = my + 16;
-  if (ty + 200 > window.innerHeight) ty = my - 200;
+  if (ty + 220 > window.innerHeight) ty = my - 220;
   tt.style.left = tx + "px";
   tt.style.top = ty + "px";
   tt.classList.add("visible");
 }
-function hideTooltip() { document.getElementById("tooltip").classList.remove("visible"); }
 
-const PAY_BANDS = [
-  { label: "<$35K", min: 0, max: 35000 },
-  { label: "$35–50K", min: 35000, max: 50000 },
-  { label: "$50–75K", min: 50000, max: 75000 },
-  { label: "$75–100K", min: 75000, max: 100000 },
-  { label: "$100K+", min: 100000, max: Infinity },
-];
-
-const EDU_GROUPS = [
-  { label: "No degree/HS", match: ["No formal educational credential", "High school diploma or equivalent"] },
-  { label: "Postsec/Assoc", match: ["Postsecondary nondegree award", "Some college, no degree", "Associate's degree"] },
-  { label: "Bachelor's", match: ["Bachelor's degree"] },
-  { label: "Master's", match: ["Master's degree"] },
-  { label: "Doctoral/Prof", match: ["Doctoral or professional degree"] },
-];
-
-const OUTLOOK_TIERS = [
-  { label: "Declining (<0%)", min: -Infinity, max: -1 },
-  { label: "Slow (0–3%)", min: 0, max: 3 },
-  { label: "Average (4–7%)", min: 4, max: 7 },
-  { label: "Fast (8–14%)", min: 8, max: 14 },
-  { label: "Much faster (15%+)", min: 15, max: Infinity },
-];
+function hideTooltip() {
+  document.getElementById("tooltip").classList.remove("visible");
+}
 
 function weightedAvgByGroups(groups, filterFn, metricFn) {
   return groups.map(g => {
@@ -628,9 +770,15 @@ function renderHbars(items) {
 }
 
 function updateStats() {
-  const summary = payload && payload.summary;
-  const totalJobs = summary ? summary.totalJobs : data.reduce((s, d) => s + (d.jobs || 0), 0);
-  document.getElementById("statTotalJobs").textContent = (totalJobs / 1e6).toFixed(0) + "M";
+  const view = currentView();
+  const summary = view.summary;
+  const totalJobs = summary.totalJobs || data.reduce((s, d) => s + (d.jobs || 0), 0);
+  document.getElementById("statTotalJobs").textContent = formatBigNumber(totalJobs);
+
+  if (!isUSView()) {
+    updateRegionalStats(view, totalJobs);
+    return;
+  }
 
   if (colorMode === "outlook") updateOutlookStats(totalJobs);
   else if (colorMode === "pay") updatePayStats(totalJobs);
@@ -839,67 +987,188 @@ function updateExposureStats(totalJobs) {
   document.getElementById("block8").innerHTML = "";
 }
 
-canvas.addEventListener("mousemove", (e) => {
-  const hit = hitTest(e.clientX, e.clientY);
-  if (hit !== hovered) { hovered = hit; draw(); }
-  if (hovered) { showTooltip(hovered, e.clientX, e.clientY); canvas.style.cursor = "pointer"; }
-  else { hideTooltip(); canvas.style.cursor = "default"; }
-});
-canvas.addEventListener("click", (e) => { const hit = hitTest(e.clientX, e.clientY); if (hit && hit.url) window.open(hit.url, "_blank"); });
-canvas.addEventListener("mouseleave", () => { hovered = null; hideTooltip(); draw(); });
-function resize() { dpr = window.devicePixelRatio || 1; layout(); draw(); }
+function updateRegionalStats(view, totalJobs) {
+  const summary = view.summary;
+  const avg = summary.weightedAverageExposure || 0;
+  document.getElementById("block2").innerHTML = `<h3>Avg. exposure</h3>
+    <div class="stat-big"><span style="color:${exposureColor(avg, 1)}">${avg.toFixed(1)}</span></div>
+    <div class="stat-label">job-weighted, 0–10</div>`;
 
-const LEGEND_CONFIG = {
-  exposure:  { low: "Low", high: "High" },
-  outlook:   { low: "Declining", high: "Growing" },
-  pay:       { low: "$25K", high: "$250K" },
-  education: { low: "No degree", high: "Doctoral" },
-};
+  const countryBars = summary.countries.slice().sort((a, b) => b.jobs - a.jobs).map(item => ({
+    label: item.name.length > 10 ? item.name.replace("United Kingdom", "UK") : item.name,
+    val: formatBigNumber(item.jobs),
+    pct: totalJobs > 0 ? item.jobs / totalJobs * 100 : 0,
+    color: "rgba(255,255,255,0.45)"
+  }));
+  document.getElementById("block3").innerHTML = `<h3>Country mix</h3><div class="hbar-chart">${renderHbars(countryBars)}</div>`;
+
+  const tierDefs = [
+    { label: "Minimal (0–1)", lo: 0, hi: 1, mid: 0.5 },
+    { label: "Low (2–3)", lo: 2, hi: 3, mid: 2.5 },
+    { label: "Moderate (4–5)", lo: 4, hi: 5, mid: 4.5 },
+    { label: "High (6–7)", lo: 6, hi: 7, mid: 6.5 },
+    { label: "Very high (8–10)", lo: 8, hi: 10, mid: 9 },
+  ];
+  const tiers = tierDefs.map(t => {
+    let jobs = 0;
+    for (const d of data) { if (d.exposure != null && d.jobs && d.exposure >= t.lo && d.exposure <= t.hi) jobs += d.jobs; }
+    return { ...t, jobs, color: exposureColor(t.mid, 1) };
+  });
+  document.getElementById("block4").innerHTML = `<h3>Exposure tiers</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
+
+  document.getElementById("block5").innerHTML = `<h3>Largest group</h3>
+    <div class="stat-big">${summary.largestOccupation ? formatBigNumber(summary.largestOccupation.jobs) : "—"}</div>
+    <div class="stat-label">${summary.largestOccupation ? summary.largestOccupation.title : ""}</div>`;
+
+  document.getElementById("block6").innerHTML = `<h3>Most exposed</h3>
+    <div class="stat-big" style="color:${summary.mostExposedLargeOccupation ? exposureColor(summary.mostExposedLargeOccupation.exposure, 1) : "var(--fg)"}">${summary.mostExposedLargeOccupation ? summary.mostExposedLargeOccupation.exposure + "/10" : "—"}</div>
+    <div class="stat-label">${summary.mostExposedLargeOccupation ? summary.mostExposedLargeOccupation.title : ""}</div>`;
+
+  document.getElementById("block7").innerHTML = `<h3>Most resilient</h3>
+    <div class="stat-big" style="color:${summary.mostResilientLargeOccupation ? exposureColor(summary.mostResilientLargeOccupation.exposure, 1) : "var(--fg)"}">${summary.mostResilientLargeOccupation ? summary.mostResilientLargeOccupation.exposure + "/10" : "—"}</div>
+    <div class="stat-label">${summary.mostResilientLargeOccupation ? summary.mostResilientLargeOccupation.title : ""}</div>`;
+
+  document.getElementById("block8").innerHTML = `<h3>Coverage</h3>
+    <div class="mini-note">${summary.yearStrategy === "latest_shared" ? "Shared year " + summary.yearLabel : "Mixed country years: " + summary.yearLabel}</div>`;
+}
 
 function drawGradientLegend() {
   const c = document.getElementById("gradientLegend");
   const gctx = c.getContext("2d");
+  const mode = isUSView() ? colorMode : "exposure";
   for (let x = 0; x < 80; x++) {
     const t = x / 79;
-    gctx.fillStyle = colorMode === "exposure" ? greenRedCSS(t, 1) : greenRedCSS(1 - t, 1);
+    gctx.fillStyle = mode === "exposure" ? greenRedCSS(t, 1) : greenRedCSS(1 - t, 1);
     gctx.fillRect(x, 0, 1, 8);
   }
-  const cfg = LEGEND_CONFIG[colorMode];
+  const cfg = LEGEND_CONFIG[mode];
   document.getElementById("legendLow").textContent = cfg.low;
   document.getElementById("legendHigh").textContent = cfg.high;
 }
 
-document.getElementById("colorToggle").addEventListener("click", (e) => {
-  const btn = e.target.closest("button");
-  if (!btn || !btn.dataset.mode) return;
-  colorMode = btn.dataset.mode;
-  document.querySelectorAll("#colorToggle button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+function applyPayloadMetadata() {
+  const view = currentView();
+  const summary = view.summary;
+  document.getElementById("pageTitle").textContent = view.heading;
+  document.title = `${view.heading} | bozliu/jobs`;
+
+  const countries = Array.isArray(view.countries) ? view.countries.join(", ") : "";
+  const sourceLabel = isUSView() ? "BLS 2024" : `ILOSTAT · ${summary.yearStrategy === "latest_shared" ? "shared year " + summary.yearLabel : "mixed years"}`;
+  document.getElementById("regionMeta").textContent = `${countries} · ${sourceLabel}`;
+
+  const intro = document.getElementById("introCopy");
+  intro.innerHTML = (summary.introHtml || []).map(text => `<p>${text}</p>`).join("");
+  document.querySelectorAll(".repo-link").forEach(link => { link.href = summary.repoUrl; });
+
+  const promptDetails = document.getElementById("promptDetails");
+  const promptBox = document.getElementById("promptBox");
+  promptDetails.hidden = !summary.showPrompt;
+  promptBox.textContent = summary.promptText || "";
+}
+
+function updateModeControls() {
+  const toggle = document.getElementById("colorToggle");
+  const chip = document.getElementById("modeChip");
+  toggle.hidden = !isUSView();
+  chip.hidden = isUSView();
+  if (isUSView()) {
+    document.querySelectorAll("#colorToggle button").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.mode === colorMode);
+    });
+  }
+  document.querySelectorAll("#regionToggle button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.region === activeRegion);
+  });
+}
+
+function coerceState(region, mode) {
+  const safeRegion = payload.views[region] ? region : (payload.defaultRegion || "us");
+  if (safeRegion !== "us") {
+    return { region: safeRegion, mode: "exposure" };
+  }
+  const allowed = new Set(payload.views.us.availableModes || ["outlook"]);
+  return { region: safeRegion, mode: allowed.has(mode) ? mode : payload.views.us.defaultMode };
+}
+
+function syncUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("region", activeRegion);
+  if (activeRegion === "us") url.searchParams.set("mode", usMode);
+  else url.searchParams.delete("mode");
+  window.history.replaceState({}, "", url);
+}
+
+function applyState({ skipUrl = false } = {}) {
+  const view = currentView();
+  colorMode = isUSView() ? usMode : view.defaultMode;
+  data = view.occupations || [];
+  applyPayloadMetadata();
+  updateModeControls();
   updateStats();
   drawGradientLegend();
+  resize();
+  if (!skipUrl) syncUrl();
+}
+
+function resize() {
+  dpr = window.devicePixelRatio || 1;
+  layout();
   draw();
-  requestAnimationFrame(resize);
+}
+
+canvas.addEventListener("mousemove", (e) => {
+  const hit = hitTest(e.clientX, e.clientY);
+  if (hit !== hovered) { hovered = hit; draw(); }
+  if (hovered) {
+    showTooltip(hovered, e.clientX, e.clientY);
+    canvas.style.cursor = isUSView() && hovered.url ? "pointer" : "default";
+  } else {
+    hideTooltip();
+    canvas.style.cursor = "default";
+  }
 });
 
-function applyPayloadMetadata() {
-  const repoUrl = payload && payload.summary && payload.summary.repoUrl;
-  if (repoUrl) {
-    document.querySelectorAll(".repo-link").forEach(link => { link.href = repoUrl; });
-  }
-}
+canvas.addEventListener("click", (e) => {
+  const hit = hitTest(e.clientX, e.clientY);
+  if (isUSView() && hit && hit.url) window.open(hit.url, "_blank");
+});
+
+canvas.addEventListener("mouseleave", () => {
+  hovered = null;
+  hideTooltip();
+  draw();
+});
+
+document.getElementById("regionToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn || !btn.dataset.region) return;
+  const next = coerceState(btn.dataset.region, usMode);
+  activeRegion = next.region;
+  if (next.region === "us") usMode = next.mode;
+  applyState();
+});
+
+document.getElementById("colorToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn || !btn.dataset.mode || !isUSView()) return;
+  usMode = btn.dataset.mode;
+  applyState();
+});
+
+window.addEventListener("resize", resize);
 
 fetch("data.json")
   .then(r => r.json())
   .then(d => {
-    payload = Array.isArray(d) ? { occupations: d, summary: null } : d;
-    data = payload.occupations || [];
-    applyPayloadMetadata();
-    updateStats();
-    drawGradientLegend();
-    resize();
+    payload = d;
+    const url = new URL(window.location.href);
+    const requestedRegion = url.searchParams.get("region") || payload.defaultRegion || "us";
+    const requestedMode = url.searchParams.get("mode") || payload.views.us.defaultMode;
+    const next = coerceState(requestedRegion, requestedMode);
+    activeRegion = next.region;
+    usMode = next.mode;
+    applyState({ skipUrl: false });
   });
-
-window.addEventListener("resize", resize);
 </script>
 </body>
 </html>
