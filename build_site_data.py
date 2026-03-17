@@ -137,6 +137,12 @@ def make_occupation_snapshot(record: dict | None) -> dict | None:
     }
     if record.get("countryBreakdown"):
         snapshot["countryBreakdown"] = record["countryBreakdown"]
+    if record.get("mappingType"):
+        snapshot["mappingType"] = record["mappingType"]
+    if record.get("mappingConfidence") is not None:
+        snapshot["mappingConfidence"] = record["mappingConfidence"]
+    if record.get("sourceYearLabel"):
+        snapshot["sourceYearLabel"] = record["sourceYearLabel"]
     return snapshot
 
 
@@ -308,12 +314,15 @@ def build_us_summary(records: list[dict], categories: list[dict]) -> dict:
         "sourceLabel": "Bureau of Labor Statistics Occupational Outlook Handbook",
         "generatedAt": None,
         "occupationsCount": len(records),
+        "visibleOccupationsCount": len(records),
         "categoryCount": len(categories),
         "countriesCount": 1,
         "countries": [{"name": "United States", "code": "USA", "year": 2024}],
         "year": 2024,
         "yearLabel": "2024",
         "yearStrategy": "single_year",
+        "freshnessSummary": "Single BLS 2024 release",
+        "methodologyNote": "US occupations are taken directly from the Occupational Outlook Handbook. Area shows employment; color shows the selected BLS or AI layer.",
         "totalJobs": total_jobs,
         "weightedAveragePay": weighted_average(records, "pay"),
         "weightedAverageOutlook": weighted_average(records, "outlook"),
@@ -418,13 +427,20 @@ def build_us_view() -> dict:
     }
 
 
-def build_regional_summary(region: dict, occupations: list[dict]) -> dict:
-    total_jobs = sum(item["jobs"] for item in occupations)
-    largest = max(occupations, key=lambda item: item["jobs"])
-    most_exposed = max(occupations, key=lambda item: (item["exposure"], item["jobs"]))
-    most_resilient = min(occupations, key=lambda item: (item["exposure"], -item["jobs"]))
+def build_regional_summary(region: dict, occupations: list[dict], categories: list[dict]) -> dict:
+    active_occupations = [item for item in occupations if item["jobs"] > 0] or occupations
+    total_jobs = sum(item["jobs"] for item in active_occupations)
+    largest = max(active_occupations, key=lambda item: item["jobs"])
+    large_records = select_large(active_occupations) or active_occupations
+    exposure_records = [item for item in large_records if item.get("exposure") is not None] or active_occupations
+    most_exposed = max(exposure_records, key=lambda item: (item["exposure"], item["jobs"]))
+    most_resilient = min(exposure_records, key=lambda item: (item["exposure"], -item["jobs"]))
     countries = region["countries"]
     country_names = ", ".join(item["name"] for item in countries)
+    live_categories = [category for category in categories if category["jobs"] > 0] or categories
+    largest_category = live_categories[0]
+    top_country = max(countries, key=lambda item: item["jobs"])
+    freshness_summary = region["freshness"]["summary"]
 
     if region["yearStrategy"] == "latest_shared":
         note = f"Built from the latest shared ILOSTAT occupation year across {country_names}."
@@ -437,64 +453,112 @@ def build_regional_summary(region: dict, occupations: list[dict]) -> dict:
         "sourceLabel": region["source"]["label"],
         "generatedAt": None,
         "occupationsCount": len(occupations),
-        "categoryCount": 1,
+        "visibleOccupationsCount": len(active_occupations),
+        "categoryCount": len(categories),
         "countriesCount": len(countries),
         "countries": countries,
         "year": region["year"],
         "yearLabel": region["yearLabel"],
         "yearStrategy": region["yearStrategy"],
         "note": note,
+        "freshness": region["freshness"],
+        "freshnessSummary": freshness_summary,
+        "methodologyNote": (
+            "Regional employment stays official at the ILOSTAT major-group level, then gets projected into the "
+            "same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks."
+        ),
         "totalJobs": total_jobs,
         "weightedAveragePay": None,
         "weightedAverageOutlook": None,
-        "weightedAverageExposure": weighted_average(occupations, "exposure"),
+        "weightedAverageExposure": weighted_average(active_occupations, "exposure"),
         "introHtml": [
-            f'This view merges employment-by-occupation data from <a href="{ILOSTAT_URL}">ILOSTAT</a> for <b>{country_names}</b>. The rectangles are broad international occupation groups rather than country-specific detailed job titles.',
-            'In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents AI exposure. This keeps the views comparable and readable without forcing unreliable pay, education, or outlook estimates across countries.',
-            note,
+            f'This view merges official employment-by-occupation data from <a href="{ILOSTAT_URL}">ILOSTAT</a> for <b>{country_names}</b>, then reallocates those country totals into the same <b>342 canonical occupation labels</b> used by the US map.',
+            'In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents the same Digital AI Exposure score used in the US view. That creates taxonomy parity without pretending the region also has US-quality pay, education, or outlook estimates.',
+            f"{note} <b>{freshness_summary}.</b>",
         ],
         "promptText": None,
         "showPrompt": False,
         "largestOccupation": make_occupation_snapshot(largest),
+        "largestCategory": largest_category,
+        "topCountry": {
+            "name": top_country["name"],
+            "code": top_country["code"],
+            "jobs": top_country["jobs"],
+            "sourceYear": top_country["sourceYear"],
+        },
         "mostExposedLargeOccupation": make_occupation_snapshot(most_exposed),
         "mostResilientLargeOccupation": make_occupation_snapshot(most_resilient),
+        "highlights": [
+            {
+                "title": "Visible occupations",
+                "value": len(active_occupations),
+                "format": "count",
+                "context": "non-zero tiles in the treemap",
+                "detail": f"{len(occupations)} canonical occupations remain in the payload",
+            },
+            {
+                "title": "Largest category",
+                "value": largest_category["jobs"],
+                "format": "jobs",
+                "context": largest_category["label"],
+                "detail": f"{largest_category['shareOfJobs']}% of the mapped regional jobs",
+            },
+            {
+                "title": "Most exposed large role",
+                "value": most_exposed["exposure"],
+                "format": "score",
+                "context": most_exposed["title"],
+                "detail": f"{format(most_exposed['jobs'], ',')} mapped regional jobs",
+            },
+            {
+                "title": "Largest country input",
+                "value": top_country["jobs"],
+                "format": "jobs",
+                "context": top_country["name"],
+                "detail": f"source year {top_country['sourceYear']}",
+            },
+        ],
     }
 
 
-def load_regional_views() -> dict[str, dict]:
+def load_regional_views(us_records: list[dict]) -> dict[str, dict]:
     with open("regional_employment.json") as file:
         employment_payload = json.load(file)
-    with open("regional_scores.json") as file:
-        scores_payload = json.load(file)
-    scores = {row["slug"]: row for row in scores_payload}
+    us_by_slug = {record["slug"]: record for record in us_records}
 
     views = {}
     for region_id, region in employment_payload["regions"].items():
         occupations = []
         for item in region["occupations"]:
-            score = scores.get(item["slug"])
-            if not score:
+            us_record = us_by_slug.get(item["slug"])
+            if not us_record:
                 continue
             occupations.append(
                 {
-                    "title": item["title"],
-                    "slug": item["slug"],
-                    "category": "international-major-groups",
-                    "category_label": CATEGORY_LABELS["international-major-groups"],
+                    "title": us_record["title"],
+                    "slug": us_record["slug"],
+                    "category": us_record["category"],
+                    "category_label": us_record["category_label"],
                     "pay": None,
                     "jobs": item["jobs"],
                     "outlook": None,
                     "outlook_desc": "",
                     "education": None,
-                    "exposure": score["exposure"],
-                    "exposure_rationale": score["rationale"],
+                    "exposure": us_record["exposure"],
+                    "exposure_rationale": us_record["exposure_rationale"],
                     "countryBreakdown": item["countryBreakdown"],
                     "source": item["source"],
-                    "url": item["source"]["url"],
+                    "sourceYear": item["sourceYear"],
+                    "sourceYearLabel": item["sourceYearLabel"],
+                    "mappingType": item["mappingType"],
+                    "mappingConfidence": item["mappingConfidence"],
+                    "url": "",
                 }
             )
         occupations.sort(key=lambda record: record["jobs"], reverse=True)
-        summary = build_regional_summary(region, occupations)
+        total_jobs = sum(record["jobs"] or 0 for record in occupations)
+        categories = build_categories(occupations, total_jobs)
+        summary = build_regional_summary(region, occupations, categories)
         views[region_id] = {
             "id": region_id,
             "label": region["label"],
@@ -507,7 +571,7 @@ def load_regional_views() -> dict[str, dict]:
             "defaultMode": "exposure",
             "summary": summary,
             "stories": [],
-            "categories": [],
+            "categories": categories,
             "occupations": occupations,
         }
 
@@ -516,7 +580,7 @@ def load_regional_views() -> dict[str, dict]:
 
 def main() -> None:
     us_view = build_us_view()
-    regional_views = load_regional_views()
+    regional_views = load_regional_views(us_view["occupations"])
 
     payload = {
         "generatedAt": None,

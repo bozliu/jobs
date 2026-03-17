@@ -1,0 +1,113 @@
+{
+  "sourceLabel": "ILOSTAT employment by occupation",
+  "sourceUrl": "https://ilostat.ilo.org/data/",
+  "apiUrl": "https://rplumber.ilo.org/data/indicator/",
+  "indicator": "EMP_TEMP_SEX_OCU_NB",
+  "regions": {
+    "asia": {
+      "label": "Asia",
+      "countries": ["CHN", "JPN", "IND", "AUS"],
+      "yearStrategy": "latest_per_country",
+      "note": "Asia uses the latest official occupation year available per country because China is only available here as an older cached official extract."
+    },
+    "europe": {
+      "label": "Europe",
+      "countries": ["DEU", "GBR", "FRA", "ITA", "ESP"],
+      "yearStrategy": "latest_shared",
+      "note": "Europe uses the latest shared occupation year available across the selected countries."
+    }
+  },
+  "countries": [
+    {
+      "code": "AUS",
+      "name": "Australia",
+      "region": "asia",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "CHN",
+      "name": "China",
+      "region": "asia",
+      "ingestMode": "cached_official_extract",
+      "classificationPrefix": "OCU_ISCO88_",
+      "nativeCodeSystem": "ISCO-88 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "manual cached refresh",
+      "cachePath": "regional_sources/china_ilostat_2005_major_groups.csv"
+    },
+    {
+      "code": "IND",
+      "name": "India",
+      "region": "asia",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "JPN",
+      "name": "Japan",
+      "region": "asia",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "DEU",
+      "name": "Germany",
+      "region": "europe",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "GBR",
+      "name": "United Kingdom",
+      "region": "europe",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "FRA",
+      "name": "France",
+      "region": "europe",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "ITA",
+      "name": "Italy",
+      "region": "europe",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    },
+    {
+      "code": "ESP",
+      "name": "Spain",
+      "region": "europe",
+      "ingestMode": "live_ilostat_api",
+      "classificationPrefix": "OCU_ISCO08_",
+      "nativeCodeSystem": "ISCO-08 major groups",
+      "fileFormat": "csv",
+      "refreshCadence": "daily"
+    }
+  ]
+}
