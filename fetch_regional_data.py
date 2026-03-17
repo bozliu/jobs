@@ -14,6 +14,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import os
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -239,7 +240,7 @@ def main() -> None:
         client.close()
 
     payload = {
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "generatedAt": None,
         "source": {
             "label": "ILOSTAT employment by occupation",
             "url": ILO_DATASET_URL,
@@ -250,6 +251,22 @@ def main() -> None:
             for region_id in REGIONS
         },
     }
+
+    generated_at = datetime.now(timezone.utc).isoformat()
+    existing_payload = None
+    if os.path.exists(OUTPUT_FILE):
+        with open(OUTPUT_FILE) as file:
+            existing_payload = json.load(file)
+
+    def normalized(data: dict) -> dict:
+        stripped = json.loads(json.dumps(data))
+        stripped.pop("generatedAt", None)
+        return stripped
+
+    if existing_payload and normalized(existing_payload) == normalized(payload):
+        generated_at = existing_payload.get("generatedAt") or generated_at
+
+    payload["generatedAt"] = generated_at
 
     with open(OUTPUT_FILE, "w") as file:
         json.dump(payload, file, indent=2)
