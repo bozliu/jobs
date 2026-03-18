@@ -6,460 +6,319 @@
 <title>Job Market Visualizer</title>
 <link rel="icon" href="data:,">
 <style>
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --paper: #090b11;
-  --paper-2: #111521;
-  --paper-3: #171d2a;
-  --ink: #f1ebe1;
-  --ink-2: #c2b9aa;
-  --ink-3: #8b8797;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --shadow: 0 28px 88px rgba(0, 0, 0, 0.42);
-  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.26);
-  --accent: #9ed5c8;
-  --accent-soft: rgba(158, 213, 200, 0.14);
-  --radius-xl: 28px;
-  --radius-lg: 22px;
-  --radius-md: 16px;
-  --radius-sm: 12px;
-}
-
-html {
-  scroll-behavior: smooth;
+  --bg: #0a0a0f;
+  --bg2: #12121a;
+  --fg: #e0e0e8;
+  --fg2: #888894;
+  --fg3: #b6b6c3;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--ink);
-  background:
-    radial-gradient(circle at top left, rgba(94, 140, 128, 0.18), transparent 30%),
-    radial-gradient(circle at top right, rgba(180, 110, 82, 0.14), transparent 26%),
-    linear-gradient(180deg, #05070c 0%, #0a0d15 48%, #05070c 100%);
-  font-family: "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
 
 a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-button {
-  font: inherit;
+  color: var(--fg2);
 }
 
 [hidden] {
   display: none !important;
 }
 
-.page {
-  width: min(1500px, calc(100vw - 28px));
-  margin: 20px auto 32px;
+#wrapper {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 250px;
 }
 
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 28px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(135deg, rgba(22, 27, 40, 0.96), rgba(12, 15, 24, 0.98)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
-  box-shadow: var(--shadow);
+#header {
+  padding: 20px 28px 16px;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: -10% auto auto -6%;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(94, 140, 128, 0.2), transparent 70%);
-  pointer-events: none;
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: auto -8% -18% auto;
-  width: 360px;
-  height: 360px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(180, 110, 82, 0.18), transparent 68%);
-  pointer-events: none;
-}
-
-.eyebrow {
-  margin: 0 0 10px;
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.hero-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.95fr);
-  gap: 28px;
-}
-
-.title-row {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.title-row h1,
-.canvas-header h2 {
-  margin: 0;
-  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.96;
-}
-
-.title-row h1 {
-  font-size: clamp(2.8rem, 4.7vw, 5.2rem);
-  max-width: 10ch;
-}
-
-.hero .repo-link {
-  font-size: 13px;
-  color: var(--ink-3);
-}
-
-.meta-line {
-  margin-bottom: 14px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--ink-3);
-}
-
-.intro-copy p {
-  margin: 0 0 12px;
-  max-width: 68ch;
-  color: var(--ink-2);
-  font-size: 15px;
-  line-height: 1.72;
-}
-
-.intro-copy strong,
-.intro-copy b {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.prompt-wrap {
-  position: relative;
-  z-index: 1;
-  margin-top: 18px;
-}
-
-.prompt-wrap summary {
-  cursor: pointer;
-  color: var(--ink-3);
-  font-size: 14px;
-}
-
-.prompt-wrap summary:hover {
-  color: var(--ink);
-}
-
-.prompt-box {
-  margin-top: 10px;
-  padding: 14px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--ink-2);
-  font-family: "SF Mono", "Menlo", "Consolas", monospace;
-  font-size: 11px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  max-height: 320px;
-  overflow: auto;
-}
-
-.control-panel {
-  display: grid;
-  gap: 14px;
-  align-content: start;
-}
-
-.panel-card,
-.stat-card,
-.canvas-shell {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(18, 23, 35, 0.94), rgba(10, 13, 21, 0.98));
-  box-shadow: var(--shadow-soft);
-}
-
-.panel-card {
-  padding: 16px;
-}
-
-.panel-label {
-  margin: 0 0 10px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.segmented {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.segmented button,
-.mode-chip {
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--ink-2);
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
-}
-
-.segmented button {
-  cursor: pointer;
-}
-
-.segmented button:hover,
-.mode-chip:hover {
-  border-color: var(--line-strong);
-  transform: translateY(-1px);
-}
-
-.segmented button.active {
-  background: var(--accent);
-  border-color: transparent;
-  color: #051311;
-}
-
-.legend-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.legend-title {
-  font-size: 15px;
-  color: var(--ink);
-}
-
-.legend-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--ink-3);
-}
-
-.legend-bar canvas {
-  flex: 1;
-  min-width: 120px;
-  height: 10px;
-  border-radius: 999px;
-}
-
-.legend-note {
-  margin: 10px 0 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--ink-3);
-}
-
-.stats-grid {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
-}
-
-.stat-card {
-  padding: 18px 18px 20px;
-}
-
-.stat-card .label {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.stat-card .value {
-  margin-top: 12px;
-  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  font-size: clamp(2rem, 3vw, 3rem);
-  letter-spacing: -0.05em;
-  line-height: 0.94;
-}
-
-.stat-card .context {
-  margin-top: 10px;
-  font-size: 14px;
-  color: var(--ink);
-}
-
-.stat-card .detail {
-  margin-top: 6px;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--ink-3);
-}
-
-.canvas-shell {
-  margin-top: 20px;
-  padding: 20px;
-}
-
-.canvas-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
+.intro {
   margin-bottom: 18px;
 }
 
-.canvas-header h2 {
-  font-size: clamp(2rem, 3.2vw, 3.2rem);
-  margin-top: 4px;
+.intro h1 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-.canvas-meta {
-  margin: 10px 0 0;
-  max-width: 72ch;
-  font-size: 14px;
+.intro h1 a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg2);
+  text-decoration: none;
+}
+
+.intro h1 a:hover,
+.intro a:hover {
+  text-decoration: underline;
+}
+
+.meta-line {
+  font-size: 12px;
+  color: var(--fg2);
+  margin-bottom: 12px;
+}
+
+#introCopy p {
+  font-size: 15px;
   line-height: 1.6;
-  color: var(--ink-2);
+  color: var(--fg2);
+  margin-bottom: 8px;
 }
 
-.canvas-summary {
+#introCopy strong,
+#introCopy b {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.intro details {
+  margin: 10px 0;
+}
+
+.intro summary {
+  font-size: 14px;
+  color: var(--fg2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.intro summary:hover {
+  color: var(--fg);
+}
+
+.prompt-box {
+  margin-top: 8px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--fg2);
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.controls-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.control-group h3,
+.stat-section h3 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg2);
+}
+
+.geo-toggle,
+.color-toggle {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.geo-toggle button,
+.color-toggle button {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: var(--fg2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.geo-toggle button {
+  border-radius: 999px;
+}
+
+.color-toggle button {
+  border-radius: 4px;
+}
+
+.geo-toggle button.active,
+.color-toggle button.active {
+  background: rgba(255,255,255,0.08);
+  color: var(--fg);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.geo-toggle button:hover:not(.active),
+.color-toggle button:hover:not(.active) {
+  background: rgba(255,255,255,0.04);
+}
+
+.mode-chip {
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  font-size: 12px;
+  color: var(--fg3);
+}
+
+.gradient-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--fg2);
+}
+
+.gradient-legend canvas {
+  border-radius: 2px;
+}
+
+.stats-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
+  gap: 20px 28px;
+  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
-.summary-chip,
-.footer-pill {
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--ink-2);
-  font-size: 12px;
+.stat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 130px;
 }
 
-#canvasFrame {
-  position: relative;
-  overflow: hidden;
-  border-radius: calc(var(--radius-lg) - 4px);
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(16, 19, 29, 0.95), rgba(7, 9, 15, 0.98)),
-    linear-gradient(135deg, rgba(94, 140, 128, 0.08), rgba(180, 110, 82, 0.08));
+.stat-big {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--fg2);
+  max-width: 200px;
+  line-height: 1.35;
+}
+
+.stat-note {
+  font-size: 11px;
+  color: var(--fg3);
+  max-width: 220px;
+  line-height: 1.35;
+}
+
+.mini-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-bottom: 16px;
+  font-size: 11px;
+  color: var(--fg2);
+  line-height: 1.4;
 }
 
 canvas#canvas {
   display: block;
-  width: 100%;
   cursor: default;
-}
-
-.canvas-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
 }
 
 #tooltip {
   position: fixed;
-  z-index: 20;
-  max-width: 360px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(14, 18, 28, 0.96);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-  color: var(--ink);
   pointer-events: none;
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 360px;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.12s ease, transform 0.12s ease;
-  backdrop-filter: blur(10px);
+  transition: opacity 0.12s;
+  z-index: 20;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
 }
 
 #tooltip.visible {
   opacity: 1;
-  transform: translateY(0);
 }
 
 #tooltip .tt-title {
-  font-size: 17px;
   font-weight: 600;
-  line-height: 1.28;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #fff;
 }
 
 #tooltip .tt-highlight {
-  margin-top: 10px;
+  font-size: 12px;
+  margin-bottom: 8px;
 }
 
 #tooltip .tt-stats {
   display: grid;
   grid-template-columns: auto auto;
-  gap: 4px 14px;
-  margin-top: 12px;
+  gap: 2px 12px;
   font-size: 12px;
 }
 
 #tooltip .tt-stats .label {
-  color: var(--ink-3);
+  color: var(--fg2);
 }
 
 #tooltip .tt-stats .value {
+  color: var(--fg);
   text-align: right;
-  color: var(--ink);
 }
 
 #tooltip .tt-rationale,
 #tooltip .tt-country-breakdown {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
+  margin-top: 8px;
+  line-height: 1.4;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 8px;
 }
 
 #tooltip .tt-rationale {
-  font-size: 12px;
-  line-height: 1.55;
-  color: var(--ink-2);
+  font-size: 11px;
+  color: var(--fg2);
 }
 
 #tooltip .tt-country-title {
-  margin-bottom: 6px;
   font-size: 10px;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  color: var(--fg2);
+  margin-bottom: 6px;
 }
 
 #tooltip .tt-country-row {
@@ -467,137 +326,72 @@ canvas#canvas {
   justify-content: space-between;
   gap: 10px;
   font-size: 11px;
-  line-height: 1.5;
-  color: var(--ink-2);
+  color: var(--fg3);
 }
 
-@media (max-width: 1080px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 900px) {
+  #header { padding: 18px 18px 12px; }
+  .intro h1 { font-size: 24px; }
+  .controls-row, .stats-row { gap: 16px 18px; }
 }
 
-@media (max-width: 720px) {
-  .page {
-    width: min(100vw - 18px, 1500px);
-    margin: 10px auto 24px;
-  }
-
-  .hero,
-  .canvas-shell {
-    padding: 18px;
-  }
-
-  .title-row h1 {
-    font-size: 2.7rem;
-  }
-
-  .canvas-header {
-    flex-direction: column;
-  }
-
-  .canvas-summary {
-    justify-content: flex-start;
-  }
-
-  #tooltip {
-    max-width: min(340px, calc(100vw - 20px));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  * {
-    transition: none !important;
-  }
+@media (max-width: 640px) {
+  .intro h1 { font-size: 22px; }
+  .stat-big { font-size: 28px; }
+  #tooltip { max-width: min(340px, calc(100vw - 24px)); }
 }
 </style>
 </head>
 <body>
-<div class="page">
-  <header class="hero">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow">Global Labor Atlas</p>
-        <div class="title-row">
-          <h1 id="pageTitle">Job Market Visualizer</h1>
-          <a class="repo-link" href="https://github.com/bozliu/jobs">GitHub</a>
+
+<div id="wrapper">
+  <div id="header">
+    <div class="intro">
+      <h1><span id="pageTitle">Job Market Visualizer</span> <a class="repo-link" href="https://github.com/bozliu/jobs">GitHub</a></h1>
+      <div class="meta-line" id="regionMeta"></div>
+      <div id="introCopy"></div>
+      <details id="promptDetails" hidden>
+        <summary>View the Digital AI Exposure scoring prompt</summary>
+        <div class="prompt-box" id="promptBox"></div>
+      </details>
+    </div>
+
+    <div class="controls-row">
+      <div class="control-group">
+        <h3>Region</h3>
+        <div class="geo-toggle" id="regionToggle">
+          <button data-region="us" class="active">US</button>
+          <button data-region="asia">Asia</button>
+          <button data-region="europe">Europe</button>
         </div>
-        <div class="meta-line" id="regionMeta"></div>
-        <div class="intro-copy" id="introCopy"></div>
       </div>
 
-      <div class="control-panel">
-        <div class="panel-card">
-          <p class="panel-label">Region</p>
-          <div class="segmented" id="regionToggle">
-            <button data-region="us" class="active">US</button>
-            <button data-region="asia">Asia</button>
-            <button data-region="europe">Europe</button>
-          </div>
+      <div class="control-group" id="modeSection">
+        <h3>Layer</h3>
+        <div class="color-toggle" id="colorToggle">
+          <button data-mode="outlook" class="active">BLS Outlook</button>
+          <button data-mode="pay">Median Pay</button>
+          <button data-mode="education">Education</button>
+          <button data-mode="exposure">Digital AI Exposure</button>
         </div>
+        <div class="mode-chip" id="modeChip" hidden>Area = Employment · Color = Digital AI Exposure</div>
+      </div>
 
-        <div class="panel-card" id="modeSection">
-          <p class="panel-label">Layer</p>
-          <div class="segmented" id="colorToggle">
-            <button data-mode="outlook" class="active">BLS Outlook</button>
-            <button data-mode="pay">Median Pay</button>
-            <button data-mode="education">Education</button>
-            <button data-mode="exposure">Digital AI Exposure</button>
-          </div>
-          <div class="mode-chip" id="modeChip" hidden>Area = Employment · Color = Digital AI Exposure</div>
-        </div>
-
-        <div class="panel-card">
-          <div class="legend-head">
-            <p class="panel-label" style="margin:0;">Color Legend</p>
-            <span class="legend-title" id="legendTitle">BLS outlook</span>
-          </div>
-          <div class="legend-bar">
-            <span id="legendLow">Declining</span>
-            <canvas id="gradientLegend" width="160" height="10" aria-hidden="true"></canvas>
-            <span id="legendHigh">Growing</span>
-          </div>
-          <p class="legend-note" id="legendNote"></p>
-        </div>
+      <div class="gradient-legend">
+        <span id="legendLow">Declining</span>
+        <canvas id="gradientLegend" width="80" height="8"></canvas>
+        <span id="legendHigh">Growing</span>
       </div>
     </div>
 
-    <details class="prompt-wrap" id="promptDetails" hidden>
-      <summary>View the Digital AI Exposure scoring prompt</summary>
-      <div class="prompt-box" id="promptBox"></div>
-    </details>
-  </header>
-
-  <section class="stats-grid" id="statsGrid"></section>
-
-  <section class="canvas-shell">
-    <div class="canvas-header">
-      <div>
-        <p class="eyebrow">Treemap Explorer</p>
-        <h2 id="canvasTitle">Occupation map</h2>
-        <p class="canvas-meta" id="canvasMeta"></p>
-      </div>
-      <div class="canvas-summary">
-        <span class="summary-chip" id="summaryChip1"></span>
-        <span class="summary-chip" id="summaryChip2"></span>
-        <span class="summary-chip" id="summaryChip3"></span>
-      </div>
+    <div class="stats-row" id="statsRow"></div>
+    <div class="mini-meta">
+      <span id="footnoteLeft"></span>
+      <span id="footnoteRight"></span>
     </div>
+  </div>
 
-    <div id="canvasFrame">
-      <canvas id="canvas"></canvas>
-    </div>
-
-    <div class="canvas-footer">
-      <span class="footer-pill" id="footerMethod"></span>
-      <span class="footer-pill" id="footerFreshness"></span>
-      <span class="footer-pill" id="footerUpdated"></span>
-    </div>
-  </section>
+  <canvas id="canvas"></canvas>
 </div>
 
 <div id="tooltip">
@@ -616,22 +410,13 @@ let colorMode = "outlook";
 let data = [];
 let visibleData = [];
 let rects = [];
-let categoryRects = [];
 let hovered = null;
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 let dpr = window.devicePixelRatio || 1;
-
-const MARGIN = 16;
-const GAP = 2;
-const PAPER = "#090b11";
-const PAPER_ALT = "#111521";
-const INK = "#f1ebe1";
-const INK_SOFT = "#8b8797";
-const GRID = "rgba(255, 255, 255, 0.08)";
-const GRID_STRONG = "rgba(255, 255, 255, 0.16)";
-const LIGHT_LABEL = "rgba(255, 251, 244, 0.96)";
+const MARGIN = 12;
+const GAP = 1.5;
 
 const EDU_LEVELS = [
   "No formal educational credential",
@@ -644,39 +429,11 @@ const EDU_LEVELS = [
   "Doctoral or professional degree",
 ];
 
-const COLOR_SCALES = {
-  exposure: { low: [74, 106, 95], high: [214, 105, 76] },
-  outlook: { low: [191, 86, 76], high: [70, 164, 116] },
-  pay: { low: [101, 122, 156], high: [212, 170, 89] },
-  education: { low: [92, 86, 132], high: [145, 120, 214] },
-  neutral: [70, 76, 92],
-};
-
 const LEGEND_CONFIG = {
-  exposure: {
-    title: "Digital AI exposure",
-    low: "Lower",
-    high: "Higher",
-    note: "Screen-native work trends warmer and more saturated.",
-  },
-  outlook: {
-    title: "BLS outlook",
-    low: "Declining",
-    high: "Growing",
-    note: "Warmer tiles are slower or negative growth; greener tiles point to faster expansion.",
-  },
-  pay: {
-    title: "Median pay",
-    low: "$25K",
-    high: "$250K",
-    note: "Darker blue tiles mark occupations with higher median annual pay.",
-  },
-  education: {
-    title: "Entry education",
-    low: "No degree",
-    high: "Doctoral",
-    note: "Higher entry credentials shift tiles toward deeper indigo.",
-  },
+  exposure:  { low: "Low", high: "High" },
+  outlook:   { low: "Declining", high: "Growing" },
+  pay:       { low: "$25K", high: "$250K" },
+  education: { low: "No degree", high: "Doctoral" },
 };
 
 function currentView() {
@@ -687,58 +444,14 @@ function isUSView() {
   return activeRegion === "us";
 }
 
-function clamp(value, min = 0, max = 1) {
-  return Math.max(min, Math.min(max, value));
-}
-
-function mixColor(low, high, t) {
-  return low.map((channel, index) => Math.round(channel + (high[index] - channel) * t));
-}
-
-function rgba(rgb, alpha = 1) {
-  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
-}
-
-function luminance(rgb) {
-  return rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114;
-}
-
-function neutralColor(alpha = 1) {
-  return rgba(COLOR_SCALES.neutral, alpha);
-}
-
-function outlookRGB(value) {
-  if (value == null) return COLOR_SCALES.neutral;
-  const t = clamp((value + 12) / 24);
-  return mixColor(COLOR_SCALES.outlook.low, COLOR_SCALES.outlook.high, t);
-}
-
-function payRGB(value) {
-  if (value == null) return COLOR_SCALES.neutral;
-  const bounded = Math.max(25000, Math.min(250000, value));
-  const t = clamp((Math.log(bounded) - Math.log(25000)) / (Math.log(250000) - Math.log(25000)));
-  return mixColor(COLOR_SCALES.pay.low, COLOR_SCALES.pay.high, t);
-}
-
-function educationRGB(value) {
-  const idx = EDU_LEVELS.indexOf(value);
-  if (idx < 0) return COLOR_SCALES.neutral;
-  const t = clamp(idx / (EDU_LEVELS.length - 1));
-  return mixColor(COLOR_SCALES.education.low, COLOR_SCALES.education.high, t);
-}
-
-function exposureRGB(value) {
-  if (value == null) return COLOR_SCALES.neutral;
-  const t = clamp(value / 10);
-  return mixColor(COLOR_SCALES.exposure.low, COLOR_SCALES.exposure.high, t);
-}
-
-function tileRGB(record) {
-  if (!isUSView()) return exposureRGB(record.exposure);
-  if (colorMode === "outlook") return outlookRGB(record.outlook);
-  if (colorMode === "pay") return payRGB(record.pay);
-  if (colorMode === "education") return educationRGB(record.education);
-  return exposureRGB(record.exposure);
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[char]));
 }
 
 function formatNumber(value) {
@@ -760,51 +473,106 @@ function formatPay(value) {
   return value == null ? "—" : "$" + value.toLocaleString();
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  }[char]));
+function weightedAverage(records, key) {
+  let weighted = 0;
+  let jobs = 0;
+  for (const record of records) {
+    const value = record[key];
+    if (value == null || !record.jobs) continue;
+    weighted += value * record.jobs;
+    jobs += record.jobs;
+  }
+  return jobs ? weighted / jobs : null;
 }
 
-function metricModeLabel() {
-  if (!isUSView()) return "Digital AI Exposure";
-  return {
-    outlook: "BLS Outlook",
-    pay: "Median Pay",
-    education: "Education",
-    exposure: "Digital AI Exposure",
-  }[colorMode] || "BLS Outlook";
+function boostContrast(t) {
+  const c = (t - 0.5) * 2;
+  const b = Math.sign(c) * Math.pow(Math.abs(c), 0.55);
+  return b / 2 + 0.5;
 }
 
-function categoryLabel(slug) {
-  const record = data.find((item) => item.category === slug);
-  return record ? record.category_label : slug.replace(/-/g, " ");
+function greenRedCSS(t, alpha) {
+  t = boostContrast(Math.max(0, Math.min(1, t)));
+  let r, g, b;
+  if (t < 0.5) {
+    const s = t / 0.5;
+    r = Math.round(30 + s * 200);
+    g = Math.round(180 - s * 20);
+    b = Math.round(40 - s * 20);
+  } else {
+    const s = (t - 0.5) / 0.5;
+    r = Math.round(230 + s * 25);
+    g = Math.round(160 - s * 130);
+    b = Math.round(20 - s * 5);
+  }
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function outlookColor(value, alpha) {
+  if (value == null) return `rgba(128,128,128,${alpha})`;
+  return greenRedCSS(1 - Math.max(0, Math.min(1, (value + 12) / 24)), alpha);
+}
+
+function payColor(value, alpha) {
+  if (value == null) return `rgba(128,128,128,${alpha})`;
+  const t = 1 - (Math.log(Math.max(25000, Math.min(250000, value))) - Math.log(25000)) / (Math.log(250000) - Math.log(25000));
+  return greenRedCSS(t, alpha);
+}
+
+function eduColor(index, alpha) {
+  if (index < 0) return `rgba(128,128,128,${alpha})`;
+  return greenRedCSS(1 - index / (EDU_LEVELS.length - 1), alpha);
+}
+
+function exposureColor(value, alpha) {
+  if (value == null) return `rgba(128,128,128,${alpha})`;
+  return greenRedCSS(value / 10, alpha);
+}
+
+function tileColorCSS(record, alpha) {
+  if (!isUSView()) return exposureColor(record.exposure, alpha);
+  if (colorMode === "exposure") return exposureColor(record.exposure, alpha);
+  if (colorMode === "outlook") return outlookColor(record.outlook, alpha);
+  if (colorMode === "pay") return payColor(record.pay, alpha);
+  if (colorMode === "education") return eduColor(EDU_LEVELS.indexOf(record.education), alpha);
+  return `rgba(128,128,128,${alpha})`;
 }
 
 function tileSubInfo(record) {
-  const jobs = record.jobs ? `${formatNumber(record.jobs)} jobs` : "";
   if (!isUSView()) {
-    return `${record.exposure != null ? record.exposure + "/10" : "—"} · ${jobs}`;
+    return (record.exposure != null ? record.exposure + "/10" : "") +
+      (record.jobs ? " · " + formatNumber(record.jobs) + " jobs" : "");
+  }
+  if (colorMode === "exposure") {
+    return (record.exposure != null ? record.exposure + "/10" : "") +
+      (record.jobs ? " · " + formatNumber(record.jobs) + " jobs" : "");
   }
   if (colorMode === "outlook") {
-    const outlook = record.outlook != null ? `${record.outlook > 0 ? "+" : ""}${record.outlook}%` : "—";
-    return `${outlook} · ${jobs}`;
+    const outlook = record.outlook != null ? (record.outlook > 0 ? "+" : "") + record.outlook + "%" : "";
+    return outlook + (record.jobs ? " · " + formatNumber(record.jobs) + " jobs" : "");
   }
   if (colorMode === "pay") {
-    return `${formatPay(record.pay)} · ${jobs}`;
+    return (record.pay != null ? formatPay(record.pay) : "") +
+      (record.jobs ? " · " + formatNumber(record.jobs) + " jobs" : "");
   }
   if (colorMode === "education") {
-    return `${record.education || "—"} · ${jobs}`;
+    const short = {
+      "No formal educational credential": "No formal",
+      "High school diploma or equivalent": "HS diploma",
+      "Postsecondary nondegree award": "Postsecondary",
+      "Some college, no degree": "Some college",
+      "Associate's degree": "Associate's",
+      "Bachelor's degree": "Bachelor's",
+      "Master's degree": "Master's",
+      "Doctoral or professional degree": "Doctoral/Prof",
+    }[record.education] || "";
+    return short + (record.jobs ? " · " + formatNumber(record.jobs) + " jobs" : "");
   }
-  return `${record.exposure != null ? record.exposure + "/10" : "—"} · ${jobs}`;
+  return "";
 }
 
 function squarify(items, x, y, w, h) {
-  if (!items.length) return [];
+  if (items.length === 0) return [];
   if (items.length === 1) return [{ ...items[0], rx: x, ry: y, rw: w, rh: h }];
   const total = items.reduce((sum, item) => sum + item.value, 0);
   if (total === 0) return [];
@@ -815,18 +583,18 @@ function squarify(items, x, y, w, h) {
   let cw = w;
   let ch = h;
 
-  while (remaining.length) {
-    const remainingTotal = remaining.reduce((sum, item) => sum + item.value, 0);
+  while (remaining.length > 0) {
+    const remTotal = remaining.reduce((sum, item) => sum + item.value, 0);
     const vertical = cw >= ch;
     const side = vertical ? ch : cw;
     let row = [remaining[0]];
     let rowSum = remaining[0].value;
 
-    for (let i = 1; i < remaining.length; i += 1) {
+    for (let i = 1; i < remaining.length; i++) {
       const candidate = [...row, remaining[i]];
       const candidateSum = rowSum + remaining[i].value;
-      if (worstAspect(candidate, candidateSum, side, remainingTotal, vertical ? cw : ch) <
-          worstAspect(row, rowSum, side, remainingTotal, vertical ? cw : ch)) {
+      if (worstAspect(candidate, candidateSum, side, remTotal, vertical ? cw : ch) <
+          worstAspect(row, rowSum, side, remTotal, vertical ? cw : ch)) {
         row = candidate;
         rowSum = candidateSum;
       } else {
@@ -834,7 +602,7 @@ function squarify(items, x, y, w, h) {
       }
     }
 
-    const rowFraction = rowSum / remainingTotal;
+    const rowFraction = rowSum / remTotal;
     const rowThickness = vertical ? cw * rowFraction : ch * rowFraction;
     let offset = 0;
 
@@ -862,11 +630,11 @@ function squarify(items, x, y, w, h) {
 
 function worstAspect(row, rowSum, side, totalArea, availableExtent) {
   const rowExtent = availableExtent * (rowSum / totalArea);
-  if (!rowExtent) return Infinity;
+  if (rowExtent === 0) return Infinity;
   let worst = 0;
   for (const item of row) {
     const itemLength = side * (item.value / rowSum);
-    if (!itemLength) continue;
+    if (itemLength === 0) continue;
     const aspect = Math.max(rowExtent / itemLength, itemLength / rowExtent);
     if (aspect > worst) worst = aspect;
   }
@@ -874,10 +642,9 @@ function worstAspect(row, rowSum, side, totalArea, availableExtent) {
 }
 
 function layout() {
-  const frame = document.getElementById("canvasFrame");
-  const width = frame.clientWidth;
-  const aspect = window.innerWidth < 720 ? 0.9 : 0.6;
-  const height = Math.max(440, Math.min(940, Math.round(width * aspect)));
+  const wrapper = document.getElementById("wrapper");
+  const width = wrapper.clientWidth;
+  const height = Math.round(width * 3 / 4);
   canvas.width = width * dpr;
   canvas.height = height * dpr;
   canvas.style.width = width + "px";
@@ -889,103 +656,75 @@ function layout() {
   const th = height - MARGIN * 2;
 
   const byCategory = {};
-  for (const item of visibleData) {
-    const category = item.category || "uncategorized";
+  for (const record of visibleData) {
+    const category = record.category || "uncategorized";
     if (!byCategory[category]) byCategory[category] = [];
-    byCategory[category].push(item);
+    byCategory[category].push(record);
   }
 
   const categories = Object.keys(byCategory).map((category) => ({
     cat: category,
-    label: byCategory[category][0].category_label,
     items: byCategory[category].sort((a, b) => (b.jobs || 0) - (a.jobs || 0)),
-    value: byCategory[category].reduce((sum, item) => sum + Math.max(item.jobs || 0, 1), 0),
+    value: byCategory[category].reduce((sum, record) => sum + (record.jobs || 1), 0),
   })).sort((a, b) => b.value - a.value);
 
-  categoryRects = squarify(categories, tx, ty, tw, th);
+  const categoryRects = squarify(categories, tx, ty, tw, th);
   rects = [];
-
   for (const categoryRect of categoryRects) {
-    const items = categoryRect.items.map((item) => ({ ...item, value: Math.max(item.jobs || 0, 1) }));
+    const items = categoryRect.items.map((record) => ({ ...record, value: record.jobs || 1 }));
     const innerRects = squarify(items, categoryRect.rx + GAP, categoryRect.ry + GAP, categoryRect.rw - GAP * 2, categoryRect.rh - GAP * 2);
-    rects.push(...innerRects);
+    for (const rect of innerRects) rects.push(rect);
   }
 }
 
-function drawCategoryFrames() {
-  for (const categoryRect of categoryRects) {
-    const rx = categoryRect.rx + 0.5;
-    const ry = categoryRect.ry + 0.5;
-    const rw = categoryRect.rw - 1;
-    const rh = categoryRect.rh - 1;
-    if (rw <= 0 || rh <= 0) continue;
+function draw() {
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = "#0a0a0f";
+  ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
-    ctx.strokeStyle = GRID;
-    ctx.lineWidth = 1;
-    ctx.strokeRect(rx, ry, rw, rh);
-
-    if (rw > 110 && rh > 30) {
-      ctx.save();
-      ctx.fillStyle = INK_SOFT;
-      ctx.font = '600 11px "Avenir Next", "Helvetica Neue", sans-serif';
-      ctx.textBaseline = "top";
-      ctx.fillText(categoryRect.label, rx + 8, ry + 7);
-      ctx.restore();
-    }
-  }
-}
-
-function drawTiles() {
   for (const record of rects) {
     const isHovered = record === hovered;
-    const rx = record.rx + GAP / 2;
-    const ry = record.ry + GAP / 2;
-    const rw = record.rw - GAP;
-    const rh = record.rh - GAP;
+    const g = GAP / 2;
+    const rx = record.rx + g;
+    const ry = record.ry + g;
+    const rw = record.rw - g * 2;
+    const rh = record.rh - g * 2;
     if (rw <= 0 || rh <= 0) continue;
 
-    const rgb = tileRGB(record);
-    const labelColor = luminance(rgb) < 148 ? LIGHT_LABEL : "rgba(32, 27, 23, 0.92)";
-    ctx.fillStyle = rgba(rgb, isHovered ? 0.96 : 0.84);
+    ctx.fillStyle = tileColorCSS(record, isHovered ? 0.8 : 0.5);
     ctx.fillRect(rx, ry, rw, rh);
 
-    ctx.strokeStyle = isHovered ? GRID_STRONG : rgba(rgb, 0.95);
-    ctx.lineWidth = isHovered ? 2 : 1;
-    ctx.strokeRect(rx + 0.5, ry + 0.5, rw - 1, rh - 1);
+    if (isHovered) {
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(rx, ry, rw, rh);
+    }
 
-    if (rw > 62 && rh > 24) {
+    if (rw > 50 && rh > 18) {
       ctx.save();
       ctx.beginPath();
-      ctx.rect(rx + 6, ry + 6, rw - 12, rh - 12);
+      ctx.rect(rx + 4, ry + 2, rw - 8, rh - 4);
       ctx.clip();
-      const titleSize = Math.min(15, Math.max(9, Math.min(rw / 11, rh / 3.6)));
-      ctx.fillStyle = labelColor;
-      ctx.font = `600 ${titleSize}px "Avenir Next", "Helvetica Neue", sans-serif`;
+      const fontSize = Math.min(13, Math.max(9, Math.min(rw / 10, rh / 3)));
+      ctx.font = `500 ${fontSize}px -apple-system, system-ui, sans-serif`;
+      ctx.fillStyle = isHovered ? "#fff" : "rgba(255,255,255,0.85)";
       ctx.textBaseline = "top";
-      ctx.fillText(record.title, rx + 8, ry + 7);
-      if (rh > 40 && rw > 84) {
-        ctx.fillStyle = luminance(rgb) < 148 ? "rgba(255, 251, 244, 0.78)" : "rgba(32, 27, 23, 0.68)";
-        ctx.font = `500 ${Math.max(8, titleSize - 2)}px "Avenir Next", "Helvetica Neue", sans-serif`;
-        ctx.fillText(tileSubInfo(record), rx + 8, ry + 10 + titleSize);
+      ctx.fillText(record.title, rx + 5, ry + 4);
+      if (rh > 34 && rw > 60) {
+        ctx.font = `400 ${Math.max(8, fontSize - 2)}px -apple-system, system-ui, sans-serif`;
+        ctx.fillStyle = "rgba(255,255,255,0.5)";
+        ctx.fillText(tileSubInfo(record), rx + 5, ry + 4 + fontSize + 2);
       }
       ctx.restore();
     }
   }
 }
 
-function draw() {
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.fillStyle = PAPER;
-  ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-  drawCategoryFrames();
-  drawTiles();
-}
-
 function hitTest(mx, my) {
   const bounds = canvas.getBoundingClientRect();
   const cx = mx - bounds.left;
   const cy = my - bounds.top;
-  for (let i = rects.length - 1; i >= 0; i -= 1) {
+  for (let i = rects.length - 1; i >= 0; i--) {
     const record = rects[i];
     if (cx >= record.rx && cx < record.rx + record.rw && cy >= record.ry && cy < record.ry + record.rh) {
       return record;
@@ -994,30 +733,36 @@ function hitTest(mx, my) {
   return null;
 }
 
-function metricHighlight(record) {
-  const rgb = tileRGB(record);
+function tooltipHighlight(record) {
   if (!isUSView() || colorMode === "exposure") {
-    return `
-      <div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">Digital AI Exposure · ${record.exposure != null ? record.exposure + "/10" : "—"}</div>
-      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
-        <div style="height:100%;width:${record.exposure != null ? clamp(record.exposure / 10) * 100 : 0}%;background:${rgba(rgb, 1)};"></div>
-      </div>`;
+    const exposure = record.exposure;
+    if (exposure == null) return "";
+    const color = exposureColor(exposure, 1);
+    return `<span style="color:${color};font-weight:600;">Digital AI Exposure: ${exposure}/10</span>` +
+      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="height:100%;width:${exposure * 10}%;background:${color};border-radius:2px;"></div></div>`;
   }
   if (colorMode === "outlook") {
-    return `
-      <div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">BLS Outlook · ${record.outlook != null ? (record.outlook > 0 ? "+" : "") + record.outlook + "%" : "—"}</div>
-      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
-        <div style="height:100%;width:${record.outlook != null ? clamp((record.outlook + 10) / 30) * 100 : 0}%;background:${rgba(rgb, 1)};"></div>
-      </div>`;
+    const outlook = record.outlook;
+    if (outlook == null) return "";
+    const color = outlookColor(outlook, 1);
+    return `<span style="color:${color};font-weight:600;">Outlook: ${outlook > 0 ? "+" : ""}${outlook}%</span>` +
+      (record.outlook_desc ? ` <span style="color:var(--fg2);">(${record.outlook_desc})</span>` : "") +
+      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="height:100%;width:${Math.min(100, Math.max(0, (outlook + 10) / 30 * 100))}%;background:${color};border-radius:2px;"></div></div>`;
   }
   if (colorMode === "pay") {
-    return `
-      <div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">Median Pay · ${formatPay(record.pay)}</div>
-      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
-        <div style="height:100%;width:${record.pay != null ? clamp((Math.log(Math.max(25000, Math.min(250000, record.pay))) - Math.log(25000)) / (Math.log(250000) - Math.log(25000))) * 100 : 0}%;background:${rgba(rgb, 1)};"></div>
-      </div>`;
+    const pay = record.pay;
+    if (pay == null) return "";
+    const color = payColor(pay, 1);
+    return `<span style="color:${color};font-weight:600;">Median Pay: ${formatPay(pay)}</span>` +
+      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="height:100%;width:${Math.min(100, pay / 150000 * 100)}%;background:${color};border-radius:2px;"></div></div>`;
   }
-  return `<div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">Education · ${escapeHtml(record.education || "—")}</div>`;
+  const education = record.education || "";
+  const idx = EDU_LEVELS.indexOf(education);
+  const color = idx >= 0 ? eduColor(idx, 1) : "var(--fg)";
+  return `<span style="color:${color};font-weight:600;">Education: ${education || "—"}</span>`;
 }
 
 function renderCountryBreakdown(record) {
@@ -1026,10 +771,10 @@ function renderCountryBreakdown(record) {
   const rows = record.countryBreakdown
     .slice()
     .sort((a, b) => b.jobs - a.jobs)
+    .slice(0, 6)
     .map((item) => {
-      const share = total > 0 ? Math.round((item.jobs / total) * 100) : 0;
-      const right = `${formatBigNumber(item.jobs)} · ${share}% · ${item.sourceYear}`;
-      return `<div class="tt-country-row"><span>${escapeHtml(item.country)}</span><span>${right}</span></div>`;
+      const pct = total > 0 ? (item.jobs / total * 100).toFixed(0) : "0";
+      return `<div class="tt-country-row"><span>${escapeHtml(item.country)}</span><span>${formatBigNumber(item.jobs)} · ${pct}% · ${item.sourceYear}</span></div>`;
     })
     .join("");
   return `<div class="tt-country-title">Country mix</div>${rows}`;
@@ -1038,37 +783,33 @@ function renderCountryBreakdown(record) {
 function showTooltip(record, mx, my) {
   const tooltip = document.getElementById("tooltip");
   tooltip.querySelector(".tt-title").textContent = record.title;
-  tooltip.querySelector(".tt-highlight").innerHTML = metricHighlight(record);
+  tooltip.querySelector(".tt-highlight").innerHTML = tooltipHighlight(record);
 
   if (isUSView()) {
     tooltip.querySelector(".tt-stats").innerHTML = `
-      <span class="label">Jobs (2024)</span><span class="value">${formatBigNumber(record.jobs)}</span>
       <span class="label">Median pay</span><span class="value">${formatPay(record.pay)}</span>
-      <span class="label">Outlook</span><span class="value">${record.outlook != null ? (record.outlook > 0 ? "+" : "") + record.outlook + "%" : "—"}</span>
-      <span class="label">Entry education</span><span class="value">${escapeHtml(record.education || "—")}</span>`;
+      <span class="label">Jobs (2024)</span><span class="value">${formatNumber(record.jobs)}</span>
+      <span class="label">Outlook</span><span class="value">${record.outlook != null ? record.outlook + "%" : "—"} ${record.outlook_desc ? "(" + record.outlook_desc + ")" : ""}</span>
+      <span class="label">Education</span><span class="value">${escapeHtml(record.education || "—")}</span>`;
+    tooltip.querySelector(".tt-rationale").textContent = colorMode === "exposure" ? (record.exposure_rationale || "") : "";
     tooltip.querySelector(".tt-country-breakdown").innerHTML = "";
   } else {
-    const dominantCountry = record.countryBreakdown && record.countryBreakdown.length ? record.countryBreakdown[0].country : "—";
     tooltip.querySelector(".tt-stats").innerHTML = `
       <span class="label">Regional jobs</span><span class="value">${formatBigNumber(record.jobs)}</span>
-      <span class="label">Mapped taxonomy</span><span class="value">US canonical slug</span>
-      <span class="label">Largest country input</span><span class="value">${escapeHtml(dominantCountry)}</span>
-      <span class="label">Mapping confidence</span><span class="value">${record.mappingConfidence != null ? record.mappingConfidence.toFixed(2) : "—"}</span>
-      <span class="label">Mapping type</span><span class="value">${escapeHtml(record.mappingType || "—")}</span>
-      <span class="label">Source year</span><span class="value">${escapeHtml(record.sourceYearLabel || "—")}</span>`;
+      <span class="label">AI exposure</span><span class="value">${record.exposure != null ? record.exposure + "/10" : "—"}</span>
+      <span class="label">Mapping</span><span class="value">${escapeHtml(record.mappingType || "—")}${record.mappingConfidence != null ? " · " + record.mappingConfidence.toFixed(2) : ""}</span>
+      <span class="label">Source years</span><span class="value">${escapeHtml(record.sourceYearLabel || "—")}</span>`;
+    tooltip.querySelector(".tt-rationale").textContent = record.exposure_rationale || "";
     tooltip.querySelector(".tt-country-breakdown").innerHTML = renderCountryBreakdown(record);
   }
 
-  tooltip.querySelector(".tt-rationale").textContent = record.exposure_rationale || "";
-
-  let tx = mx + 18;
+  let tx = mx + 16;
   let ty = my - 16;
-  if (tx + 360 > window.innerWidth) tx = mx - 378;
-  if (ty < 12) ty = my + 18;
-  if (ty + 240 > window.innerHeight) ty = Math.max(12, my - 240);
-
-  tooltip.style.left = `${tx}px`;
-  tooltip.style.top = `${ty}px`;
+  if (tx + 360 > window.innerWidth) tx = mx - 376;
+  if (ty < 10) ty = my + 16;
+  if (ty + 220 > window.innerHeight) ty = my - 220;
+  tooltip.style.left = tx + "px";
+  tooltip.style.top = ty + "px";
   tooltip.classList.add("visible");
 }
 
@@ -1076,35 +817,22 @@ function hideTooltip() {
   document.getElementById("tooltip").classList.remove("visible");
 }
 
-function weightedAverage(records, metricKey) {
-  let weighted = 0;
-  let jobs = 0;
-  for (const record of records) {
-    const value = record[metricKey];
-    if (value == null || !record.jobs) continue;
-    weighted += value * record.jobs;
-    jobs += record.jobs;
-  }
-  return jobs ? weighted / jobs : null;
-}
-
-function buildStatCards(view) {
+function buildStats(view) {
   const summary = view.summary;
-  const cards = [];
 
   if (!isUSView()) {
-    cards.push(
+    return [
       {
         label: "Mapped jobs",
         value: formatBigNumber(summary.totalJobs),
         context: `${summary.countriesCount} countries`,
-        detail: `${summary.visibleOccupationsCount} visible occupations from a 342-slug canonical taxonomy`,
+        detail: `${summary.visibleOccupationsCount} visible occupations`,
       },
       {
         label: "Avg. exposure",
         value: summary.weightedAverageExposure != null ? summary.weightedAverageExposure.toFixed(1) : "—",
-        context: "job-weighted across the mapped region",
-        detail: "Exposure scores come from the US canonical occupation definitions.",
+        context: "job-weighted",
+        detail: "US canonical exposure scores",
       },
       {
         label: "Largest category",
@@ -1124,38 +852,39 @@ function buildStatCards(view) {
         context: summary.freshnessSummary,
         detail: summary.note,
       },
-    );
-    return cards;
+    ];
   }
 
-  cards.push({
-    label: "Employment footprint",
-    value: formatBigNumber(summary.totalJobs),
-    context: `${summary.occupationsCount} occupations`,
-    detail: "BLS 2024 occupational employment base",
-  });
+  const stats = [
+    {
+      label: "Total jobs",
+      value: formatBigNumber(summary.totalJobs),
+      context: `${summary.occupationsCount} occupations`,
+      detail: "BLS 2024 occupational employment",
+    },
+  ];
 
   if (colorMode === "outlook") {
     const avgOutlook = weightedAverage(data, "outlook");
     const growingJobs = data.reduce((sum, item) => sum + ((item.outlook != null && item.outlook > 0 && item.jobs) ? item.jobs : 0), 0);
-    cards.push(
+    stats.push(
       {
         label: "Avg. outlook",
         value: avgOutlook != null ? `${avgOutlook > 0 ? "+" : ""}${avgOutlook.toFixed(1)}%` : "—",
-        context: "job-weighted projected growth",
-        detail: "Faster growth shifts the treemap toward green.",
+        context: "job-weighted",
+        detail: "projected growth",
       },
       {
         label: "Fastest growth",
         value: summary.fastestGrowingOccupation ? `${summary.fastestGrowingOccupation.outlook > 0 ? "+" : ""}${summary.fastestGrowingOccupation.outlook}%` : "—",
         context: summary.fastestGrowingOccupation ? summary.fastestGrowingOccupation.title : "—",
-        detail: "Top BLS growth projection in the dataset",
+        detail: "highest BLS projection",
       },
       {
         label: "Growing jobs",
         value: formatBigNumber(growingJobs),
-        context: "occupations with positive outlook",
-        detail: "All jobs sitting above 0% projected growth",
+        context: "positive outlook",
+        detail: "jobs above 0%",
       },
       {
         label: "Largest category",
@@ -1169,30 +898,30 @@ function buildStatCards(view) {
     const topPayCategory = currentView().categories
       .filter((category) => category.averagePay != null)
       .sort((a, b) => b.averagePay - a.averagePay)[0];
-    cards.push(
+    stats.push(
       {
         label: "Avg. pay",
         value: summary.weightedAveragePay != null ? "$" + Math.round(summary.weightedAveragePay / 1000) + "K" : "—",
-        context: "job-weighted median pay",
-        detail: "Higher-paid occupations deepen toward blue.",
+        context: "job-weighted",
+        detail: "median annual pay",
       },
       {
         label: "Highest pay",
         value: summary.highestPayOccupation ? formatPay(summary.highestPayOccupation.pay) : "—",
         context: summary.highestPayOccupation ? summary.highestPayOccupation.title : "—",
-        detail: "Top annual median pay in the BLS dataset",
+        detail: "top annual median pay",
       },
       {
         label: "Annual wage pool",
         value: "$" + (totalWages / 1e12).toFixed(1) + "T",
         context: "jobs × median pay",
-        detail: "A rough scale check on where earnings concentrate.",
+        detail: "rough scale check",
       },
       {
         label: "Top pay category",
         value: topPayCategory ? "$" + Math.round(topPayCategory.averagePay / 1000) + "K" : "—",
         context: topPayCategory ? topPayCategory.label : "—",
-        detail: "Category-level average weighted by employment",
+        detail: "weighted by employment",
       },
     );
   } else if (colorMode === "education") {
@@ -1204,24 +933,24 @@ function buildStatCards(view) {
       educationJobs[item.education] = (educationJobs[item.education] || 0) + item.jobs;
     }
     const dominantEducation = Object.entries(educationJobs).sort((a, b) => b[1] - a[1])[0];
-    cards.push(
+    stats.push(
       {
-        label: "Bachelor's+ share",
+        label: "Bachelor's+",
         value: summary.totalJobs ? `${Math.round((bachelorsPlus / summary.totalJobs) * 100)}%` : "—",
-        context: "jobs requiring at least a bachelor's degree",
-        detail: "The indigo end tracks higher entry credentials.",
+        context: "of all jobs",
+        detail: "require at least a bachelor's degree",
       },
       {
         label: "No degree / HS",
         value: formatBigNumber(noDegree),
-        context: "jobs without bachelor's entry requirements",
-        detail: "Large embodied sectors still dominate the lower-credential base.",
+        context: "lower formal credential floor",
+        detail: "jobs without bachelor's entry",
       },
       {
         label: "Most common requirement",
         value: dominantEducation ? dominantEducation[0] : "—",
         context: dominantEducation ? formatBigNumber(dominantEducation[1]) + " jobs" : "—",
-        detail: "Weighted by the BLS employment base",
+        detail: "weighted by employment",
       },
       {
         label: "Largest category",
@@ -1234,82 +963,64 @@ function buildStatCards(view) {
     const exposedCategory = currentView().categories
       .filter((category) => category.averageExposure != null && category.jobs >= 500000)
       .sort((a, b) => b.averageExposure - a.averageExposure)[0];
-    cards.push(
+    stats.push(
       {
         label: "Avg. exposure",
         value: summary.weightedAverageExposure != null ? summary.weightedAverageExposure.toFixed(1) : "—",
-        context: "job-weighted, 0–10 scale",
-        detail: "Screen-native work tends to cluster at the warm end.",
+        context: "job-weighted",
+        detail: "0-10 scale",
       },
       {
         label: "Most exposed at scale",
         value: summary.mostExposedLargeOccupation ? `${summary.mostExposedLargeOccupation.exposure}/10` : "—",
         context: summary.mostExposedLargeOccupation ? summary.mostExposedLargeOccupation.title : "—",
-        detail: "Large occupation with the highest AI exposure score",
+        detail: "large occupation",
       },
       {
         label: "Most resilient at scale",
         value: summary.mostResilientLargeOccupation ? `${summary.mostResilientLargeOccupation.exposure}/10` : "—",
         context: summary.mostResilientLargeOccupation ? summary.mostResilientLargeOccupation.title : "—",
-        detail: "Large occupation with the lowest AI exposure score",
+        detail: "large occupation",
       },
       {
         label: "Most exposed category",
         value: exposedCategory ? exposedCategory.averageExposure.toFixed(1) : "—",
         context: exposedCategory ? exposedCategory.label : "—",
-        detail: "Average exposure weighted by category employment",
+        detail: "average exposure weighted by jobs",
       },
     );
   }
 
-  return cards;
+  return stats;
 }
 
-function renderStatCards() {
-  const cards = buildStatCards(currentView());
-  document.getElementById("statsGrid").innerHTML = cards.map((card) => `
-    <article class="stat-card">
-      <div class="label">${escapeHtml(card.label)}</div>
-      <div class="value">${escapeHtml(card.value)}</div>
-      <div class="context">${escapeHtml(card.context || "")}</div>
-      <div class="detail">${escapeHtml(card.detail || "")}</div>
-    </article>
+function renderStatsRow() {
+  const stats = buildStats(currentView());
+  document.getElementById("statsRow").innerHTML = stats.map((stat) => `
+    <div class="stat-section">
+      <h3>${escapeHtml(stat.label)}</h3>
+      <div class="stat-big">${escapeHtml(stat.value)}</div>
+      <div class="stat-label">${escapeHtml(stat.context || "")}</div>
+      <div class="stat-note">${escapeHtml(stat.detail || "")}</div>
+    </div>
   `).join("");
 }
 
 function drawGradientLegend() {
-  const canvasLegend = document.getElementById("gradientLegend");
-  const legendCtx = canvasLegend.getContext("2d");
+  const legend = document.getElementById("gradientLegend");
+  const legendCtx = legend.getContext("2d");
   const mode = isUSView() ? colorMode : "exposure";
-  for (let x = 0; x < canvasLegend.width; x += 1) {
-    const t = x / (canvasLegend.width - 1);
-    const rgb = mode === "outlook"
-      ? mixColor(COLOR_SCALES.outlook.low, COLOR_SCALES.outlook.high, t)
-      : mode === "pay"
-      ? mixColor(COLOR_SCALES.pay.low, COLOR_SCALES.pay.high, t)
-      : mode === "education"
-      ? mixColor(COLOR_SCALES.education.low, COLOR_SCALES.education.high, t)
-      : mixColor(COLOR_SCALES.exposure.low, COLOR_SCALES.exposure.high, t);
-    legendCtx.fillStyle = rgba(rgb, 1);
-    legendCtx.fillRect(x, 0, 1, canvasLegend.height);
+  for (let x = 0; x < legend.width; x++) {
+    const t = x / (legend.width - 1);
+    if (mode === "outlook") legendCtx.fillStyle = greenRedCSS(1 - t, 1);
+    else if (mode === "pay") legendCtx.fillStyle = greenRedCSS(1 - t, 1);
+    else if (mode === "education") legendCtx.fillStyle = greenRedCSS(1 - t, 1);
+    else legendCtx.fillStyle = greenRedCSS(t, 1);
+    legendCtx.fillRect(x, 0, 1, legend.height);
   }
-
   const config = LEGEND_CONFIG[mode];
-  document.getElementById("legendTitle").textContent = config.title;
   document.getElementById("legendLow").textContent = config.low;
   document.getElementById("legendHigh").textContent = config.high;
-  document.getElementById("legendNote").textContent = config.note + (isUSView() ? "" : " Area always encodes mapped employment.");
-}
-
-function renderSummaryChips(view) {
-  const summary = view.summary;
-  document.getElementById("summaryChip1").textContent = `${summary.visibleOccupationsCount || visibleData.length} visible tiles`;
-  document.getElementById("summaryChip2").textContent = isUSView()
-    ? `Color = ${metricModeLabel()}`
-    : "Area = Employment · Color = Digital AI Exposure";
-  document.getElementById("summaryChip3").textContent = summary.yearStrategy === "latest_shared"
-    ? `Source year ${summary.yearLabel}`
-    : `Years ${summary.yearLabel}`;
 }
 
 function applyPayloadMetadata() {
@@ -1319,13 +1030,11 @@ function applyPayloadMetadata() {
   document.title = `${view.heading} | bozliu/jobs`;
 
   const countries = Array.isArray(view.countries) ? view.countries.join(", ") : "";
-  const sourceBits = isUSView()
+  document.getElementById("regionMeta").textContent = isUSView()
     ? `${countries} · BLS 2024 · ${summary.occupationsCount} occupations`
-    : `${countries} · ILOSTAT · ${summary.yearStrategy === "latest_shared" ? "shared year " + summary.yearLabel : "mixed years"} · ${summary.freshnessSummary}`;
-  document.getElementById("regionMeta").textContent = sourceBits;
+    : `${countries} · ILOSTAT · ${summary.yearStrategy === "latest_shared" ? "shared year " + summary.yearLabel : "mixed years"} · ${summary.visibleOccupationsCount} visible tiles`;
 
-  const intro = document.getElementById("introCopy");
-  intro.innerHTML = (summary.introHtml || []).map((paragraph) => `<p>${paragraph}</p>`).join("");
+  document.getElementById("introCopy").innerHTML = (summary.introHtml || []).map((paragraph) => `<p>${paragraph}</p>`).join("");
   document.querySelectorAll(".repo-link").forEach((link) => {
     link.href = summary.repoUrl;
   });
@@ -1335,18 +1044,12 @@ function applyPayloadMetadata() {
   promptDetails.hidden = !summary.showPrompt;
   promptBox.textContent = summary.promptText || "";
 
-  document.getElementById("canvasTitle").textContent = isUSView()
-    ? `${metricModeLabel()} across the US occupation map`
-    : `${view.label} employment mapped into the US occupation taxonomy`;
-  document.getElementById("canvasMeta").textContent = isUSView()
-    ? "Each rectangle is a BLS occupation. Area shows 2024 employment. Color changes with the selected layer."
-    : "Each rectangle is one of the 342 US canonical occupation labels. Area shows mapped regional employment; color stays on Digital AI Exposure for taxonomy parity.";
-  document.getElementById("footerMethod").textContent = summary.methodologyNote;
-  document.getElementById("footerFreshness").textContent = summary.freshnessSummary || summary.note || "";
-  document.getElementById("footerUpdated").textContent = payload.generatedAt
+  document.getElementById("footnoteLeft").textContent = isUSView()
+    ? "Area = employment. Click any tile to open the full BLS page."
+    : `${summary.freshnessSummary}. Area = mapped employment, color = Digital AI Exposure.`;
+  document.getElementById("footnoteRight").textContent = payload.generatedAt
     ? `Updated ${new Date(payload.generatedAt).toLocaleString()}`
-    : "Updated recently";
-  renderSummaryChips(view);
+    : "";
 }
 
 function updateModeControls() {
@@ -1387,7 +1090,7 @@ function applyState({ skipUrl = false } = {}) {
   visibleData = isUSView() ? data : data.filter((item) => (item.jobs || 0) > 0);
   applyPayloadMetadata();
   updateModeControls();
-  renderStatCards();
+  renderStatsRow();
   drawGradientLegend();
   resize();
   if (!skipUrl) syncUrl();
@@ -1414,15 +1117,15 @@ canvas.addEventListener("mousemove", (event) => {
   }
 });
 
+canvas.addEventListener("click", (event) => {
+  const hit = hitTest(event.clientX, event.clientY);
+  if (isUSView() && hit && hit.url) window.open(hit.url, "_blank");
+});
+
 canvas.addEventListener("mouseleave", () => {
   hovered = null;
   hideTooltip();
   draw();
-});
-
-canvas.addEventListener("click", (event) => {
-  const hit = hitTest(event.clientX, event.clientY);
-  if (isUSView() && hit && hit.url) window.open(hit.url, "_blank");
 });
 
 document.getElementById("regionToggle").addEventListener("click", (event) => {
@@ -1430,7 +1133,7 @@ document.getElementById("regionToggle").addEventListener("click", (event) => {
   if (!button || !button.dataset.region) return;
   const next = coerceState(button.dataset.region, usMode);
   activeRegion = next.region;
-  if (activeRegion === "us") usMode = next.mode;
+  if (next.region === "us") usMode = next.mode;
   applyState();
 });
 
