@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+from pathlib import Path
 
 
 def load_us_slugs() -> set[str]:
@@ -16,13 +17,22 @@ def load_us_slugs() -> set[str]:
 
 def main() -> None:
     us_slugs = load_us_slugs()
+    with open("regional_source_catalog.json") as file:
+        catalog = json.load(file)
     with open("regional_crosswalk.json") as file:
         crosswalk = json.load(file)
     with open("regional_employment.json") as file:
         employment = json.load(file)
 
+    china_cfg = next(country for country in catalog["countries"] if country["code"] == "CHN")
+    assert china_cfg["cachePath"] != "regional_sources/china_ilostat_2005_major_groups.csv", "China still points at the 2005 ILOSTAT fallback"
+    assert Path(china_cfg["cachePath"]).exists(), f"Missing China extract {china_cfg['cachePath']}"
+
     for country in crosswalk["countries"]:
         assert country["sourceYear"] is not None, f"Missing sourceYear for {country['code']}"
+        if country["code"] == "CHN":
+            assert country["sourceYear"] >= 2023, "China sourceYear did not advance beyond the old fallback"
+            assert "2005" not in (country.get("sourceYearLabel") or ""), "China source label still references 2005"
         for mapping in country["mappings"]:
             total = sum(item["weight"] for item in mapping["occupationWeights"])
             assert math.isclose(total, 1.0, rel_tol=0, abs_tol=1e-9), (

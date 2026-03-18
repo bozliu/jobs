@@ -29,6 +29,16 @@ US_OCCUPATIONS_FILE = Path("occupations.csv")
 CROSSWALK_FILE = Path("regional_crosswalk.json")
 EMPLOYMENT_FILE = Path("regional_employment.json")
 
+NATIVE_GROUP_FAMILIES = {
+    "CN01": ("1",),
+    "CN02": ("2", "3"),
+    "CN04": ("4",),
+    "CN05": ("5",),
+    "CN06": ("6",),
+    "CN78": ("7", "8"),
+    "CN99": ("9",),
+}
+
 
 def load_json(path: Path) -> dict:
     with path.open() as file:
@@ -110,6 +120,9 @@ def load_cached_country_rows(catalog: dict, country_cfg: dict) -> list[dict]:
                     "nativeCodeSystem": country_cfg["nativeCodeSystem"],
                     "ingestMode": country_cfg["ingestMode"],
                     "indicator": catalog["indicator"],
+                    "sourceUrl": raw.get("sourceUrl") or country_cfg.get("sourceUrl") or catalog["sourceUrl"],
+                    "sourceYearLabel": raw.get("sourceYearLabel") or str(raw["year"]),
+                    "sourceDetail": raw.get("sourceDetail") or country_cfg.get("sourceNote") or "",
                 }
             )
     return rows
@@ -119,7 +132,7 @@ def load_country_rows(catalog: dict, client: httpx.Client) -> dict[str, list[dic
     countries = country_configs_by_code(catalog)
     rows_by_country = {}
     for code, country_cfg in countries.items():
-        if country_cfg["ingestMode"] == "cached_official_extract":
+        if country_cfg["ingestMode"] in {"cached_official_extract", "manual_curated_official_mix"}:
             rows = load_cached_country_rows(catalog, country_cfg)
         else:
             rows = fetch_live_country_rows(client, catalog, country_cfg)
@@ -169,12 +182,32 @@ def family_baseline_confidence(family_weights: dict[str, list[dict]]) -> dict[st
     return baselines
 
 
+def occupation_weights_for_native_code(native_code: str, family_weights: dict[str, list[dict]]) -> list[dict]:
+    family_codes = NATIVE_GROUP_FAMILIES.get(native_code, (native_code,))
+    combined = []
+    for family_code in family_codes:
+        combined.extend(family_weights.get(family_code, []))
+    if not combined:
+        raise KeyError(f"No family weights found for native code {native_code}")
+
+    total_weight = sum(item["weight"] for item in combined) or 1.0
+    return [
+        {
+            **item,
+            "weight": item["weight"] / total_weight,
+        }
+        for item in combined
+    ]
+
+
 def source_quality_factor(country_cfg: dict) -> float:
     factor = 0.88
     if "ISCO-88" in country_cfg["nativeCodeSystem"]:
         factor -= 0.08
     if country_cfg["ingestMode"] == "cached_official_extract":
         factor -= 0.04
+    if country_cfg["ingestMode"] == "manual_curated_official_mix":
+        factor -= 0.02
     return max(0.6, factor)
 
 
@@ -184,7 +217,7 @@ def build_country_crosswalk(country_cfg: dict, selected_rows: list[dict], family
     quality_factor = source_quality_factor(country_cfg)
 
     for row in sorted(selected_rows, key=lambda item: item["nativeCode"]):
-        occupation_weights = family_weights[row["nativeCode"]]
+        occupation_weights = occupation_weights_for_native_code(row["nativeCode"], family_weights)
         total_weight = sum(item["weight"] for item in occupation_weights) or 1.0
         normalized_weights = []
         average_assignment_confidence = 0.0
@@ -228,10 +261,16 @@ def build_country_crosswalk(country_cfg: dict, selected_rows: list[dict], family
         "fileFormat": country_cfg["fileFormat"],
         "refreshCadence": country_cfg["refreshCadence"],
         "sourceYear": selected_year,
-        "sourceYearLabel": str(selected_year),
+        "sourceYearLabel": selected_rows[0].get("sourceYearLabel") or str(selected_year),
         "classification": selected_rows[0]["classification"],
         "jobs": total_jobs,
         "cachePath": country_cfg.get("cachePath"),
+        "sourceLabel": country_cfg.get("sourceLabel") or "ILOSTAT employment by occupation",
+        "sourceUrl": country_cfg.get("sourceUrl"),
+        "publicationTitle": country_cfg.get("publicationTitle"),
+        "publicationYear": country_cfg.get("publicationYear"),
+        "tableTitle": country_cfg.get("tableTitle"),
+        "sourceNote": country_cfg.get("sourceNote"),
         "mappings": mappings,
     }
 
@@ -379,7 +418,7 @@ def main() -> None:
                             "year": chosen_year,
                             "sourceYear": chosen_year,
                             "classification": mapping["classification"],
-                            "source": catalog["sourceLabel"],
+                            "source": country_cfg.get("sourceLabel") or catalog["sourceLabel"],
                             "ingestMode": country_cfg["ingestMode"],
                             "mappingType": mapping["mappingType"],
                             "mappingConfidence": mapping["mappingConfidence"],
@@ -402,9 +441,12 @@ def main() -> None:
 
         occupations.sort(key=lambda item: (-item["jobs"], item["title"]))
 
-        live_countries = [item["name"] for item in country_payloads if item["ingestMode"] != "cached_official_extract"]
+        live_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "live_ilostat_api"]
+        manual_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "manual_curated_official_mix"]
         cached_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "cached_official_extract"]
-        if cached_countries:
+        if manual_countries:
+            freshness_summary = f"{len(live_countries)} live ILOSTAT feeds + {len(manual_countries)} checked-in official national extract"
+        elif cached_countries:
             freshness_summary = f"{len(live_countries)} live ILOSTAT feeds + {len(cached_countries)} cached official extract"
         else:
             freshness_summary = f"{len(live_countries)} live ILOSTAT feeds"
@@ -420,8 +462,10 @@ def main() -> None:
             "freshness": {
                 "summary": freshness_summary,
                 "liveCountries": live_countries,
+                "manualCountries": manual_countries,
                 "cachedCountries": cached_countries,
                 "hasCachedSources": bool(cached_countries),
+                "hasManualSources": bool(manual_countries),
             },
             "occupations": occupations,
             "source": {

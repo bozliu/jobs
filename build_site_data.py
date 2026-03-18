@@ -3,8 +3,8 @@ Build a multi-view JSON payload for the static website.
 
 The output powers a single-page explorer with three geography views:
 - US: detailed BLS occupations
-- Asia: merged regional ILOSTAT occupation groups
-- Europe: merged regional ILOSTAT occupation groups
+- Asia: merged regional occupation data
+- Europe: merged regional occupation data
 
 Usage:
     python build_site_data.py
@@ -322,14 +322,14 @@ def build_us_summary(records: list[dict], categories: list[dict]) -> dict:
         "yearLabel": "2024",
         "yearStrategy": "single_year",
         "freshnessSummary": "Single BLS 2024 release",
-        "methodologyNote": "US occupations are taken directly from the Occupational Outlook Handbook. Area shows employment; color shows the selected BLS or AI layer.",
+        "methodologyNote": "US occupations come directly from the Occupational Outlook Handbook. Area shows employment; color shows the selected BLS or AI layer.",
         "totalJobs": total_jobs,
         "weightedAveragePay": weighted_average(records, "pay"),
         "weightedAverageOutlook": weighted_average(records, "outlook"),
         "weightedAverageExposure": weighted_average(records, "exposure"),
         "introHtml": [
-            'This is a research tool that visualizes <b>342 occupations</b> from the <a href="https://www.bls.gov/ooh/">Bureau of Labor Statistics Occupational Outlook Handbook</a>, covering <b>143M jobs</b> across the US economy. Each rectangle&apos;s <b>area</b> is proportional to total employment. <b>Color</b> shows the selected metric: projected growth outlook, median pay, education requirements, or AI exposure.',
-            'The <a class="repo-link" href="https://github.com/bozliu/jobs">source code</a> includes scrapers, parsers, and a prompt-driven scoring pipeline. The Digital AI Exposure layer is one example: it estimates how much current AI, which is primarily digital, may reshape each occupation.',
+            'Jobs Atlas maps <b>342 occupations</b> from the <a href="https://www.bls.gov/ooh/">Bureau of Labor Statistics Occupational Outlook Handbook</a>, covering <b>143M jobs</b> across the US economy. Each rectangle&apos;s <b>area</b> represents employment. <b>Color</b> shows the selected layer: projected growth outlook, median pay, education requirements, or AI exposure.',
+            'The <a class="repo-link" href="https://github.com/bozliu/jobs">repo</a> contains the scrapers, parsers, and prompt-driven scoring pipeline behind the map. The Digital AI Exposure layer estimates how much current AI, which is still mostly digital, may reshape each occupation.',
             'A high exposure score does <em>not</em> mean a role disappears. It only means AI is likely to materially change the throughput, workflow, or structure of the job.'
         ],
         "promptText": US_PROMPT_TEXT,
@@ -413,7 +413,7 @@ def build_us_view() -> dict:
     return {
         "id": "us",
         "label": "US",
-        "heading": "US Job Market Visualizer",
+        "heading": "Jobs Atlas · US",
         "countries": ["United States"],
         "year": 2024,
         "yearLabel": "2024",
@@ -443,7 +443,7 @@ def build_regional_summary(region: dict, occupations: list[dict], categories: li
     freshness_summary = region["freshness"]["summary"]
 
     if region["yearStrategy"] == "latest_shared":
-        note = f"Built from the latest shared ILOSTAT occupation year across {country_names}."
+        note = f"Built from the latest shared occupation year available across {country_names}."
     else:
         note = region["note"]
 
@@ -464,15 +464,15 @@ def build_regional_summary(region: dict, occupations: list[dict], categories: li
         "freshness": region["freshness"],
         "freshnessSummary": freshness_summary,
         "methodologyNote": (
-            "Regional employment stays official at the ILOSTAT major-group level, then gets projected into the "
-            "same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks."
+            "Regional employment stays grounded in official country-level occupation sources, then gets projected into "
+            "the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks."
         ),
         "totalJobs": total_jobs,
         "weightedAveragePay": None,
         "weightedAverageOutlook": None,
         "weightedAverageExposure": weighted_average(active_occupations, "exposure"),
         "introHtml": [
-            f'This view merges official employment-by-occupation data from <a href="{ILOSTAT_URL}">ILOSTAT</a> for <b>{country_names}</b>, then reallocates those country totals into the same <b>342 canonical occupation labels</b> used by the US map.',
+            f'This regional view merges official occupation data for <b>{country_names}</b>, then reallocates those totals into the same <b>342 canonical occupation labels</b> used by the US map.',
             'In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents the same Digital AI Exposure score used in the US view. That creates taxonomy parity without pretending the region also has US-quality pay, education, or outlook estimates.',
             f"{note} <b>{freshness_summary}.</b>",
         ],
@@ -562,7 +562,7 @@ def load_regional_views(us_records: list[dict]) -> dict[str, dict]:
         views[region_id] = {
             "id": region_id,
             "label": region["label"],
-            "heading": f"{region['label']} Job Market Visualizer",
+            "heading": f"Jobs Atlas · {region['label']}",
             "countries": [item["name"] for item in region["countries"]],
             "year": region["year"],
             "yearLabel": region["yearLabel"],

@@ -18,6 +18,13 @@ FAMILY_DEFINITIONS = {
     "7": "Craft and related trades workers",
     "8": "Plant and machine operators, and assemblers",
     "9": "Elementary occupations",
+    "CN01": "Unit leaders and managers",
+    "CN02": "Professional and technical personnel",
+    "CN04": "Clerical and related personnel",
+    "CN05": "Social production and life service personnel",
+    "CN06": "Agricultural production and auxiliary personnel",
+    "CN78": "Production, manufacturing, operators, and related personnel",
+    "CN99": "Other employed persons",
 }
 
 

@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Job Market Visualizer</title>
+<title>Jobs Atlas</title>
 <link rel="icon" href="data:,">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #0a0a0f;
-  --bg2: #12121a;
-  --fg: #e0e0e8;
-  --fg2: #888894;
-  --fg3: #b6b6c3;
+  --bg: #f6f3ee;
+  --bg2: #fffdfa;
+  --fg: #17171c;
+  --fg2: #696977;
+  --fg3: #4b4b57;
 }
 
 body {
@@ -104,8 +104,8 @@ a {
 
 .prompt-box {
   margin-top: 8px;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(23,23,28,0.1);
   border-radius: 6px;
   padding: 12px 16px;
   font-family: "SF Mono", "Menlo", "Consolas", monospace;
@@ -153,7 +153,7 @@ a {
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 500;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(23,23,28,0.12);
   background: transparent;
   color: var(--fg2);
   cursor: pointer;
@@ -170,21 +170,21 @@ a {
 
 .geo-toggle button.active,
 .color-toggle button.active {
-  background: rgba(255,255,255,0.08);
+  background: rgba(23,23,28,0.08);
   color: var(--fg);
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(23,23,28,0.2);
 }
 
 .geo-toggle button:hover:not(.active),
 .color-toggle button:hover:not(.active) {
-  background: rgba(255,255,255,0.04);
+  background: rgba(23,23,28,0.04);
 }
 
 .mode-chip {
   padding: 8px 12px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(23,23,28,0.12);
   border-radius: 999px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(23,23,28,0.03);
   font-size: 12px;
   color: var(--fg3);
 }
@@ -256,7 +256,7 @@ canvas#canvas {
   position: fixed;
   pointer-events: none;
   background: var(--bg2);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(23,23,28,0.12);
   border-radius: 8px;
   padding: 12px 16px;
   font-size: 13px;
@@ -265,7 +265,7 @@ canvas#canvas {
   opacity: 0;
   transition: opacity 0.12s;
   z-index: 20;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  box-shadow: 0 18px 40px rgba(34, 31, 45, 0.14);
 }
 
 #tooltip.visible {
@@ -276,7 +276,7 @@ canvas#canvas {
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 6px;
-  color: #fff;
+  color: var(--fg);
 }
 
 #tooltip .tt-highlight {
@@ -304,7 +304,7 @@ canvas#canvas {
 #tooltip .tt-country-breakdown {
   margin-top: 8px;
   line-height: 1.4;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(23,23,28,0.08);
   padding-top: 8px;
 }
 
@@ -347,7 +347,7 @@ canvas#canvas {
 <div id="wrapper">
   <div id="header">
     <div class="intro">
-      <h1><span id="pageTitle">Job Market Visualizer</span> <a class="repo-link" href="https://github.com/bozliu/jobs">GitHub</a></h1>
+      <h1><span id="pageTitle">Jobs Atlas</span> <a class="repo-link" href="https://github.com/bozliu/jobs">GitHub</a></h1>
       <div class="meta-line" id="regionMeta"></div>
       <div id="introCopy"></div>
       <details id="promptDetails" hidden>
@@ -679,7 +679,7 @@ function layout() {
 
 function draw() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.fillStyle = "#0a0a0f";
+  ctx.fillStyle = "#f6f3ee";
   ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
   for (const record of rects) {
@@ -695,7 +695,7 @@ function draw() {
     ctx.fillRect(rx, ry, rw, rh);
 
     if (isHovered) {
-      ctx.strokeStyle = "#fff";
+      ctx.strokeStyle = "rgba(23,23,28,0.78)";
       ctx.lineWidth = 2;
       ctx.strokeRect(rx, ry, rw, rh);
     }
@@ -707,12 +707,12 @@ function draw() {
       ctx.clip();
       const fontSize = Math.min(13, Math.max(9, Math.min(rw / 10, rh / 3)));
       ctx.font = `500 ${fontSize}px -apple-system, system-ui, sans-serif`;
-      ctx.fillStyle = isHovered ? "#fff" : "rgba(255,255,255,0.85)";
+      ctx.fillStyle = isHovered ? "rgba(23,23,28,0.96)" : "rgba(23,23,28,0.88)";
       ctx.textBaseline = "top";
       ctx.fillText(record.title, rx + 5, ry + 4);
       if (rh > 34 && rw > 60) {
         ctx.font = `400 ${Math.max(8, fontSize - 2)}px -apple-system, system-ui, sans-serif`;
-        ctx.fillStyle = "rgba(255,255,255,0.5)";
+        ctx.fillStyle = "rgba(23,23,28,0.58)";
         ctx.fillText(tileSubInfo(record), rx + 5, ry + 4 + fontSize + 2);
       }
       ctx.restore();
@@ -739,7 +739,7 @@ function tooltipHighlight(record) {
     if (exposure == null) return "";
     const color = exposureColor(exposure, 1);
     return `<span style="color:${color};font-weight:600;">Digital AI Exposure: ${exposure}/10</span>` +
-      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="margin-top:3px;height:4px;background:rgba(23,23,28,0.08);border-radius:2px;">` +
       `<div style="height:100%;width:${exposure * 10}%;background:${color};border-radius:2px;"></div></div>`;
   }
   if (colorMode === "outlook") {
@@ -748,7 +748,7 @@ function tooltipHighlight(record) {
     const color = outlookColor(outlook, 1);
     return `<span style="color:${color};font-weight:600;">Outlook: ${outlook > 0 ? "+" : ""}${outlook}%</span>` +
       (record.outlook_desc ? ` <span style="color:var(--fg2);">(${record.outlook_desc})</span>` : "") +
-      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="margin-top:3px;height:4px;background:rgba(23,23,28,0.08);border-radius:2px;">` +
       `<div style="height:100%;width:${Math.min(100, Math.max(0, (outlook + 10) / 30 * 100))}%;background:${color};border-radius:2px;"></div></div>`;
   }
   if (colorMode === "pay") {
@@ -756,7 +756,7 @@ function tooltipHighlight(record) {
     if (pay == null) return "";
     const color = payColor(pay, 1);
     return `<span style="color:${color};font-weight:600;">Median Pay: ${formatPay(pay)}</span>` +
-      `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
+      `<div style="margin-top:3px;height:4px;background:rgba(23,23,28,0.08);border-radius:2px;">` +
       `<div style="height:100%;width:${Math.min(100, pay / 150000 * 100)}%;background:${color};border-radius:2px;"></div></div>`;
   }
   const education = record.education || "";
@@ -1027,12 +1027,12 @@ function applyPayloadMetadata() {
   const view = currentView();
   const summary = view.summary;
   document.getElementById("pageTitle").textContent = view.heading;
-  document.title = `${view.heading} | bozliu/jobs`;
+  document.title = `${view.heading} | Jobs Atlas`;
 
   const countries = Array.isArray(view.countries) ? view.countries.join(", ") : "";
   document.getElementById("regionMeta").textContent = isUSView()
     ? `${countries} · BLS 2024 · ${summary.occupationsCount} occupations`
-    : `${countries} · ILOSTAT · ${summary.yearStrategy === "latest_shared" ? "shared year " + summary.yearLabel : "mixed years"} · ${summary.visibleOccupationsCount} visible tiles`;
+    : `${countries} · ${summary.sourceLabel} · ${summary.yearStrategy === "latest_shared" ? "shared year " + summary.yearLabel : summary.yearLabel} · ${summary.visibleOccupationsCount} visible tiles`;
 
   document.getElementById("introCopy").innerHTML = (summary.introHtml || []).map((paragraph) => `<p>${paragraph}</p>`).join("");
   document.querySelectorAll(".repo-link").forEach((link) => {

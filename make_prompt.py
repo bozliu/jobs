@@ -1,7 +1,7 @@
 """
-Generate prompt.md — a single file containing all project data, designed to be
-copy-pasted into an LLM for analysis and conversation about AI exposure of the
-US job market.
+Generate prompt.md — a single file containing the US map data, designed to be
+copy-pasted into an LLM for analysis and conversation about AI exposure in the
+labor market atlas.
 
 Usage:
     uv run python make_prompt.py
@@ -66,12 +66,12 @@ def main():
     lines = []
 
     # ── Header ──
-    lines.append("# AI Exposure of the US Job Market")
+    lines.append("# Jobs Atlas: AI Exposure Across the US Labor Market")
     lines.append("")
-    lines.append("This document contains structured data on 342 US occupations from the Bureau of Labor Statistics Occupational Outlook Handbook, each scored for AI exposure on a 0-10 scale by an LLM (Gemini Flash). Use this data to analyze, question, and discuss how AI will reshape the US labor market.")
+    lines.append("This document contains structured data on 342 US occupations from the Bureau of Labor Statistics Occupational Outlook Handbook, each scored for AI exposure on a 0-10 scale by an LLM (Gemini Flash). Use this data to analyze, question, and discuss how AI may reshape the labor market.")
     lines.append("")
-    lines.append("Live visualization: https://karpathy.ai/jobs/")
-    lines.append("GitHub: https://github.com/karpathy/jobs")
+    lines.append("Live visualization: https://jobs-psi-ochre.vercel.app/")
+    lines.append("GitHub: https://github.com/bozliu/jobs")
     lines.append("")
 
     # ── Scoring methodology ──

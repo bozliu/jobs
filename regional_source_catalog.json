@@ -1,5 +1,5 @@
 {
-  "sourceLabel": "ILOSTAT employment by occupation",
+  "sourceLabel": "Official employment-by-occupation sources",
   "sourceUrl": "https://ilostat.ilo.org/data/",
   "apiUrl": "https://rplumber.ilo.org/data/indicator/",
   "indicator": "EMP_TEMP_SEX_OCU_NB",
@@ -8,7 +8,7 @@
       "label": "Asia",
       "countries": ["CHN", "JPN", "IND", "AUS"],
       "yearStrategy": "latest_per_country",
-      "note": "Asia uses the latest official occupation year available per country because China is only available here as an older cached official extract."
+      "note": "Asia uses the latest official occupation year or checked-in official national extract available per country. China now rebuilds from a newer checked-in official national extract instead of the legacy fallback path."
     },
     "europe": {
       "label": "Europe",
@@ -26,18 +26,26 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "CHN",
       "name": "China",
       "region": "asia",
-      "ingestMode": "cached_official_extract",
-      "classificationPrefix": "OCU_ISCO88_",
-      "nativeCodeSystem": "ISCO-88 major groups",
+      "ingestMode": "manual_curated_official_mix",
+      "classificationPrefix": "CN_OCC_",
+      "nativeCodeSystem": "China national seven-group occupation mix",
       "fileFormat": "csv",
-      "refreshCadence": "manual cached refresh",
-      "cachePath": "regional_sources/china_ilostat_2005_major_groups.csv"
+      "refreshCadence": "manual official extract refresh",
+      "cachePath": "regional_sources/china_official_occupation_mix_2023.csv",
+      "sourceLabel": "China Labour Statistical Yearbook 2024 + China Population and Employment Statistical Yearbook 2019",
+      "sourceUrl": "https://www.stats.gov.cn/hd/lyzx/zxgk/202405/t20240524_1953603.html",
+      "publicationTitle": "China Labour Statistical Yearbook 2024",
+      "publicationYear": 2024,
+      "tableTitle": "Employment total (2023) blended with a checked-in nationwide occupation mix extract",
+      "sourceNote": "The repo now anchors China to the latest official employment year in the national labour yearbook series, while carrying a versioned nationwide occupation-mix extract in-repo so the site can rebuild deterministically without the legacy fallback dependency."
     },
     {
       "code": "IND",
@@ -47,7 +55,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "JPN",
@@ -57,7 +67,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "DEU",
@@ -67,7 +79,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "GBR",
@@ -77,7 +91,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "FRA",
@@ -87,7 +103,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "ITA",
@@ -97,7 +115,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     },
     {
       "code": "ESP",
@@ -107,7 +127,9 @@
       "classificationPrefix": "OCU_ISCO08_",
       "nativeCodeSystem": "ISCO-08 major groups",
       "fileFormat": "csv",
-      "refreshCadence": "daily"
+      "refreshCadence": "daily",
+      "sourceLabel": "ILOSTAT employment by occupation",
+      "sourceUrl": "https://ilostat.ilo.org/data/"
     }
   ]
 }

@@ -1,9 +1,9 @@
-# AI Exposure of the US Job Market
+# Jobs Atlas: AI Exposure Across the US Labor Market
 
-This document contains structured data on 342 US occupations from the Bureau of Labor Statistics Occupational Outlook Handbook, each scored for AI exposure on a 0-10 scale by an LLM (Gemini Flash). Use this data to analyze, question, and discuss how AI will reshape the US labor market.
+This document contains structured data on 342 US occupations from the Bureau of Labor Statistics Occupational Outlook Handbook, each scored for AI exposure on a 0-10 scale by an LLM (Gemini Flash). Use this data to analyze, question, and discuss how AI may reshape the labor market.
 
-Live visualization: https://karpathy.ai/jobs/
-GitHub: https://github.com/karpathy/jobs
+Live visualization: https://jobs-psi-ochre.vercel.app/
+GitHub: https://github.com/bozliu/jobs
 
 ## Scoring methodology
 

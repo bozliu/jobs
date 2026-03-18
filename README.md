@@ -1,77 +1,76 @@
-# US Job Market Visualizer
+# Jobs Atlas
 
-A research tool for visually exploring Bureau of Labor Statistics [Occupational Outlook Handbook](https://www.bls.gov/ooh/) data. This is not a report, a paper, or a serious economic publication — it is a development tool for exploring BLS data visually.
+A living map of work across the US, Asia, and Europe.
 
-**Live demo: [karpathy.ai/jobs](https://karpathy.ai/jobs/)**
+![Jobs Atlas hero](site/hero.gif)
 
-## What's here
+Live site: [jobs-psi-ochre.vercel.app](https://jobs-psi-ochre.vercel.app)
 
-The BLS OOH covers **342 occupations** spanning every sector of the US economy, with detailed data on job duties, work environment, education requirements, pay, and employment projections. We scraped all of it and built an interactive treemap visualization where each rectangle's **area** is proportional to total employment and **color** shows the selected metric — toggle between BLS projected growth outlook, median pay, education requirements, and AI exposure.
+## What this is
 
-## LLM-powered coloring
+Jobs Atlas is a single-page treemap that tracks how employment is distributed across occupations, then colors those occupations by one of several layers:
 
-The repo includes scrapers, parsers, and a pipeline for writing custom LLM prompts to score and color occupations by any criteria. You write a prompt, the LLM scores each occupation, and the treemap colors accordingly. The "Digital AI Exposure" layer is one example — it estimates how much current AI (which is primarily digital) will reshape each occupation. But you could write a different prompt for any question — e.g. exposure to humanoid robotics, offshoring risk, climate impact — and re-run the pipeline to get a different coloring. See `score.py` for the prompt and scoring pipeline.
+- `US`: BLS outlook, median pay, education, and Digital AI Exposure
+- `Asia`: merged regional employment plus Digital AI Exposure
+- `Europe`: merged regional employment plus Digital AI Exposure
 
-**What "AI Exposure" is NOT:**
-- It does **not** predict that a job will disappear. Software developers score 9/10 because AI is transforming their work — but demand for software could easily *grow* as each developer becomes more productive.
-- It does **not** account for demand elasticity, latent demand, regulatory barriers, or social preferences for human workers.
-- The scores are rough LLM estimates (Gemini Flash via OpenRouter), not rigorous predictions. Many high-exposure jobs will be reshaped, not replaced.
+The frontend is static. The repo contains the scrapers, transforms, scoring pipeline, regional crosswalks, and generated payload that power the live Vercel deployment.
 
-## Data pipeline
+## Data sources
 
-1. **Scrape** (`scrape.py`) — Playwright (non-headless, BLS blocks bots) downloads raw HTML for all 342 occupation pages into `html/`.
-2. **Parse** (`parse_detail.py`, `process.py`) — BeautifulSoup converts raw HTML into clean Markdown files in `pages/`.
-3. **Tabulate** (`make_csv.py`) — Extracts structured fields (pay, education, job count, growth outlook, SOC code) into `occupations.csv`.
-4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM with a scoring rubric. Each occupation gets an AI Exposure score from 0-10 with a rationale. Results saved to `scores.json`. Fork this to write your own prompts.
-5. **Build site data** (`build_site_data.py`) — Merges CSV stats and AI exposure scores into a compact `site/data.json` for the frontend.
-6. **Website** (`site/index.html`) — Interactive treemap visualization with four color layers: BLS Outlook, Median Pay, Education, and Digital AI Exposure.
+| View | Geography | Source | Native classification | Year logic | Refresh mode |
+| --- | --- | --- | --- | --- | --- |
+| `US` | United States | [Bureau of Labor Statistics Occupational Outlook Handbook](https://www.bls.gov/ooh/) | BLS OOH occupations | Single `2024` release | Rebuilt from checked-in BLS artifacts |
+| `Asia` | China | [National Bureau of Statistics of China](https://www.stats.gov.cn/) via [China Labour Statistical Yearbook 2024](https://www.stats.gov.cn/hd/lyzx/zxgk/202405/t20240524_1953603.html) plus the checked-in extract in [regional_sources/china_official_occupation_mix_2023.csv](/Users/bozliu/Documents/Commecial%20Value%20Projects/jobs/regional_sources/china_official_occupation_mix_2023.csv) | China national seven-group occupation mix, then mapped into the 342 canonical Jobs Atlas occupations | `2023 employment total · 2018 occupation mix` | Manual refresh when a newer official table is extracted into the repo |
+| `Asia` | Japan | [ILOSTAT employment by occupation](https://ilostat.ilo.org/data/) | ISCO-08 major groups | Latest official year available for Japan | Daily GitHub Action refresh |
+| `Asia` | India | [ILOSTAT employment by occupation](https://ilostat.ilo.org/data/) | ISCO-08 major groups | Latest official year available for India | Daily GitHub Action refresh |
+| `Asia` | Australia | [ILOSTAT employment by occupation](https://ilostat.ilo.org/data/) | ISCO-08 major groups | Latest official year available for Australia | Daily GitHub Action refresh |
+| `Europe` | Germany, United Kingdom, France, Italy, Spain | [ILOSTAT employment by occupation](https://ilostat.ilo.org/data/) | ISCO-08 major groups | Latest shared official year across all selected countries | Daily GitHub Action refresh |
 
-## Key files
+## Why China is different
 
-| File | Description |
-|------|-------------|
-| `occupations.json` | Master list of 342 occupations with title, URL, category, slug |
-| `occupations.csv` | Summary stats: pay, education, job count, growth projections |
-| `scores.json` | AI exposure scores (0-10) with rationales for all 342 occupations |
-| `prompt.md` | All data in a single file, designed to be pasted into an LLM for analysis |
-| `html/` | Raw HTML pages from BLS (source of truth, ~40MB) |
-| `pages/` | Clean Markdown versions of each occupation page |
-| `site/` | Static website (treemap visualization) |
+China is the only selected country in Asia that does not currently flow through the same live ILOSTAT path as Japan, India, and Australia.
 
-## LLM prompt
+The repo now uses a checked-in official national extract for China, anchored to the latest official employment total used in the labour yearbook series plus a versioned nationwide occupation-mix extract that can be rebuilt reproducibly inside this repo. That means:
 
-[`prompt.md`](prompt.md) packages all the data — aggregate statistics, tier breakdowns, exposure by pay/education, BLS growth projections, and all 342 occupations with their scores and rationales — into a single file (~45K tokens) designed to be pasted into an LLM. This lets you have a data-grounded conversation about AI's impact on the job market without needing to run any code. Regenerate it with `uv run python make_prompt.py`.
+- the visible China year is newer than the old ILOSTAT fallback
+- the site can rebuild deterministically in CI
+- China is still not a live API source like Japan, India, or Australia
 
-## Setup
+If a newer official nationwide occupation table becomes available in a machine-readable or extractable form, replacing the checked-in China file is the intended upgrade path.
 
-```
-uv sync
-uv run playwright install chromium
-```
+## Update mechanism
 
-Requires an OpenRouter API key in `.env`:
-```
-OPENROUTER_API_KEY=your_key_here
-```
+Daily refresh runs in [daily-refresh.yml](/Users/bozliu/Documents/Commecial%20Value%20Projects/jobs/.github/workflows/daily-refresh.yml).
 
-## Usage
+- US scoring reruns only when the scoring inputs change.
+- API-backed regional countries refresh every day from ILOSTAT.
+- China is validated every day, but it only changes when the checked-in official extract is replaced.
+- Generated outputs are committed only when tracked artifacts actually change.
+- Vercel deploys from the repo’s production branch, so the public URL stays fixed.
+
+## Method
+
+- US occupations come directly from BLS and stay in their native 342-slug taxonomy.
+- Regional data starts from official country-level occupation inputs.
+- Those country totals are projected into the same 342 canonical occupation slugs as the US view using deterministic employment-weighted crosswalks.
+- Regional views guarantee taxonomy parity with the US map, but not US-grade parity for pay, education, or outlook.
+- Digital AI Exposure is an LLM-scored overlay, not a prediction that a job disappears.
+
+## Local development
 
 ```bash
-# Scrape BLS pages (only needed once, results are cached in html/)
-uv run python scrape.py
-
-# Generate Markdown from HTML
-uv run python process.py
-
-# Generate CSV summary
-uv run python make_csv.py
-
-# Score AI exposure (uses OpenRouter API)
-uv run python score.py
-
-# Build website data
+uv sync
+uv run python fetch_regional_data.py
+uv run python validate_regional_data.py
 uv run python build_site_data.py
-
-# Serve the site locally
+uv run python make_prompt.py
 cd site && python -m http.server 8000
 ```
+
+## Important files
+
+- [site/index.html](/Users/bozliu/Documents/Commecial%20Value%20Projects/jobs/site/index.html): static frontend
+- [build_site_data.py](/Users/bozliu/Documents/Commecial%20Value%20Projects/jobs/build_site_data.py): builds the multi-region payload
+- [fetch_regional_data.py](/Users/bozliu/Documents/Commecial%20Value%20Projects/jobs/fetch_regional_data.py): refreshes regional source artifacts
+- [regional_source_catalog.json](/Users/bozliu/Documents/Commecial%20Value%20Projects/jobs/regional_source_catalog.json): source metadata and refresh policy
