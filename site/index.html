@@ -9,18 +9,18 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --paper: #f4ecdf;
-  --paper-2: #fbf7ef;
-  --paper-3: #fffdf9;
-  --ink: #201b17;
-  --ink-2: #554d45;
-  --ink-3: #7d7469;
-  --line: rgba(55, 43, 27, 0.12);
-  --line-strong: rgba(55, 43, 27, 0.18);
-  --shadow: 0 24px 80px rgba(70, 55, 33, 0.12);
-  --shadow-soft: 0 10px 32px rgba(70, 55, 33, 0.08);
-  --accent: #1d695f;
-  --accent-soft: rgba(29, 105, 95, 0.08);
+  --paper: #090b11;
+  --paper-2: #111521;
+  --paper-3: #171d2a;
+  --ink: #f1ebe1;
+  --ink-2: #c2b9aa;
+  --ink-3: #8b8797;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --shadow: 0 28px 88px rgba(0, 0, 0, 0.42);
+  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.26);
+  --accent: #9ed5c8;
+  --accent-soft: rgba(158, 213, 200, 0.14);
   --radius-xl: 28px;
   --radius-lg: 22px;
   --radius-md: 16px;
@@ -36,9 +36,9 @@ body {
   min-height: 100vh;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(202, 182, 143, 0.2), transparent 36%),
-    radial-gradient(circle at top right, rgba(157, 184, 177, 0.16), transparent 28%),
-    linear-gradient(180deg, #f6efe3 0%, #fbf8f2 58%, #f3ece1 100%);
+    radial-gradient(circle at top left, rgba(94, 140, 128, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(180, 110, 82, 0.14), transparent 26%),
+    linear-gradient(180deg, #05070c 0%, #0a0d15 48%, #05070c 100%);
   font-family: "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
 }
 
@@ -71,8 +71,8 @@ button {
   border-radius: var(--radius-xl);
   border: 1px solid var(--line);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 249, 240, 0.9)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    linear-gradient(135deg, rgba(22, 27, 40, 0.96), rgba(12, 15, 24, 0.98)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
   box-shadow: var(--shadow);
 }
 
@@ -83,7 +83,7 @@ button {
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(180, 202, 195, 0.22), transparent 70%);
+  background: radial-gradient(circle, rgba(94, 140, 128, 0.2), transparent 70%);
   pointer-events: none;
 }
 
@@ -94,7 +94,7 @@ button {
   width: 360px;
   height: 360px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(209, 174, 120, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(180, 110, 82, 0.18), transparent 68%);
   pointer-events: none;
 }
 
@@ -183,7 +183,7 @@ button {
   padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--ink-2);
   font-family: "SF Mono", "Menlo", "Consolas", monospace;
   font-size: 11px;
@@ -204,7 +204,7 @@ button {
 .canvas-shell {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 252, 247, 0.96));
+  background: linear-gradient(180deg, rgba(18, 23, 35, 0.94), rgba(10, 13, 21, 0.98));
   box-shadow: var(--shadow-soft);
 }
 
@@ -231,7 +231,7 @@ button {
   padding: 10px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--ink-2);
   transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
@@ -249,7 +249,7 @@ button {
 .segmented button.active {
   background: var(--accent);
   border-color: transparent;
-  color: #f8f4ed;
+  color: #051311;
 }
 
 .legend-head {
@@ -364,7 +364,7 @@ button {
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--ink-2);
   font-size: 12px;
 }
@@ -375,8 +375,8 @@ button {
   border-radius: calc(var(--radius-lg) - 4px);
   border: 1px solid var(--line);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(252, 248, 240, 0.92)),
-    linear-gradient(135deg, rgba(192, 213, 205, 0.08), rgba(214, 182, 126, 0.08));
+    linear-gradient(180deg, rgba(16, 19, 29, 0.95), rgba(7, 9, 15, 0.98)),
+    linear-gradient(135deg, rgba(94, 140, 128, 0.08), rgba(180, 110, 82, 0.08));
 }
 
 canvas#canvas {
@@ -398,9 +398,9 @@ canvas#canvas {
   max-width: 360px;
   padding: 14px 16px;
   border-radius: 18px;
-  border: 1px solid rgba(48, 39, 29, 0.14);
-  background: rgba(255, 253, 249, 0.96);
-  box-shadow: 0 24px 48px rgba(57, 46, 31, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(14, 18, 28, 0.96);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
   color: var(--ink);
   pointer-events: none;
   opacity: 0;
@@ -625,12 +625,12 @@ let dpr = window.devicePixelRatio || 1;
 
 const MARGIN = 16;
 const GAP = 2;
-const PAPER = "#fbf7ef";
-const PAPER_ALT = "#f6efe3";
-const INK = "#201b17";
-const INK_SOFT = "#7d7469";
-const GRID = "rgba(60, 47, 31, 0.1)";
-const GRID_STRONG = "rgba(60, 47, 31, 0.16)";
+const PAPER = "#090b11";
+const PAPER_ALT = "#111521";
+const INK = "#f1ebe1";
+const INK_SOFT = "#8b8797";
+const GRID = "rgba(255, 255, 255, 0.08)";
+const GRID_STRONG = "rgba(255, 255, 255, 0.16)";
 const LIGHT_LABEL = "rgba(255, 251, 244, 0.96)";
 
 const EDU_LEVELS = [
@@ -645,11 +645,11 @@ const EDU_LEVELS = [
 ];
 
 const COLOR_SCALES = {
-  exposure: { low: [202, 214, 206], high: [153, 81, 52] },
-  outlook: { low: [171, 85, 66], high: [58, 124, 95] },
-  pay: { low: [224, 214, 192], high: [40, 82, 116] },
-  education: { low: [220, 211, 194], high: [95, 88, 151] },
-  neutral: [189, 178, 162],
+  exposure: { low: [74, 106, 95], high: [214, 105, 76] },
+  outlook: { low: [191, 86, 76], high: [70, 164, 116] },
+  pay: { low: [101, 122, 156], high: [212, 170, 89] },
+  education: { low: [92, 86, 132], high: [145, 120, 214] },
+  neutral: [70, 76, 92],
 };
 
 const LEGEND_CONFIG = {
@@ -999,21 +999,21 @@ function metricHighlight(record) {
   if (!isUSView() || colorMode === "exposure") {
     return `
       <div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">Digital AI Exposure · ${record.exposure != null ? record.exposure + "/10" : "—"}</div>
-      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(32,27,23,0.08);overflow:hidden;">
+      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
         <div style="height:100%;width:${record.exposure != null ? clamp(record.exposure / 10) * 100 : 0}%;background:${rgba(rgb, 1)};"></div>
       </div>`;
   }
   if (colorMode === "outlook") {
     return `
       <div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">BLS Outlook · ${record.outlook != null ? (record.outlook > 0 ? "+" : "") + record.outlook + "%" : "—"}</div>
-      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(32,27,23,0.08);overflow:hidden;">
+      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
         <div style="height:100%;width:${record.outlook != null ? clamp((record.outlook + 10) / 30) * 100 : 0}%;background:${rgba(rgb, 1)};"></div>
       </div>`;
   }
   if (colorMode === "pay") {
     return `
       <div style="font-size:13px;color:${rgba(rgb, 1)};font-weight:600;">Median Pay · ${formatPay(record.pay)}</div>
-      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(32,27,23,0.08);overflow:hidden;">
+      <div style="margin-top:5px;height:5px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
         <div style="height:100%;width:${record.pay != null ? clamp((Math.log(Math.max(25000, Math.min(250000, record.pay))) - Math.log(25000)) / (Math.log(250000) - Math.log(25000))) * 100 : 0}%;background:${rgba(rgb, 1)};"></div>
       </div>`;
   }
