@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-18T08:09:41.764444+00:00",
+  "generatedAt": "2026-03-19T04:21:27.839726+00:00",
   "source": {
     "label": "Official employment-by-occupation sources",
     "url": "https://ilostat.ilo.org/data/",
@@ -32,7 +32,9 @@
           "publicationTitle": "China Labour Statistical Yearbook 2024",
           "publicationYear": 2024,
           "tableTitle": "Employment total (2023) blended with a checked-in nationwide occupation mix extract",
-          "sourceNote": "The repo now anchors China to the latest official employment year in the national labour yearbook series, while carrying a versioned nationwide occupation-mix extract in-repo so the site can rebuild deterministically without the legacy fallback dependency."
+          "sourceNote": "The repo now anchors China to the latest official employment year in the national labour yearbook series, while carrying a versioned nationwide occupation-mix extract in-repo so the site can rebuild deterministically without the legacy fallback dependency.",
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "JPN",
@@ -52,7 +54,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "IND",
@@ -72,7 +76,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "AUS",
@@ -92,7 +98,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": false,
+          "fallbackReason": null
         }
       ],
       "freshness": {
@@ -102,11 +110,13 @@
           "India",
           "Australia"
         ],
+        "fallbackCountries": [],
         "manualCountries": [
           "China"
         ],
         "cachedCountries": [],
         "hasCachedSources": false,
+        "hasFallbackSources": false,
         "hasManualSources": true
       },
       "occupations": [
@@ -24087,7 +24097,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": true,
+          "fallbackReason": "live fetch returned no occupation rows"
         },
         {
           "code": "GBR",
@@ -24107,7 +24119,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "FRA",
@@ -24127,7 +24141,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": true,
+          "fallbackReason": "live fetch returned no occupation rows"
         },
         {
           "code": "ITA",
@@ -24147,7 +24163,9 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "ESP",
@@ -24167,21 +24185,26 @@
           "publicationTitle": null,
           "publicationYear": null,
           "tableTitle": null,
-          "sourceNote": null
+          "sourceNote": null,
+          "usedFallback": false,
+          "fallbackReason": null
         }
       ],
       "freshness": {
-        "summary": "5 live ILOSTAT feeds",
+        "summary": "3 live ILOSTAT feeds + 2 committed live snapshot fallback",
         "liveCountries": [
-          "Germany",
           "United Kingdom",
-          "France",
           "Italy",
           "Spain"
+        ],
+        "fallbackCountries": [
+          "Germany",
+          "France"
         ],
         "manualCountries": [],
         "cachedCountries": [],
         "hasCachedSources": false,
+        "hasFallbackSources": true,
         "hasManualSources": false
       },
       "occupations": [

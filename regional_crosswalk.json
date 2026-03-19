@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-18T08:09:41.719063+00:00",
+  "generatedAt": "2026-03-19T04:21:27.808276+00:00",
   "source": {
     "label": "Official employment-by-occupation sources",
     "url": "https://ilostat.ilo.org/data/",
@@ -29,6 +29,8 @@
       "publicationYear": 2024,
       "tableTitle": "Employment total (2023) blended with a checked-in nationwide occupation mix extract",
       "sourceNote": "The repo now anchors China to the latest official employment year in the national labour yearbook series, while carrying a versioned nationwide occupation-mix extract in-repo so the site can rebuild deterministically without the legacy fallback dependency.",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "CN01",
@@ -2515,6 +2517,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "1",
@@ -4511,6 +4515,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "1",
@@ -7019,6 +7025,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
@@ -9545,6 +9553,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": true,
+      "fallbackReason": "live fetch returned no occupation rows",
       "mappings": [
         {
           "nativeCode": "0",
@@ -12071,6 +12081,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
@@ -14597,6 +14609,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": true,
+      "fallbackReason": "live fetch returned no occupation rows",
       "mappings": [
         {
           "nativeCode": "0",
@@ -17123,6 +17137,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
@@ -19649,6 +19665,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",

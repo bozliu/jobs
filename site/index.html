@@ -444,6 +444,25 @@ function isUSView() {
   return activeRegion === "us";
 }
 
+function currentAreaScale() {
+  return currentView().areaScale || { mode: "employment", label: "employment", uiLabel: "Employment" };
+}
+
+function displayAreaValue(record) {
+  const jobs = record.jobs || 0;
+  if (jobs <= 0) return 1;
+  const areaScale = currentAreaScale();
+  if (areaScale.mode === "power") {
+    return Math.pow(jobs, areaScale.exponent || 1);
+  }
+  return jobs;
+}
+
+function areaModeText() {
+  const areaScale = currentAreaScale();
+  return `Area = ${areaScale.uiLabel || "Employment"} · Color = Digital AI Exposure`;
+}
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -665,13 +684,13 @@ function layout() {
   const categories = Object.keys(byCategory).map((category) => ({
     cat: category,
     items: byCategory[category].sort((a, b) => (b.jobs || 0) - (a.jobs || 0)),
-    value: byCategory[category].reduce((sum, record) => sum + (record.jobs || 1), 0),
+    value: byCategory[category].reduce((sum, record) => sum + displayAreaValue(record), 0),
   })).sort((a, b) => b.value - a.value);
 
   const categoryRects = squarify(categories, tx, ty, tw, th);
   rects = [];
   for (const categoryRect of categoryRects) {
-    const items = categoryRect.items.map((record) => ({ ...record, value: record.jobs || 1 }));
+    const items = categoryRect.items.map((record) => ({ ...record, value: displayAreaValue(record) }));
     const innerRects = squarify(items, categoryRect.rx + GAP, categoryRect.ry + GAP, categoryRect.rw - GAP * 2, categoryRect.rh - GAP * 2);
     for (const rect of innerRects) rects.push(rect);
   }
@@ -1043,10 +1062,11 @@ function applyPayloadMetadata() {
   const promptBox = document.getElementById("promptBox");
   promptDetails.hidden = !summary.showPrompt;
   promptBox.textContent = summary.promptText || "";
+  document.getElementById("modeChip").textContent = areaModeText();
 
   document.getElementById("footnoteLeft").textContent = isUSView()
     ? "Area = employment. Click any tile to open the full BLS page."
-    : `${summary.freshnessSummary}. Area = mapped employment, color = Digital AI Exposure.`;
+    : `${summary.freshnessSummary}. ${summary.areaNote || "Area = mapped employment."} Color = Digital AI Exposure.`;
   document.getElementById("footnoteRight").textContent = payload.generatedAt
     ? `Updated ${new Date(payload.generatedAt).toLocaleString()}`
     : "";

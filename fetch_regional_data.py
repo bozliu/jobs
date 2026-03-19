@@ -128,14 +128,56 @@ def load_cached_country_rows(catalog: dict, country_cfg: dict) -> list[dict]:
     return rows
 
 
-def load_country_rows(catalog: dict, client: httpx.Client) -> dict[str, list[dict]]:
+def load_existing_country_snapshots() -> dict[str, dict]:
+    if not CROSSWALK_FILE.exists():
+        return {}
+    payload = load_json(CROSSWALK_FILE)
+    return {country["code"]: country for country in payload.get("countries", [])}
+
+
+def load_country_rows_from_snapshot(catalog: dict, country_cfg: dict, snapshot: dict, reason: str) -> list[dict]:
+    rows = []
+    for mapping in snapshot.get("mappings", []):
+        rows.append(
+            {
+                "countryCode": snapshot["code"],
+                "countryName": snapshot["name"],
+                "year": int(mapping["year"]),
+                "nativeCode": mapping["nativeCode"],
+                "nativeLabel": mapping["nativeLabel"],
+                "jobs": int(mapping["jobs"]),
+                "source": snapshot.get("sourceLabel") or "",
+                "classification": mapping.get("classification") or snapshot.get("classification") or country_cfg["nativeCodeSystem"].split()[0].replace("-", ""),
+                "nativeCodeSystem": country_cfg["nativeCodeSystem"],
+                "ingestMode": country_cfg["ingestMode"],
+                "indicator": catalog["indicator"],
+                "sourceUrl": snapshot.get("sourceUrl") or country_cfg.get("sourceUrl") or catalog["sourceUrl"],
+                "sourceYearLabel": snapshot.get("sourceYearLabel") or str(mapping["year"]),
+                "sourceDetail": snapshot.get("sourceNote") or "",
+                "usedFallback": True,
+                "fallbackReason": reason,
+            }
+        )
+    return rows
+
+
+def load_country_rows(catalog: dict, client: httpx.Client, existing_snapshots: dict[str, dict]) -> dict[str, list[dict]]:
     countries = country_configs_by_code(catalog)
     rows_by_country = {}
     for code, country_cfg in countries.items():
         if country_cfg["ingestMode"] in {"cached_official_extract", "manual_curated_official_mix"}:
             rows = load_cached_country_rows(catalog, country_cfg)
         else:
-            rows = fetch_live_country_rows(client, catalog, country_cfg)
+            fallback_reason = None
+            try:
+                rows = fetch_live_country_rows(client, catalog, country_cfg)
+            except httpx.HTTPError as error:
+                rows = []
+                fallback_reason = f"live fetch error: {error.__class__.__name__}"
+            if not rows and existing_snapshots.get(code):
+                reason = fallback_reason or "live fetch returned no occupation rows"
+                print(f"Warning: using previously committed country snapshot for {code} because {reason}.")
+                rows = load_country_rows_from_snapshot(catalog, country_cfg, existing_snapshots[code], reason)
         if not rows:
             raise ValueError(f"No occupation rows found for {code}")
         rows_by_country[code] = rows
@@ -271,6 +313,8 @@ def build_country_crosswalk(country_cfg: dict, selected_rows: list[dict], family
         "publicationYear": country_cfg.get("publicationYear"),
         "tableTitle": country_cfg.get("tableTitle"),
         "sourceNote": country_cfg.get("sourceNote"),
+        "usedFallback": bool(selected_rows[0].get("usedFallback")),
+        "fallbackReason": selected_rows[0].get("fallbackReason"),
         "mappings": mappings,
     }
 
@@ -325,12 +369,13 @@ def write_json_preserving_timestamp(path: Path, payload: dict) -> None:
 def main() -> None:
     catalog = load_json(CATALOG_FILE)
     countries = country_configs_by_code(catalog)
+    existing_snapshots = load_existing_country_snapshots()
     us_rows = load_us_rows()
     family_weights, assignments = build_us_family_weights(us_rows)
     family_baselines = family_baseline_confidence(family_weights)
 
     with httpx.Client(follow_redirects=True) as client:
-        all_country_rows = load_country_rows(catalog, client)
+        all_country_rows = load_country_rows(catalog, client, existing_snapshots)
 
     region_selection = {}
     for region_id, region_cfg in catalog["regions"].items():
@@ -442,9 +487,17 @@ def main() -> None:
         occupations.sort(key=lambda item: (-item["jobs"], item["title"]))
 
         live_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "live_ilostat_api"]
+        fallback_countries = [item["name"] for item in country_payloads if item.get("usedFallback")]
         manual_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "manual_curated_official_mix"]
         cached_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "cached_official_extract"]
-        if manual_countries:
+        live_live_countries = [item["name"] for item in country_payloads if item["ingestMode"] == "live_ilostat_api" and not item.get("usedFallback")]
+        if fallback_countries and manual_countries:
+            freshness_summary = f"{len(live_live_countries)} live ILOSTAT feeds + {len(fallback_countries)} committed live snapshot fallback + {len(manual_countries)} checked-in official national extract"
+        elif fallback_countries and cached_countries:
+            freshness_summary = f"{len(live_live_countries)} live ILOSTAT feeds + {len(fallback_countries)} committed live snapshot fallback + {len(cached_countries)} cached official extract"
+        elif fallback_countries:
+            freshness_summary = f"{len(live_live_countries)} live ILOSTAT feeds + {len(fallback_countries)} committed live snapshot fallback"
+        elif manual_countries:
             freshness_summary = f"{len(live_countries)} live ILOSTAT feeds + {len(manual_countries)} checked-in official national extract"
         elif cached_countries:
             freshness_summary = f"{len(live_countries)} live ILOSTAT feeds + {len(cached_countries)} cached official extract"
@@ -461,10 +514,12 @@ def main() -> None:
             "countries": country_payloads,
             "freshness": {
                 "summary": freshness_summary,
-                "liveCountries": live_countries,
+                "liveCountries": live_live_countries,
+                "fallbackCountries": fallback_countries,
                 "manualCountries": manual_countries,
                 "cachedCountries": cached_countries,
                 "hasCachedSources": bool(cached_countries),
+                "hasFallbackSources": bool(fallback_countries),
                 "hasManualSources": bool(manual_countries),
             },
             "occupations": occupations,

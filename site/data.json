@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-18T08:09:44.967943+00:00",
+  "generatedAt": "2026-03-19T04:21:36.069872+00:00",
   "defaultRegion": "us",
   "views": {
     "us": {
@@ -19,11 +19,17 @@
         "exposure"
       ],
       "defaultMode": "outlook",
+      "areaScale": {
+        "mode": "employment",
+        "label": "employment",
+        "uiLabel": "Employment",
+        "description": "Area = employment."
+      },
       "summary": {
         "repoUrl": "https://github.com/bozliu/jobs",
         "sourceUrl": "https://www.bls.gov/ooh/",
         "sourceLabel": "Bureau of Labor Statistics Occupational Outlook Handbook",
-        "generatedAt": "2026-03-18T08:09:44.967943+00:00",
+        "generatedAt": "2026-03-19T04:21:36.069872+00:00",
         "occupationsCount": 342,
         "visibleOccupationsCount": 342,
         "categoryCount": 25,
@@ -40,6 +46,7 @@
         "yearStrategy": "single_year",
         "freshnessSummary": "Single BLS 2024 release",
         "methodologyNote": "US occupations come directly from the Occupational Outlook Handbook. Area shows employment; color shows the selected BLS or AI layer.",
+        "areaNote": "Area = employment.",
         "totalJobs": 143066500,
         "weightedAveragePay": 62393.07,
         "weightedAverageOutlook": 3.36,
@@ -7102,11 +7109,18 @@
         "exposure"
       ],
       "defaultMode": "exposure",
+      "areaScale": {
+        "mode": "power",
+        "exponent": 0.55,
+        "label": "visibility-adjusted employment",
+        "uiLabel": "Visibility-adjusted employment",
+        "description": "Area = visibility-adjusted employment for readability; tooltip and stats show real jobs."
+      },
       "summary": {
         "repoUrl": "https://github.com/bozliu/jobs",
         "sourceUrl": "https://ilostat.ilo.org/data/",
         "sourceLabel": "Official employment-by-occupation sources",
-        "generatedAt": "2026-03-18T08:09:44.967943+00:00",
+        "generatedAt": "2026-03-19T04:21:36.069872+00:00",
         "occupationsCount": 342,
         "visibleOccupationsCount": 342,
         "categoryCount": 25,
@@ -7130,7 +7144,9 @@
             "publicationTitle": "China Labour Statistical Yearbook 2024",
             "publicationYear": 2024,
             "tableTitle": "Employment total (2023) blended with a checked-in nationwide occupation mix extract",
-            "sourceNote": "The repo now anchors China to the latest official employment year in the national labour yearbook series, while carrying a versioned nationwide occupation-mix extract in-repo so the site can rebuild deterministically without the legacy fallback dependency."
+            "sourceNote": "The repo now anchors China to the latest official employment year in the national labour yearbook series, while carrying a versioned nationwide occupation-mix extract in-repo so the site can rebuild deterministically without the legacy fallback dependency.",
+            "usedFallback": false,
+            "fallbackReason": null
           },
           {
             "code": "JPN",
@@ -7150,7 +7166,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": false,
+            "fallbackReason": null
           },
           {
             "code": "IND",
@@ -7170,7 +7188,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": false,
+            "fallbackReason": null
           },
           {
             "code": "AUS",
@@ -7190,7 +7210,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": false,
+            "fallbackReason": null
           }
         ],
         "year": null,
@@ -7204,22 +7226,25 @@
             "India",
             "Australia"
           ],
+          "fallbackCountries": [],
           "manualCountries": [
             "China"
           ],
           "cachedCountries": [],
           "hasCachedSources": false,
+          "hasFallbackSources": false,
           "hasManualSources": true
         },
         "freshnessSummary": "3 live ILOSTAT feeds + 1 checked-in official national extract",
-        "methodologyNote": "Regional employment stays grounded in official country-level occupation sources, then gets projected into the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks.",
+        "methodologyNote": "Regional employment stays grounded in official country-level occupation sources, then gets projected into the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks. Asia uses a visibility-adjusted treemap area so smaller occupations remain visible, while tooltips and stats continue to show real mapped jobs.",
+        "areaNote": "Area = visibility-adjusted employment for readability; tooltip and stats show real jobs.",
         "totalJobs": 1308175237,
         "weightedAveragePay": null,
         "weightedAverageOutlook": null,
         "weightedAverageExposure": 3.75,
         "introHtml": [
           "This regional view merges official occupation data for <b>China, Japan, India, Australia</b>, then reallocates those totals into the same <b>342 canonical occupation labels</b> used by the US map.",
-          "In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents the same Digital AI Exposure score used in the US view. That creates taxonomy parity without pretending the region also has US-quality pay, education, or outlook estimates.",
+          "In this regional map, <b>area</b> uses <b>visibility-adjusted employment</b> so smaller occupations remain visible, while tooltips and stats still report real mapped jobs. <b>Color</b> represents the same Digital AI Exposure score used in the US view.",
           "Asia uses the latest official occupation year or checked-in official national extract available per country. China now rebuilds from a newer checked-in official national extract instead of the legacy fallback path. <b>3 live ILOSTAT feeds + 1 checked-in official national extract.</b>"
         ],
         "promptText": null,
@@ -39965,11 +39990,17 @@
         "exposure"
       ],
       "defaultMode": "exposure",
+      "areaScale": {
+        "mode": "employment",
+        "label": "employment",
+        "uiLabel": "Employment",
+        "description": "Area = mapped employment."
+      },
       "summary": {
         "repoUrl": "https://github.com/bozliu/jobs",
         "sourceUrl": "https://ilostat.ilo.org/data/",
         "sourceLabel": "Official employment-by-occupation sources",
-        "generatedAt": "2026-03-18T08:09:44.967943+00:00",
+        "generatedAt": "2026-03-19T04:21:36.069872+00:00",
         "occupationsCount": 342,
         "visibleOccupationsCount": 342,
         "categoryCount": 25,
@@ -39993,7 +40024,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": true,
+            "fallbackReason": "live fetch returned no occupation rows"
           },
           {
             "code": "GBR",
@@ -40013,7 +40046,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": false,
+            "fallbackReason": null
           },
           {
             "code": "FRA",
@@ -40033,7 +40068,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": true,
+            "fallbackReason": "live fetch returned no occupation rows"
           },
           {
             "code": "ITA",
@@ -40053,7 +40090,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": false,
+            "fallbackReason": null
           },
           {
             "code": "ESP",
@@ -40073,7 +40112,9 @@
             "publicationTitle": null,
             "publicationYear": null,
             "tableTitle": null,
-            "sourceNote": null
+            "sourceNote": null,
+            "usedFallback": false,
+            "fallbackReason": null
           }
         ],
         "year": 2024,
@@ -40081,21 +40122,25 @@
         "yearStrategy": "latest_shared",
         "note": "Built from the latest shared occupation year available across Germany, United Kingdom, France, Italy, Spain.",
         "freshness": {
-          "summary": "5 live ILOSTAT feeds",
+          "summary": "3 live ILOSTAT feeds + 2 committed live snapshot fallback",
           "liveCountries": [
-            "Germany",
             "United Kingdom",
-            "France",
             "Italy",
             "Spain"
+          ],
+          "fallbackCountries": [
+            "Germany",
+            "France"
           ],
           "manualCountries": [],
           "cachedCountries": [],
           "hasCachedSources": false,
+          "hasFallbackSources": true,
           "hasManualSources": false
         },
-        "freshnessSummary": "5 live ILOSTAT feeds",
+        "freshnessSummary": "3 live ILOSTAT feeds + 2 committed live snapshot fallback",
         "methodologyNote": "Regional employment stays grounded in official country-level occupation sources, then gets projected into the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks.",
+        "areaNote": "Area = mapped employment.",
         "totalJobs": 150113559,
         "weightedAveragePay": null,
         "weightedAverageOutlook": null,
@@ -40103,7 +40148,7 @@
         "introHtml": [
           "This regional view merges official occupation data for <b>Germany, United Kingdom, France, Italy, Spain</b>, then reallocates those totals into the same <b>342 canonical occupation labels</b> used by the US map.",
           "In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents the same Digital AI Exposure score used in the US view. That creates taxonomy parity without pretending the region also has US-quality pay, education, or outlook estimates.",
-          "Built from the latest shared occupation year available across Germany, United Kingdom, France, Italy, Spain. <b>5 live ILOSTAT feeds.</b>"
+          "Built from the latest shared occupation year available across Germany, United Kingdom, France, Italy, Spain. <b>3 live ILOSTAT feeds + 2 committed live snapshot fallback.</b>"
         ],
         "promptText": null,
         "showPrompt": false,

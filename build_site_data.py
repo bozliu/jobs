@@ -24,6 +24,28 @@ BLS_URL = "https://www.bls.gov/ooh/"
 ILOSTAT_URL = "https://ilostat.ilo.org/data/"
 LARGE_OCCUPATION_MIN_JOBS = 150_000
 
+VIEW_AREA_SCALES = {
+    "us": {
+        "mode": "employment",
+        "label": "employment",
+        "uiLabel": "Employment",
+        "description": "Area = employment.",
+    },
+    "asia": {
+        "mode": "power",
+        "exponent": 0.55,
+        "label": "visibility-adjusted employment",
+        "uiLabel": "Visibility-adjusted employment",
+        "description": "Area = visibility-adjusted employment for readability; tooltip and stats show real jobs.",
+    },
+    "europe": {
+        "mode": "employment",
+        "label": "employment",
+        "uiLabel": "Employment",
+        "description": "Area = mapped employment.",
+    },
+}
+
 CATEGORY_LABELS = {
     "architecture-and-engineering": "Architecture & Engineering",
     "arts-and-design": "Arts & Design",
@@ -323,6 +345,7 @@ def build_us_summary(records: list[dict], categories: list[dict]) -> dict:
         "yearStrategy": "single_year",
         "freshnessSummary": "Single BLS 2024 release",
         "methodologyNote": "US occupations come directly from the Occupational Outlook Handbook. Area shows employment; color shows the selected BLS or AI layer.",
+        "areaNote": VIEW_AREA_SCALES["us"]["description"],
         "totalJobs": total_jobs,
         "weightedAveragePay": weighted_average(records, "pay"),
         "weightedAverageOutlook": weighted_average(records, "outlook"),
@@ -420,6 +443,7 @@ def build_us_view() -> dict:
         "yearStrategy": "single_year",
         "availableModes": ["outlook", "pay", "education", "exposure"],
         "defaultMode": "outlook",
+        "areaScale": VIEW_AREA_SCALES["us"],
         "summary": summary,
         "stories": build_stories(records, categories),
         "categories": categories,
@@ -427,7 +451,7 @@ def build_us_view() -> dict:
     }
 
 
-def build_regional_summary(region: dict, occupations: list[dict], categories: list[dict]) -> dict:
+def build_regional_summary(region: dict, occupations: list[dict], categories: list[dict], area_scale: dict) -> dict:
     active_occupations = [item for item in occupations if item["jobs"] > 0] or occupations
     total_jobs = sum(item["jobs"] for item in active_occupations)
     largest = max(active_occupations, key=lambda item: item["jobs"])
@@ -447,6 +471,29 @@ def build_regional_summary(region: dict, occupations: list[dict], categories: li
     else:
         note = region["note"]
 
+    if area_scale["mode"] == "power":
+        methodology_note = (
+            "Regional employment stays grounded in official country-level occupation sources, then gets projected into "
+            "the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks. "
+            "Asia uses a visibility-adjusted treemap area so smaller occupations remain visible, while tooltips and stats "
+            "continue to show real mapped jobs."
+        )
+        area_paragraph = (
+            "In this regional map, <b>area</b> uses <b>visibility-adjusted employment</b> so smaller occupations remain visible, "
+            "while tooltips and stats still report real mapped jobs. <b>Color</b> represents the same Digital AI Exposure "
+            "score used in the US view."
+        )
+    else:
+        methodology_note = (
+            "Regional employment stays grounded in official country-level occupation sources, then gets projected into "
+            "the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks."
+        )
+        area_paragraph = (
+            "In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents the same "
+            "Digital AI Exposure score used in the US view. That creates taxonomy parity without pretending the "
+            "region also has US-quality pay, education, or outlook estimates."
+        )
+
     return {
         "repoUrl": REPO_URL,
         "sourceUrl": region["source"]["url"],
@@ -463,17 +510,15 @@ def build_regional_summary(region: dict, occupations: list[dict], categories: li
         "note": note,
         "freshness": region["freshness"],
         "freshnessSummary": freshness_summary,
-        "methodologyNote": (
-            "Regional employment stays grounded in official country-level occupation sources, then gets projected into "
-            "the same 342 occupation slugs as the US map using deterministic employment-weighted crosswalks."
-        ),
+        "methodologyNote": methodology_note,
+        "areaNote": area_scale["description"],
         "totalJobs": total_jobs,
         "weightedAveragePay": None,
         "weightedAverageOutlook": None,
         "weightedAverageExposure": weighted_average(active_occupations, "exposure"),
         "introHtml": [
             f'This regional view merges official occupation data for <b>{country_names}</b>, then reallocates those totals into the same <b>342 canonical occupation labels</b> used by the US map.',
-            'In these regional maps, <b>area</b> represents merged employment and <b>color</b> represents the same Digital AI Exposure score used in the US view. That creates taxonomy parity without pretending the region also has US-quality pay, education, or outlook estimates.',
+            area_paragraph,
             f"{note} <b>{freshness_summary}.</b>",
         ],
         "promptText": None,
@@ -528,6 +573,7 @@ def load_regional_views(us_records: list[dict]) -> dict[str, dict]:
 
     views = {}
     for region_id, region in employment_payload["regions"].items():
+        area_scale = VIEW_AREA_SCALES.get(region_id, VIEW_AREA_SCALES["europe"])
         occupations = []
         for item in region["occupations"]:
             us_record = us_by_slug.get(item["slug"])
@@ -558,7 +604,7 @@ def load_regional_views(us_records: list[dict]) -> dict[str, dict]:
         occupations.sort(key=lambda record: record["jobs"], reverse=True)
         total_jobs = sum(record["jobs"] or 0 for record in occupations)
         categories = build_categories(occupations, total_jobs)
-        summary = build_regional_summary(region, occupations, categories)
+        summary = build_regional_summary(region, occupations, categories, area_scale)
         views[region_id] = {
             "id": region_id,
             "label": region["label"],
@@ -569,6 +615,7 @@ def load_regional_views(us_records: list[dict]) -> dict[str, dict]:
             "yearStrategy": region["yearStrategy"],
             "availableModes": ["exposure"],
             "defaultMode": "exposure",
+            "areaScale": area_scale,
             "summary": summary,
             "stories": [],
             "categories": categories,

@@ -54,6 +54,7 @@ Daily refresh runs in [daily-refresh.yml](/Users/bozliu/Documents/Commecial%20Va
 - US occupations come directly from BLS and stay in their native 342-slug taxonomy.
 - Regional data starts from official country-level occupation inputs.
 - Those country totals are projected into the same 342 canonical occupation slugs as the US view using deterministic employment-weighted crosswalks.
+- Asia uses a visibility-adjusted treemap area (`jobs^0.55`) so very large agriculture-heavy occupations do not hide the rest of the map; tooltips and stats still report real jobs.
 - Regional views guarantee taxonomy parity with the US map, but not US-grade parity for pay, education, or outlook.
 - Digital AI Exposure is an LLM-scored overlay, not a prediction that a job disappears.
 
