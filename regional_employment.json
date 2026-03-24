@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-23T03:40:05.355893+00:00",
+  "generatedAt": "2026-03-24T03:31:15.888707+00:00",
   "source": {
     "label": "Official employment-by-occupation sources",
     "url": "https://ilostat.ilo.org/data/",
@@ -55,8 +55,8 @@
           "publicationYear": null,
           "tableTitle": null,
           "sourceNote": null,
-          "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "IND",
@@ -77,8 +77,8 @@
           "publicationYear": null,
           "tableTitle": null,
           "sourceNote": null,
-          "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "AUS",
@@ -99,24 +99,24 @@
           "publicationYear": null,
           "tableTitle": null,
           "sourceNote": null,
-          "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "usedFallback": false,
+          "fallbackReason": null
         }
       ],
       "freshness": {
-        "summary": "0 live ILOSTAT feeds + 3 committed live snapshot fallback + 1 checked-in official national extract",
-        "liveCountries": [],
-        "fallbackCountries": [
+        "summary": "3 live ILOSTAT feeds + 1 checked-in official national extract",
+        "liveCountries": [
           "Japan",
           "India",
           "Australia"
         ],
+        "fallbackCountries": [],
         "manualCountries": [
           "China"
         ],
         "cachedCountries": [],
         "hasCachedSources": false,
-        "hasFallbackSources": true,
+        "hasFallbackSources": false,
         "hasManualSources": true
       },
       "occupations": [
@@ -24099,7 +24099,7 @@
           "tableTitle": null,
           "sourceNote": null,
           "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "fallbackReason": "live fetch returned no occupation rows"
         },
         {
           "code": "GBR",
@@ -24120,8 +24120,8 @@
           "publicationYear": null,
           "tableTitle": null,
           "sourceNote": null,
-          "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "FRA",
@@ -24143,7 +24143,7 @@
           "tableTitle": null,
           "sourceNote": null,
           "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "fallbackReason": "live fetch returned no occupation rows"
         },
         {
           "code": "ITA",
@@ -24164,8 +24164,8 @@
           "publicationYear": null,
           "tableTitle": null,
           "sourceNote": null,
-          "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "usedFallback": false,
+          "fallbackReason": null
         },
         {
           "code": "ESP",
@@ -24186,19 +24186,20 @@
           "publicationYear": null,
           "tableTitle": null,
           "sourceNote": null,
-          "usedFallback": true,
-          "fallbackReason": "live fetch error: HTTPStatusError"
+          "usedFallback": false,
+          "fallbackReason": null
         }
       ],
       "freshness": {
-        "summary": "0 live ILOSTAT feeds + 5 committed live snapshot fallback",
-        "liveCountries": [],
-        "fallbackCountries": [
-          "Germany",
+        "summary": "3 live ILOSTAT feeds + 2 committed live snapshot fallback",
+        "liveCountries": [
           "United Kingdom",
-          "France",
           "Italy",
           "Spain"
+        ],
+        "fallbackCountries": [
+          "Germany",
+          "France"
         ],
         "manualCountries": [],
         "cachedCountries": [],

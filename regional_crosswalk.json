@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-23T03:40:05.299771+00:00",
+  "generatedAt": "2026-03-24T03:31:15.832194+00:00",
   "source": {
     "label": "Official employment-by-occupation sources",
     "url": "https://ilostat.ilo.org/data/",
@@ -2517,8 +2517,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
-      "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "1",
@@ -4515,8 +4515,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
-      "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "1",
@@ -7025,8 +7025,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
-      "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
@@ -9554,7 +9554,7 @@
       "tableTitle": null,
       "sourceNote": null,
       "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "fallbackReason": "live fetch returned no occupation rows",
       "mappings": [
         {
           "nativeCode": "0",
@@ -12081,8 +12081,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
-      "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
@@ -14610,7 +14610,7 @@
       "tableTitle": null,
       "sourceNote": null,
       "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "fallbackReason": "live fetch returned no occupation rows",
       "mappings": [
         {
           "nativeCode": "0",
@@ -17137,8 +17137,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
-      "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
@@ -19665,8 +19665,8 @@
       "publicationYear": null,
       "tableTitle": null,
       "sourceNote": null,
-      "usedFallback": true,
-      "fallbackReason": "live fetch error: HTTPStatusError",
+      "usedFallback": false,
+      "fallbackReason": null,
       "mappings": [
         {
           "nativeCode": "0",
